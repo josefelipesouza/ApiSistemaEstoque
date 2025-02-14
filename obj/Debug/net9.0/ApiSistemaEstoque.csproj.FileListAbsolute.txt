@@ -1,0 +1,5 @@
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\obj\Debug\net9.0\ApiSistemaEstoque.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\obj\Debug\net9.0\ApiSistemaEstoque.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\obj\Debug\net9.0\ApiSistemaEstoque.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\obj\Debug\net9.0\ApiSistemaEstoque.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\obj\Debug\net9.0\ApiSistemaEstoque.MvcApplicationPartsAssemblyInfo.cache

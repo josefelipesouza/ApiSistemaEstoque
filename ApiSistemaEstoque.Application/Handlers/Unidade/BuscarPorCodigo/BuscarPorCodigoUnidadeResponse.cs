@@ -1,0 +1,12 @@
+using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
+
+namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.BuscarPorCodigo;
+
+public record BuscarPorCodigoUnidadeResponse(
+    int Codigo,
+    string Descricao,
+    int UsuarioCadastro,
+    DateTime CreatedAt,
+    DateTime updated_at,
+    IEnumerable<Status> Inativo
+);
