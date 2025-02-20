@@ -1,10 +1,6 @@
 using System.Text;
 using ErrorOr;
-using Hemocentro.Application.AppConfig;
-using Hemocentro.Application.Handlers;
-using Hemocentro.Application.Interfaces.Repositories;
-using Hemocentro.Application.Interfaces.Services;
-using Hemocentro.Domain.Extensions;
+
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -14,7 +10,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.SolicitarE
 public class SolicitarEsqueciSenhaHandler : BaseHandler, IRequestHandler<SolicitarEsqueciSenhaRequest, ErrorOr<string?>>
 {
     private readonly IEmailService _emailService;
-    private readonly HemocentroSettings _hemocentroSettings;
+
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly UserManager<IdentityUser> _userManager;
 
@@ -23,12 +19,12 @@ public class SolicitarEsqueciSenhaHandler : BaseHandler, IRequestHandler<Solicit
         UserManager<IdentityUser> userManager,
         IUsuarioRepository usuarioRepository,
         IEmailService emailService,
-        IOptions<HemocentroSettings> options) : base(mediator)
+
     {
         _userManager = userManager;
         _usuarioRepository = usuarioRepository;
         _emailService = emailService;
-        _hemocentroSettings = options.Value;
+
     }
 
     public async Task<ErrorOr<string?>> Handle(SolicitarEsqueciSenhaRequest request,
@@ -51,10 +47,10 @@ public class SolicitarEsqueciSenhaHandler : BaseHandler, IRequestHandler<Solicit
             return Errors.Authentication.UsuarioNaoEncontrado;
 
         var tokenEsqueciSenha = await _userManager.GeneratePasswordResetTokenAsync(identityUser);
-        var urlBase = $"{_hemocentroSettings.FrontEndUrl}/resetar-senha";
+
         var corpoEmail = FormartaCorpoEmail(identityUser.UserName, tokenEsqueciSenha, identityUser.UserName, urlBase);
 
-        await _emailService.EnviarEmail(_hemocentroSettings.EmailNaoResponda!, identityUser.Email!,
+
             "Solicitação de troca de senha", corpoEmail, cancellationToken);
 
         return string.Empty;
