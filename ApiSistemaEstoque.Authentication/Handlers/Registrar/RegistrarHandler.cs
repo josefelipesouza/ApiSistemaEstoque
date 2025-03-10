@@ -98,4 +98,5 @@ public class RegistrarHandler : BaseHandler, IRequestHandler<RegistrarRequest, E
 
         return true;
     }
+    
 }
