@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 
-public class EstoqueContext : DbContext, IUnitOfWork
+public class EstoqueContext : DbContext, IUnityOfWork
 {
     public DbSet<Categoria> Categorias { get; set; }
     public DbSet<Estoque> Estoques { get; set; }

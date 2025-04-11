@@ -1,15 +1,17 @@
 using System.Text;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Context;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Services;
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Services;
+//using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Models;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Models.exceptions;
+/*
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.AlterarSenha;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.Login;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.Registrar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.SolicitarEsqueciSenha;
+*/
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -69,17 +71,22 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Extensions;
 
         public static IServiceCollection AddAuthenticationHandlers(this IServiceCollection services)
         {
+            /*
             services.AddScoped<IRequestHandler<LoginRequest, ErrorOr<LoginResponse>>, LoginHandler>();
             services.AddScoped<IRequestHandler<RegistrarRequest, ErrorOr<bool>>, RegistrarHandler>();
             services.AddScoped<IRequestHandler<SolicitarEsqueciSenhaRequest, ErrorOr<string?>>, SolicitarEsqueciSenhaHandler>();
             services.AddScoped<IRequestHandler<AlterarSenhaRequest, ErrorOr<string?>>, AlterarSenhaHandler>();
+            */
 
             return services;
         }
+
+        /*
 
         public static IServiceCollection AddAuthenticationServices(this IServiceCollection services)
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             return services;
         }
+        */
     }

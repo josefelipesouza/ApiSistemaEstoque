@@ -5,7 +5,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositorie
 
     public interface ICategoriaRepository
     {
-        IUnitOfWork UnitOfWork { get; }
+        IUnityOfWork UnitOfWork { get; }
 
         Task AdicionarAsync(Categoria categoria, CancellationToken cancellationToken);
 

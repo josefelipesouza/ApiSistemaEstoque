@@ -20,10 +20,6 @@ public static partial class Authentication
         code: "Authentication.UsuarioNaoEncontrado",
         description: "Dados do usuário inválidos");
     
-    public static Error CoordenadorNaoEncontrado = Error.NotFound(
-        code: "Authentication.CoordenadorNaoEncontrado",
-        description: "Dados do coordenador inválidos");
-
     public static Error UsuarioDuplicado = Error.Validation(
         code: "Authentication.UsuarioDuplicado",
         description: "Dados do usuário inválidos");

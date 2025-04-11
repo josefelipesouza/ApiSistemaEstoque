@@ -2,6 +2,7 @@ using ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.BuscarPorCodigo;
 using Microsoft.OpenApi.Models;
+using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions;
 namespace ApiSistemaEstoque.ApiSistemaEstoque.API.controllers;
 
 /// <summary>
@@ -40,11 +41,14 @@ public partial class Program
         });
 
         builder.Services.AddScoped<EstoqueContext>();
-        builder.Services.AddMediatR(cfg => 
-            cfg.RegisterServicesFromAssembly(typeof(BuscarPorCodigoCategoriaHandler).Assembly));
+        //builder.Services.AddMediatR(cfg => 
+            //cfg.RegisterServicesFromAssembly(typeof(BuscarPorCodigoCategoriaHandler).Assembly));
+        builder.Services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));    
         builder.Services.AddControllers()
             .AddApplicationPart(typeof(CategoriaController).Assembly); // Certifique-se de que isso está correto
-
+        builder.Services.AddInfrastructureServices(builder.Configuration);
+    
         var app = builder.Build();
 
         // Configuração do Swagger no ambiente de desenvolvimento

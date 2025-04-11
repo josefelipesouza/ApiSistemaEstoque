@@ -8,7 +8,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Repositories
 {
     public class MovimentacaoRepository : IMovimentacaoRepository
     {
-        public IUnitOfWork UnitOfWork => _context;
+        public IUnityOfWork UnitOfWork => _context;
 
         private readonly EstoqueContext _context;
 

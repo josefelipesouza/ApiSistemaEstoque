@@ -5,7 +5,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositorie
 
 public interface IItemRepository
 {
-    IUnitOfWork UnitOfWork { get; }
+    IUnityOfWork UnitOfWork { get; }
 
     Task AdicionarAsync(Item item, CancellationToken cancellationToken);
 
