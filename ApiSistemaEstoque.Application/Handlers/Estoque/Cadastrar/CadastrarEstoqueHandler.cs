@@ -3,6 +3,10 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using MediatR;
 using System.Security.Claims;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
+using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
+using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
+using System.Security.Claims;
+
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.Cadastrar;
 

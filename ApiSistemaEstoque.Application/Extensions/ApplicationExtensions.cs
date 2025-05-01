@@ -1,5 +1,8 @@
 using ErrorOr;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
+using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
+
 
 // Handlers para Categoria
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.BuscarPorCodigo;
