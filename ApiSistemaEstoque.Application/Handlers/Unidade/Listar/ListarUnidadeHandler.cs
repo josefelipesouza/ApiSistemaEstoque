@@ -13,7 +13,12 @@ public class ListarUnidadeHandler : IRequestHandler<ListarUnidadeRequest, ErrorO
         _unidadeRepository = unidadeRepository;
     }
 
-    public async Task<ErrorOr<IEnumerable<ListarUnidadeResponse>>> Handle(ListarUnidadeRequest request, CancellationToken cancellationToken)
+    public Task<ErrorOr<IEnumerable<ListarUnidadeResponse>>> Handle(ListarUnidadeRequest request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ErrorOr<IEnumerable<ListarUnidadeResponse>>> Handler(ListarUnidadeRequest request, CancellationToken cancellationToken)
     {
         var unidades = await _unidadeRepository.ListarAsync(cancellationToken);
 
