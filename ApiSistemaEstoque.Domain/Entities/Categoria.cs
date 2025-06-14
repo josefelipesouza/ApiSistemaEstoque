@@ -1,26 +1,32 @@
 ﻿using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
 
 public class Categoria
 {
+    private string usuarioCadastro;
+
     [Key]
     public int Codigo { get; set; }
     public string Descricao { get; private set; }
     public int Superior { get; private set; }
-    public int UsuarioCadastro { get; private set; }
+    public String UsuarioCadastro { get; private set; }
     public DateTime CreatedAt  { get; private set; }
     public DateTime updated_at {get; private set;}
-    public IEnumerable<Status> Inativo { get; private set; }
+    public Status Inativo { get; private set; }
+    
+    public IdentityUser Usuario { get; set; }
 
-    public Categoria(string descricao, int superior, int usuarioCadastro)
+
+    public Categoria(string descricao, int superior, string usuarioCadastro)
     {
         Descricao = descricao;
         Superior = superior;
         UsuarioCadastro = usuarioCadastro;
-        CreatedAt =  DateTime.UtcNow;
-        Inativo = new List<Status> { Status.Ativo };
+        CreatedAt = DateTime.UtcNow;
+        Inativo = Status.Ativo;
 
     }
 
@@ -34,7 +40,7 @@ public class Categoria
         Superior = superior;
     }
 
-    public void SetUsuarioCadastro(int usuarioCadastro)
+    public void SetUsuarioCadastro(string usuarioCadastro)
     {
         UsuarioCadastro = usuarioCadastro;
     }
@@ -46,7 +52,7 @@ public class Categoria
 
     public void SetInativar()
     {
-        Inativo = new List<Status> { Status.Inativo };
+        Inativo = Status.Inativo;
     }
 }
 

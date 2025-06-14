@@ -9,11 +9,11 @@ public class TipoMovimentacao
   public int? Codigo { get; set; }
   public IEnumerable<TipoBaseMovimentacao> Tipo { get; set; }
   public string? Descricao { get; set; }
-  public int UsuarioCadastro { get; private set; }
+  public string UsuarioCadastro { get; private set; }
   public DateTime CreatedAt { get; private set; }
   public DateTime updated_at { get; private set; }
 
-  public TipoMovimentacao(IEnumerable<TipoBaseMovimentacao> tipo, string descricao, int usuarioCadastro)
+  public TipoMovimentacao(IEnumerable<TipoBaseMovimentacao> tipo, string descricao, string usuarioCadastro)
   {
     Tipo = tipo;
     Descricao = descricao;

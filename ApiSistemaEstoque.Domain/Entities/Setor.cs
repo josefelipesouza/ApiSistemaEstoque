@@ -8,7 +8,7 @@ public class Setor
     [Key]
     public int Codigo { get; private set; }
     public string Descricao { get; private set; }
-    public int UsuarioCadastro { get; private set; }
+    public string UsuarioCadastro { get; private set; }
     // Propriedade de navegação para os usuários associados a este setor
     public ICollection<Usuario> Usuarios { get; private set; }
     public DateTime CreatedAt  { get; private set; }
@@ -19,7 +19,7 @@ public class Setor
     [ForeignKey(nameof(UsuarioCadastro))]
     public Usuario Usuario { get; private set; }
     */
-    public Setor(string descricao, int usuarioCadastro)
+    public Setor(string descricao, string usuarioCadastro)
     {
         Descricao = descricao;
         UsuarioCadastro = usuarioCadastro;

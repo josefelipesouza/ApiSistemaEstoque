@@ -9,7 +9,7 @@ public record ListarItemResponse(
     string Referencia,
     int CodigoCategoria,
     int CodigoUnidade,
-    int UsuarioCadastro,
+    string UsuarioCadastro,
     DateTime CreatedAt,
     DateTime updated_at,
     IEnumerable<Status> Inativo

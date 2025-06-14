@@ -30,20 +30,22 @@ namespace ApiSistemaEstoque.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Inativo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Inativo")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Superior")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsuarioCadastro")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioCadastro")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Codigo");
+
+                    b.HasIndex("UsuarioCadastro");
 
                     b.ToTable("Categorias");
                 });
@@ -75,8 +77,9 @@ namespace ApiSistemaEstoque.Migrations
                     b.Property<int>("Superior")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UsuarioCadastro")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioCadastro")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("TEXT");
@@ -139,8 +142,9 @@ namespace ApiSistemaEstoque.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UsuarioCadastro")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioCadastro")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("TEXT");
@@ -151,24 +155,22 @@ namespace ApiSistemaEstoque.Migrations
 
                     b.HasIndex("CodigoUnidade");
 
-                    b.HasIndex("UsuarioCadastro");
-
                     b.ToTable("Itens");
                 });
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.ItemEstoque", b =>
                 {
-                    b.Property<int?>("CodigoItem")
+                    b.Property<int>("CodigoItem")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(0);
 
-                    b.Property<int?>("CodigoEstoque")
+                    b.Property<int>("CodigoEstoque")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(0);
 
-                    b.Property<int?>("Codigo")
+                    b.Property<int>("Codigo")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
@@ -177,8 +179,7 @@ namespace ApiSistemaEstoque.Migrations
                     b.Property<int?>("EstoqueCodigo")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Quantidade")
-                        .IsRequired()
+                    b.Property<int>("Quantidade")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(0);
@@ -263,23 +264,23 @@ namespace ApiSistemaEstoque.Migrations
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Movimentacao", b =>
                 {
-                    b.Property<int?>("Codigo")
+                    b.Property<int>("Codigo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CodigoEstoqueSolicitado")
+                    b.Property<int>("CodigoEstoqueSolicitado")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CodigoEstoqueSolicitante")
+                    b.Property<int>("CodigoEstoqueSolicitante")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CodigoTipoMovimentacao")
+                    b.Property<int>("CodigoTipoMovimentacao")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CodigoUsuarioEstoqueSolicitado")
+                    b.Property<int>("CodigoUsuarioEstoqueSolicitado")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CodigoUsuarioEstoqueSolicitante")
+                    b.Property<int>("CodigoUsuarioEstoqueSolicitante")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
@@ -288,6 +289,7 @@ namespace ApiSistemaEstoque.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
                         .HasDefaultValue("Aguardando");
@@ -322,8 +324,9 @@ namespace ApiSistemaEstoque.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UsuarioCadastro")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioCadastro")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("TEXT");
@@ -349,8 +352,9 @@ namespace ApiSistemaEstoque.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UsuarioCadastro")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioCadastro")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("TEXT");
@@ -377,8 +381,9 @@ namespace ApiSistemaEstoque.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UsuarioCadastro")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioCadastro")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("TEXT");
@@ -409,8 +414,9 @@ namespace ApiSistemaEstoque.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UsuarioCadastro")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UsuarioCadastro")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("TEXT");
@@ -419,7 +425,248 @@ namespace ApiSistemaEstoque.Migrations
 
                     b.HasIndex("CodigoSetor");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5p6",
+                            Name = "GerenteDeEstoque",
+                            NormalizedName = "GERENTEDEESTOQUE"
+                        },
+                        new
+                        {
+                            Id = "2b3c4d5e-6f7g-8h9i-0j1k-l2m3n4o5p6q",
+                            Name = "Almoxarife",
+                            NormalizedName = "ALMOXARIFE"
+                        },
+                        new
+                        {
+                            Id = "3c4d5e6f-7g8h-9i0j-k1l2-m3n4o5p6q7r",
+                            Name = "GestorDeCompras",
+                            NormalizedName = "GESTORDECOMPRAS"
+                        },
+                        new
+                        {
+                            Id = "4d5e6f7g-8h9i-0j1k-l2m3-n4o5p6q7r8s",
+                            Name = "GestorDeVendas",
+                            NormalizedName = "GESTORDEVENDAS"
+                        },
+                        new
+                        {
+                            Id = "5e6f7g8h-9i0j-k1l2-m3n4-o5p6q7r8s9t",
+                            Name = "GestorDeInventario",
+                            NormalizedName = "GESTORDEINVENTARIO"
+                        },
+                        new
+                        {
+                            Id = "6f7g8h9i-0j1k-l2m3-n4o5-p6q7r8s9t0u",
+                            Name = "GerenteDeLogistica",
+                            NormalizedName = "GERENTEDELOGISTICA"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Categoria", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioCadastro")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Item", b =>
@@ -436,17 +683,9 @@ namespace ApiSistemaEstoque.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioCadastro")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Categoria");
 
                     b.Navigation("Unidade");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.ItemEstoque", b =>
@@ -488,7 +727,8 @@ namespace ApiSistemaEstoque.Migrations
                     b.HasOne("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.TipoMovimentacao", "TipoMovimentacao")
                         .WithMany()
                         .HasForeignKey("CodigoTipoMovimentacao")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("TipoMovimentacao");
                 });
@@ -502,6 +742,57 @@ namespace ApiSistemaEstoque.Migrations
                         .IsRequired();
 
                     b.Navigation("Setor");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Estoque", b =>

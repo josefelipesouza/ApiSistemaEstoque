@@ -7,8 +7,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Cad
 public record CadastrarCategoriaRequest (
 
     string Descricao,
-    int Superior,
-    int UsuarioCadastro
+    int Superior
 ) : IRequest<ErrorOr<CadastrarCategoriaResponse>>;
 
 public class CadastrarCategoriaRequestValidator : AbstractValidator<CadastrarCategoriaRequest>
@@ -19,11 +18,8 @@ public class CadastrarCategoriaRequestValidator : AbstractValidator<CadastrarCat
             .NotEmpty().WithMessage("A descrição é obrigatória.")
             .MaximumLength(100).WithMessage("A descrição deve ter no máximo 100 caracteres.");
 
+        // Alterado para permitir 0 (que será tratado como null no handler)
         RuleFor(x => x.Superior)
-            .GreaterThan(0).WithMessage("O código do superior deve ser um valor positivo.");
-
-        RuleFor(x => x.UsuarioCadastro)
-            .NotNull().WithMessage("O usuário de cadastro é obrigatório.");
-
+            .GreaterThanOrEqualTo(0).WithMessage("O código do superior deve ser um valor positivo ou zero.");
     }
 }

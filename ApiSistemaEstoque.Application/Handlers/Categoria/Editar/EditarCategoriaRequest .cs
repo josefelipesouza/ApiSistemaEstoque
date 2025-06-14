@@ -9,7 +9,7 @@ public class EditarCategoriaRequest : IRequest<ErrorOr<EditarCategoriaResponse>>
     public int Codigo { get; set; }
     public required string Descricao { get; set; }
     public int Superior { get; set; }
-    public int UsuarioCadastro { get; set; }
+    public string UsuarioCadastro { get; set; }
 }
 
 public class EditarCategoriaRequestValidator : AbstractValidator<EditarCategoriaRequest>

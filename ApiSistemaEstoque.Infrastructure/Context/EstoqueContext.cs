@@ -1,16 +1,20 @@
 ﻿using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Data;
+using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.EntityConfig;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 
-public class EstoqueContext : DbContext, IUnityOfWork
+public class EstoqueContext : IdentityDbContext<IdentityUser>, IUnityOfWork
 {
     public EstoqueContext(DbContextOptions<EstoqueContext> options)
         : base(options)
     {
     }
+    
 
     public DbSet<Categoria> Categorias { get; set; }
     public DbSet<Estoque> Estoques { get; set; }
@@ -22,13 +26,25 @@ public class EstoqueContext : DbContext, IUnityOfWork
     public DbSet<Movimentacao> Movimentacoes { get; set; }
     public DbSet<TipoMovimentacao> TiposMovimentacoes { get; set; }
     public DbSet<Unidade> Unidades { get; set; }
+    public DbSet<Usuario> Usuarios{ get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Categoria>().HasKey(c => c.Codigo);
-        modelBuilder.Entity<Estoque>().HasKey(e => e.Codigo);
+
+
+        modelBuilder.ApplyConfiguration(new RoleEntityConfig());
+
+        //modelBuilder.Entity<Categoria>().HasKey(c => c.Codigo);
+        modelBuilder.Entity<Categoria>()
+    .HasOne<IdentityUser>(c => c.Usuario)
+    .WithMany()
+    .HasForeignKey(c => c.UsuarioCadastro)
+    .HasPrincipalKey(u => u.Id)
+    .OnDelete(DeleteBehavior.Restrict);
+
+        //modelBuilder.Entity<Estoque>().HasKey(e => e.Codigo);
         modelBuilder.Entity<HistoricoValorItem>().HasKey(h => h.Codigo);
         modelBuilder.Entity<Item>().HasKey(i => i.Codigo);
 

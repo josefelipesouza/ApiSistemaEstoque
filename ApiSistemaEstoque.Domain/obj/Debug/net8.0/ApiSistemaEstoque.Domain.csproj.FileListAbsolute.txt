@@ -1,0 +1,12 @@
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\bin\Debug\net8.0\ApiSistemaEstoque.Domain.deps.json
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\bin\Debug\net8.0\ApiSistemaEstoque.Domain.dll
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\bin\Debug\net8.0\ApiSistemaEstoque.Domain.pdb
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\obj\Debug\net8.0\ApiSistemaEstoque.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\obj\Debug\net8.0\ApiSistemaEstoque.Domain.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\obj\Debug\net8.0\ApiSistemaEstoque.Domain.AssemblyInfo.cs
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\obj\Debug\net8.0\ApiSistemaEstoque.Domain.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\obj\Debug\net8.0\ApiSistemaEstoque.Domain.sourcelink.json
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\obj\Debug\net8.0\ApiSistemaEstoque.Domain.dll
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\obj\Debug\net8.0\refint\ApiSistemaEstoque.Domain.dll
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\obj\Debug\net8.0\ApiSistemaEstoque.Domain.pdb
+C:\Users\User\Desktop\dev\.net\ApiSistemaEstoque\ApiSistemaEstoque.Domain\obj\Debug\net8.0\ref\ApiSistemaEstoque.Domain.dll

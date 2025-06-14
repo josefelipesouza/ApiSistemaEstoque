@@ -10,7 +10,7 @@ public class Usuario
     public int Codigo { get; private set; }
     public string Nome { get; private set; }
     public int CodigoSetor { get; private set;}
-    public int UsuarioCadastro { get; private set; }
+    public string UsuarioCadastro { get; private set; }
     public DateTime CreatedAt  { get; private set; }
     public DateTime updated_at {get; private set;}
     public IEnumerable<Status> Inativo { get; private set; }
@@ -18,7 +18,7 @@ public class Usuario
     [ForeignKey(nameof(CodigoSetor))]
     public Setor Setor { get; private set; }
 
-    public Usuario(string nome, int codigoSetor, int usuarioCadastro )
+    public Usuario(string nome, int codigoSetor, string usuarioCadastro )
     {
         Nome = nome;
         UsuarioCadastro = usuarioCadastro;

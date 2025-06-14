@@ -10,7 +10,7 @@ public class Unidade
 
     public string Descricao { get; private set; }
 
-    public int UsuarioCadastro { get; private set; }
+    public string UsuarioCadastro { get; private set; }
 
     public DateTime CreatedAt  { get; private set; }
     public DateTime updated_at {get; private set;}
@@ -18,7 +18,7 @@ public class Unidade
     public IEnumerable<Status> Inativo { get; private set; }
 
 
-    public Unidade(string descricao, int usuarioCadastro)
+    public Unidade(string descricao, string usuarioCadastro)
     {
         Descricao = descricao;
         UsuarioCadastro = usuarioCadastro;

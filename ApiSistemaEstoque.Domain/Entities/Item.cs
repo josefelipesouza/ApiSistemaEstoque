@@ -14,7 +14,7 @@ public class Item
     public string Referencia { get; private set; }
     public int CodigoCategoria { get; private set; }
     public int CodigoUnidade { get; private set; }
-    public int UsuarioCadastro { get; private set; }
+    public string UsuarioCadastro { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime updated_at { get; private set; }
     public IEnumerable<Status> Inativo { get; private set; }
@@ -25,11 +25,11 @@ public class Item
 
     [ForeignKey(nameof(CodigoUnidade))]
     public Unidade Unidade { get; private set; }
-
+    /*
     [ForeignKey(nameof(UsuarioCadastro))]
     public Usuario Usuario { get; private set; }
-
-    public Item(string descricao, int usuarioCadastro, int quantidadeMinima, string referencia, int codigoCategoria, int codigoUnidade)
+    */
+    public Item(string descricao, string usuarioCadastro, int quantidadeMinima, string referencia, int codigoCategoria, int codigoUnidade)
     {
         Descricao = descricao;
         UsuarioCadastro = usuarioCadastro;

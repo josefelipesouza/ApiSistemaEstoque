@@ -30,17 +30,6 @@
             <param name="erros">Lista de erros ocorridos.</param>
             <returns>Retorna um objeto do tipo ObjectResult contendo os erros.</returns>
         </member>
-        <member name="T:ApiSistemaEstoque.ApiSistemaEstoque.API.controllers.Program">
-            <summary>
-            Classe principal da aplicação
-            </summary>
-        </member>
-        <member name="M:ApiSistemaEstoque.ApiSistemaEstoque.API.controllers.Program.Main(System.String[])">
-            <summary>
-            Ponto de entrada principal da aplicação
-            </summary>
-            <param name="args">Argumentos da linha de comando</param>
-        </member>
         <member name="T:ApiSistemaEstoque.ApiSistemaEstoque.Application.Extensions.ApplicationExtensions">
             <summary>
             Extensões para configuração dos serviços da camada de aplicação
@@ -73,6 +62,42 @@
             <inheritdoc />
         </member>
         <member name="M:ApiSistemaEstoque.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:ApiSistemaEstoque.Migrations.InitialWithIdentity">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.InitialWithIdentity.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.InitialWithIdentity.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.InitialWithIdentity.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:ApiSistemaEstoque.Migrations.AlterarUsuarioCadastroParaString">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlterarUsuarioCadastroParaString.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlterarUsuarioCadastroParaString.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlterarUsuarioCadastroParaString.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:ApiSistemaEstoque.Migrations.AlterarRelacaoCategoriaComUsuario">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlterarRelacaoCategoriaComUsuario.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlterarRelacaoCategoriaComUsuario.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlterarRelacaoCategoriaComUsuario.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

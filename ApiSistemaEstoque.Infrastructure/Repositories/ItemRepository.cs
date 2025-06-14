@@ -27,9 +27,9 @@ public class ItemRepository : IItemRepository
         return await _context.Itens
             .Include(i => i.Categoria)      // Inclui a relação com Categoria
             .Include(i => i.Unidade)        // Inclui a relação com Unidade
-            .Include(i => i.Usuario)        // Inclui a relação com Usuario
+            //.Include(i => i.Usuario)        // Inclui a relação com Usuario
             .AsNoTracking()
-            .Where(x => x.Codigo == codigo)
+            //.Where(x => x.Codigo == codigo)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
@@ -38,7 +38,7 @@ public class ItemRepository : IItemRepository
         return await _context.Itens
             .Include(i => i.Categoria)      // Inclui a relação com Categoria
             .Include(i => i.Unidade)        // Inclui a relação com Unidade
-            .Include(i => i.Usuario)        // Inclui a relação com Usuario
+            //.Include(i => i.Usuario)        // Inclui a relação com Usuario
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }

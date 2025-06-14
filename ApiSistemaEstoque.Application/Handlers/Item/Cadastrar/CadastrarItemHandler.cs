@@ -30,10 +30,11 @@ public class CadastrarItemHandler : BaseHandler, IRequestHandler<CadastrarItemRe
         if (Validar(request, new CadastrarItemRequestValidator()) is var resultado && resultado.Count != 0)
             return resultado;    
 
-        var usuarioCadastro = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (usuarioCadastro == 0)
-            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
+
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
+    return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
         var novoItem = new Domain.Entities.Item(
             request.Descricao,
