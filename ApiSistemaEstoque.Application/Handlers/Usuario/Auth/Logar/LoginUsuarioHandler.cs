@@ -3,6 +3,7 @@ using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace ApiSistemaEstoque.Application.Handlers.Usuario.Auth.Logar;
 

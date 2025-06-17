@@ -2,6 +2,8 @@ using ErrorOr;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using MediatR;
 using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+
 using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
 using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
 using System.Security.Claims;

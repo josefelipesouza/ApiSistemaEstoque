@@ -1,26 +1,29 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "C#: ApiSistemaEstoque",
-        "type": "coreclr",
-        "request": "launch",
-        "preLaunchTask": "build",
-        "program": "${workspaceFolder}/src/ApiSistemaEstoque.API/bin/Debug/net7.0/ApiSistemaEstoque.API.dll",
-        "args": [],
-        "cwd": "${workspaceFolder}/src/ApiSistemaEstoque.API",
-        "stopAtEntry": false,
-        "serverReadyAction": {
-          "action": "openExternally",
-          "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-        },
-        "env": {
-          "ASPNETCORE_ENVIRONMENT": "Development"
-        },
-        "sourceFileMap": {
-          "/Views": "${workspaceFolder}/Views"
-        }
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ApiSistemaEstoque.API",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/ApiSistemaEstoque.API/bin/Debug/net8.0/ApiSistemaEstoque.API.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/ApiSistemaEstoque.API",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "launchBrowser": {
+        "enabled": true,
+        "args": "${auto-detect-url}"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
       }
-    ]
-  }
-  
+    }
+  ]
+}

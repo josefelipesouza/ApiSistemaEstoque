@@ -10,7 +10,7 @@ public class Setor
     public string Descricao { get; private set; }
     public string UsuarioCadastro { get; private set; }
     // Propriedade de navegação para os usuários associados a este setor
-    public ICollection<Usuario> Usuarios { get; private set; }
+    //public ICollection<Usuario> Usuarios { get; private set; }
     public DateTime CreatedAt  { get; private set; }
     public DateTime updated_at {get; private set;}
     public IEnumerable<Status> Inativo { get; private set; }
@@ -23,7 +23,7 @@ public class Setor
     {
         Descricao = descricao;
         UsuarioCadastro = usuarioCadastro;
-        Usuarios = new List<Usuario>();  // Inicializando a coleção de usuários
+        //Usuarios = new List<Usuario>();  // Inicializando a coleção de usuários
         CreatedAt =  DateTime.UtcNow;
         Inativo = new List<Status> { Status.Ativo };
     }

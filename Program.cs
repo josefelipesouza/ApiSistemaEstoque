@@ -4,11 +4,11 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.BuscarP
 using Microsoft.OpenApi.Models;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
-using ApiSistemaEstoque.Application.Handlers.Usuario.Auth.Registrar;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
+using MediatR;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.API.controllers;
 
@@ -18,7 +18,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Configuração explícita de URLs
+        // Configurar HTTPS explícito (porta 5270)
         builder.WebHost.ConfigureKestrel(options =>
         {
             options.ListenLocalhost(5270, listenOptions =>
@@ -32,20 +32,48 @@ public class Program
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Sistema de Estoque", Version = "v1" });
+
+            // XML de documentação
             var xmlFile = $"{typeof(Program).Assembly.GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             if (File.Exists(xmlPath))
             {
                 c.IncludeXmlComments(xmlPath);
             }
+
+            // Suporte a JWT no Swagger
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header usando o esquema Bearer. Ex: 'Bearer {seu token}'",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme {
+                        Reference = new OpenApiReference {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
         });
 
-        // Infraestrutura
+        // Configurações obrigatórias do JWT (Issuer, Audience, Key)
+        var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key não configurado.");
+        var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer não configurado.");
+        var jwtAudience = builder.Configuration["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience não configurado.");
+
+        // Injeções de dependência
         builder.Services.AddScoped<EstoqueContext>();
         builder.Services.AddInfrastructureServices(builder.Configuration);
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+        builder.Services.AddMediatR(typeof(Program).Assembly);
         builder.Services.AddControllers()
             .AddApplicationPart(typeof(CategoriaController).Assembly);
 
@@ -54,7 +82,7 @@ public class Program
             .AddEntityFrameworkStores<EstoqueContext>()
             .AddDefaultTokenProviders();
 
-        // ✅ Configuração do JWT
+        // Autenticação JWT
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -71,29 +99,30 @@ public class Program
                 ValidIssuer = builder.Configuration["Jwt:Issuer"],
                 ValidAudience = builder.Configuration["Jwt:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-                    
+        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+
                 NameClaimType = ClaimTypes.NameIdentifier,
-        RoleClaimType = ClaimTypes.Role    
+                RoleClaimType = ClaimTypes.Role
             };
+
         });
 
         var app = builder.Build();
 
-        // Swagger no dev
+        // Swagger
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Sistema de Estoque v1");
                 c.RoutePrefix = string.Empty;
             });
         }
 
         app.UseHttpsRedirection();
 
-        // ✅ Ativar autenticação e autorização
+        // Middleware de autenticação/autorização
         app.UseAuthentication();
         app.UseAuthorization();
 
