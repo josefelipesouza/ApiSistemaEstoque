@@ -1,4 +1,9 @@
+using System.Security.Claims;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.BuscarPorCodigo;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Cadastrar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Editar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Inativar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Listar;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +14,9 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers;
 /// <summary>
 /// Controlador responsável pelas operações relacionadas à entidade Categoria.
 /// </summary>
+[Authorize] // ✅ Toda a controller requer autenticação
 [Route("api/categorias")]
+[ApiController]
 public class CategoriaController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -37,9 +44,10 @@ public class CategoriaController : ControllerBase
     [ProducesResponseType(409)]
     [ProducesResponseType(500)]
     public async Task<IActionResult> CadastrarCategoriaAsync(
-    [FromBody] CadastrarCategoriaRequest request,
-    CancellationToken cancellationToken)
+        [FromBody] CadastrarCategoriaRequest request,
+        CancellationToken cancellationToken)
     {
+
         var resultado = await _mediator.Send(request, cancellationToken);
 
         return resultado.Match(
@@ -50,6 +58,116 @@ public class CategoriaController : ControllerBase
                 Data = response
             }),
             errors => Problem(errors));
+    }
+
+    /// <summary>
+    /// Altera uma categoria existente.
+    /// </summary>
+    /// <param name="codigo">Código da categoria a editar.</param>
+    /// <param name="request">Dados a alterar.</param>
+    // PUT api/categorias/{codigo}
+    [HttpPut("{codigo:int}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(409)]
+    [ProducesResponseType(500)]
+    public async Task<IActionResult> EditarCategoriaAsync(
+        int codigo,
+        [FromBody] EditarCategoriaRequest request,
+        CancellationToken cancellationToken)
+    {
+        
+        var resultado = await _mediator.Send(request, cancellationToken);
+
+        return resultado.Match(
+            response => Ok(new
+            {
+                Success = true,
+                Message = "Categoria atualizada com sucesso.",
+                Data = response
+            }),
+            errors => Problem(errors));
+    }
+
+    /// <summary>
+    /// Inativa (marca como inativo) uma categoria existente.
+    /// </summary>
+    /// <param name="codigo">Código da categoria que será inativada.</param>
+    /// <param name="cancellationToken"></param>
+    [HttpPatch("{codigo:int}/inativar")]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> InativarCategoriaAsync(
+        int codigo,
+        CancellationToken cancellationToken)
+    {
+        // construímos o request simples contendo só o código
+        var request = new InativarCategoriaRequest(codigo);
+
+        var resultado = await _mediator.Send(request, cancellationToken);
+
+        return resultado.Match(
+            ok => Ok(new { Success = true, Message = "Categoria inativada com sucesso." }),
+            errors => Problem(errors)
+        );
+    }
+
+    /// <summary>
+    /// Lista todas as categorias cadastradas.
+    /// </summary>
+    /// <param name="cancellationToken">Token de cancelamento da operação.</param>
+    /// <returns>Lista de categorias.</returns>
+    [HttpGet]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(500)]
+    public async Task<IActionResult> ListarCategoriasAsync(CancellationToken cancellationToken)
+    {
+        var request = new ListarCategoriaRequest();
+
+        var resultado = await _mediator.Send(request, cancellationToken);
+
+        return resultado.Match(
+            lista => Ok(new
+            {
+                Success = true,
+                Message = "Categorias listadas com sucesso.",
+                Data = lista
+            }),
+            errors => Problem(errors)
+        );
+    }
+
+    /// <summary>
+    /// Busca uma categoria pelo código.
+    /// </summary>
+    /// <param name="codigo">Código da categoria.</param>
+    /// <param name="cancellationToken">Token de cancelamento.</param>
+    /// <returns>Retorna os dados da categoria ou erro.</returns>
+    [HttpGet("{codigo:int}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(500)]
+    public async Task<IActionResult> BuscarCategoriaPorCodigoAsync(
+        int codigo,
+        CancellationToken cancellationToken)
+    {
+        var request = new BuscarPorCodigoCategoriaRequest { Codigo = codigo };
+
+        var resultado = await _mediator.Send(request, cancellationToken);
+
+        return resultado.Match(
+            response => Ok(new
+            {
+                Success = true,
+                Message = "Categoria encontrada com sucesso.",
+                Data = response
+            }),
+            errors => Problem(errors)
+        );
     }
 
     /// <summary>
@@ -78,4 +196,3 @@ public class CategoriaController : ControllerBase
             type: firstError.Code);
     }
 }
-

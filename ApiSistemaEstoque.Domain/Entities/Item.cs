@@ -17,7 +17,7 @@ public class Item
     public string UsuarioCadastro { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime updated_at { get; private set; }
-    public IEnumerable<Status> Inativo { get; private set; }
+    public Status Inativo { get; private set; }
 
 
     [ForeignKey(nameof(CodigoCategoria))]
@@ -38,7 +38,7 @@ public class Item
         CodigoCategoria = codigoCategoria;
         CodigoUnidade = codigoUnidade;
         CreatedAt = DateTime.UtcNow;
-        Inativo = new List<Status> { Status.Ativo };
+       Inativo = Status.Ativo;
     }
 
     public void SetDescricao(string descricao)
@@ -73,7 +73,7 @@ public class Item
 
     public void SetInativar()
     {
-        Inativo = new List<Status> { Status.Inativo };
+        Inativo = Status.Inativo;
     }
 
 }

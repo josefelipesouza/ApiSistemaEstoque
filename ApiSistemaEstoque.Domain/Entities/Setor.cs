@@ -13,7 +13,7 @@ public class Setor
     //public ICollection<Usuario> Usuarios { get; private set; }
     public DateTime CreatedAt  { get; private set; }
     public DateTime updated_at {get; private set;}
-    public IEnumerable<Status> Inativo { get; private set; }
+    public Status Inativo { get; private set; }
 
     /*
     [ForeignKey(nameof(UsuarioCadastro))]
@@ -25,7 +25,7 @@ public class Setor
         UsuarioCadastro = usuarioCadastro;
         //Usuarios = new List<Usuario>();  // Inicializando a coleção de usuários
         CreatedAt =  DateTime.UtcNow;
-        Inativo = new List<Status> { Status.Ativo };
+        Inativo = Status.Ativo;
     }
 
 }

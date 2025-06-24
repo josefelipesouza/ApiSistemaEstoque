@@ -32,7 +32,6 @@ public class CadastrarUnidadeHandler : BaseHandler, IRequestHandler<CadastrarUni
 
         var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
     return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
     

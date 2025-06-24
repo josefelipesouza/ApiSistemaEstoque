@@ -1,18 +1,22 @@
 using ErrorOr;
 using MediatR;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
+using System.Security.Claims;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Editar;
 
 public class EditarUnidadeHandler : BaseHandler, IRequestHandler<EditarUnidadeRequest, ErrorOr<EditarUnidadeResponse>>
 {
     private readonly IUnidadeRepository _unidadeRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     public EditarUnidadeHandler(
         IMediator mediator,
-        IUnidadeRepository unidadeRepository) : base(mediator)
+        IUnidadeRepository unidadeRepository,
+        IHttpContextAccessor httpContextAccessor) : base(mediator)
     {
         _unidadeRepository = unidadeRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<ErrorOr<EditarUnidadeResponse>> Handle(EditarUnidadeRequest request, CancellationToken cancellationToken)
@@ -24,6 +28,11 @@ public class EditarUnidadeHandler : BaseHandler, IRequestHandler<EditarUnidadeRe
             return validationResult.Errors
                 .Select(e => Error.Validation(e.PropertyName, e.ErrorMessage))
                 .ToList();
+                
+        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
+            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;        
 
         var unidadeExistente = await _unidadeRepository.BuscarPorCodigoAsync(request.Codigo, cancellationToken);
 
@@ -32,6 +41,7 @@ public class EditarUnidadeHandler : BaseHandler, IRequestHandler<EditarUnidadeRe
 
         unidadeExistente.SetDescricao(request.Descricao);
         unidadeExistente.SetDataAlteracao(DateTime.UtcNow);
+        unidadeExistente.SetUsuarioCadastro(usuarioCadastro);
 
         _unidadeRepository.Atualizar(unidadeExistente);
         

@@ -4,21 +4,18 @@ using MediatR;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Listar;
 
-public class ListarUnidadeHandler : IRequestHandler<ListarUnidadeRequest, ErrorOr<IEnumerable<ListarUnidadeResponse>>>
+public class ListarUnidadeHandler : BaseHandler, IRequestHandler<ListarUnidadeRequest, ErrorOr<IEnumerable<ListarUnidadeResponse>>>
 {
     private readonly IUnidadeRepository _unidadeRepository;
 
-    public ListarUnidadeHandler(IUnidadeRepository unidadeRepository)
+    public ListarUnidadeHandler(IMediator mediator,
+        IUnidadeRepository unidadeRepository) : base(mediator)
     {
         _unidadeRepository = unidadeRepository;
+         
     }
 
-    public Task<ErrorOr<IEnumerable<ListarUnidadeResponse>>> Handle(ListarUnidadeRequest request, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<ErrorOr<IEnumerable<ListarUnidadeResponse>>> Handler(ListarUnidadeRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<IEnumerable<ListarUnidadeResponse>>> Handle(ListarUnidadeRequest request, CancellationToken cancellationToken)
     {
         var unidades = await _unidadeRepository.ListarAsync(cancellationToken);
 

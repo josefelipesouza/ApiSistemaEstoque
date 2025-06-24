@@ -8,7 +8,7 @@ public record CadastrarEstoqueRequest(
     
         string Descricao,
         string Localizacao,
-        int Responsavel,
+        string Responsavel,
         int Superior
         
 ): IRequest<ErrorOr<CadastrarEstoqueResponse>>;

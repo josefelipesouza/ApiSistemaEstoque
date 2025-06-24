@@ -32,9 +32,8 @@ public class CadastrarItemHandler : BaseHandler, IRequestHandler<CadastrarItemRe
 
         var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
-    return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
+            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
         var novoItem = new Domain.Entities.Item(
             request.Descricao,

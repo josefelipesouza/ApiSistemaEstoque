@@ -12,5 +12,5 @@ public record BuscarPorCodigoItemResponse(
     string UsuarioCadastro,
     DateTime CreatedAt,
     DateTime updated_at,
-    IEnumerable<Status> Inativo
+    Status Inativo
 );

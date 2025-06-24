@@ -22,12 +22,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities
 
         public Status Inativo { get; private set; }
 
-        /*
-        // Navegação para o IdentityUser (usuário que cadastrou)
-        [ForeignKey(nameof(UsuarioCadastro))]
-        public IdentityUser Usuario { get; private set; }
-        */
-
+ 
         // Construtor para uso na criação da categoria
         public Categoria(string descricao, int superior, string usuarioCadastro)
         {

@@ -12,5 +12,5 @@ public record EditarItemResponse(
     string UsuarioCadastro,
     DateTime CreatedAt,
     DateTime UpdatedAt,
-    IEnumerable<Status> Inativo
+    Status Inativo
 );

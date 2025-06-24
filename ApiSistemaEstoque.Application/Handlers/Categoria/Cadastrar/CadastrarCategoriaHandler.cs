@@ -20,35 +20,30 @@ public class CadastrarCategoriaHandler : BaseHandler, IRequestHandler<CadastrarC
     public CadastrarCategoriaHandler(
         IMediator mediator,
         ICategoriaRepository categoriaRepository,
-        IHttpContextAccessor httpContextAccessor, 
+        IHttpContextAccessor httpContextAccessor,
         UserManager<IdentityUser> userManager) : base(mediator)
     {
         _categoriaRepository = categoriaRepository;
         _httpContextAccessor = httpContextAccessor;
-         _userManager = userManager;
+        _userManager = userManager;
     }
 
     public async Task<ErrorOr<CadastrarCategoriaResponse>> Handle(CadastrarCategoriaRequest request, CancellationToken cancellationToken)
     {
         if (Validar(request, new CadastrarCategoriaRequestValidator()) is var resultado && resultado.Count != 0)
             return resultado;
+        
+        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var usuarioCadastroId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-
-        var usuario = await _userManager.FindByIdAsync(usuarioCadastroId);
-        if (usuario == null)
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
-        /*
-        if (string.IsNullOrWhiteSpace(usuarioCadastroId))
-            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
-            */
-
+    
 
         var novaCategoria = new Domain.Entities.Categoria(
             request.Descricao,
             request.Superior,
-            usuarioCadastroId
+            usuarioCadastro
         );
 
         await _categoriaRepository.AdicionarAsync(novaCategoria, cancellationToken);

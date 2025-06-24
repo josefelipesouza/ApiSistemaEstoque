@@ -4,6 +4,75 @@
         <name>ApiSistemaEstoque</name>
     </assembly>
     <members>
+        <member name="M:ApiSistemaEstoque.API.Controllers.EstoqueController.CadastrarEstoqueAsync(ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.Cadastrar.CadastrarEstoqueRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cadastra um novo estoque no sistema.
+            </summary>
+            <param name="request">Dados do estoque a ser cadastrado.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna o estoque criado ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.EstoqueController.EditarEstoqueAsync(System.Int32,ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.Editar.EditarEstoqueRequest,System.Threading.CancellationToken)">
+            <summary>
+            Edita um estoque existente.
+            </summary>
+            <param name="codigo">Código do estoque a ser editado.</param>
+            <param name="request">Novos dados do estoque.</param>
+            <param name="cancellationToken">Token de cancelamento da requisição.</param>
+            <returns>Retorna o estoque atualizado ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.EstoqueController.ListarEstoquesAsync(System.Threading.CancellationToken)">
+            <summary>
+            Lista todos os estoques cadastrados.
+            </summary>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.EstoqueController.InativarEstoqueAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Inativa (marca como inativo) um estoque existente.
+            </summary>
+            <param name="codigo">Código do estoque que será inativado.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Resultado da operação.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.EstoqueController.BuscarPorCodigoAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Retorna os detalhes de um estoque pelo seu código.
+            </summary>
+            <param name="codigo">Código do estoque a buscar.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.UnidadeController.CadastrarUnidadeAsync(ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Cadastrar.CadastrarUnidadeRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cadastra uma nova unidade no sistema.
+            </summary>
+            <param name="request">Dados da unidade a ser cadastrada.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna a unidade criada ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.UnidadeController.EditarUnidadeAsync(System.Int32,ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Editar.EditarUnidadeRequest,System.Threading.CancellationToken)">
+            <summary>
+            Edita uma unidade existente no sistema.
+            </summary>
+            <param name="codigo">Código da unidade a ser editada.</param>
+            <param name="request">Dados atualizados da unidade.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna a unidade atualizada ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.UnidadeController.BuscarUnidadePorCodigoAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Busca uma unidade pelo seu código.
+            </summary>
+            <param name="codigo">Código da unidade.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna os dados da unidade ou erro caso não encontrada.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.UnidadeController.ListarUnidadesAsync(System.Threading.CancellationToken)">
+            <summary>
+            Lista todas as unidades cadastradas.
+            </summary>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna uma lista de unidades ou erro.</returns>
+        </member>
         <member name="T:ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers.CategoriaController">
             <summary>
             Controlador responsável pelas operações relacionadas à entidade Categoria.
@@ -22,6 +91,35 @@
             <param name="request">Dados da categoria a ser cadastrada.</param>
             <param name="cancellationToken">Token de cancelamento da requisição.</param>
             <returns>Retorna o status do cadastro da categoria.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers.CategoriaController.EditarCategoriaAsync(System.Int32,ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Editar.EditarCategoriaRequest,System.Threading.CancellationToken)">
+            <summary>
+            Altera uma categoria existente.
+            </summary>
+            <param name="codigo">Código da categoria a editar.</param>
+            <param name="request">Dados a alterar.</param>
+        </member>
+        <member name="M:ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers.CategoriaController.InativarCategoriaAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Inativa (marca como inativo) uma categoria existente.
+            </summary>
+            <param name="codigo">Código da categoria que será inativada.</param>
+            <param name="cancellationToken"></param>
+        </member>
+        <member name="M:ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers.CategoriaController.ListarCategoriasAsync(System.Threading.CancellationToken)">
+            <summary>
+            Lista todas as categorias cadastradas.
+            </summary>
+            <param name="cancellationToken">Token de cancelamento da operação.</param>
+            <returns>Lista de categorias.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers.CategoriaController.BuscarCategoriaPorCodigoAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Busca uma categoria pelo código.
+            </summary>
+            <param name="codigo">Código da categoria.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna os dados da categoria ou erro.</returns>
         </member>
         <member name="M:ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers.CategoriaController.Problem(System.Collections.Generic.List{ErrorOr.Error})">
             <summary>
@@ -98,6 +196,18 @@
             <inheritdoc />
         </member>
         <member name="M:ApiSistemaEstoque.Migrations.AlterarRelacaoCategoriaComUsuario.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:ApiSistemaEstoque.Migrations.AlterarCampoInativoParaInteger">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlterarCampoInativoParaInteger.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlterarCampoInativoParaInteger.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlterarCampoInativoParaInteger.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>
