@@ -12,28 +12,33 @@ public class TipoMovimentacao
   public string UsuarioCadastro { get; private set; }
   public DateTime CreatedAt { get; private set; }
   public DateTime updated_at { get; private set; }
+  public Status Inativo { get; private set; }
 
   public TipoMovimentacao(IEnumerable<TipoBaseMovimentacao> tipo, string descricao, string usuarioCadastro)
   {
     Tipo = tipo;
     Descricao = descricao;
-    UsuarioCadastro = usuarioCadastro;
     CreatedAt = DateTime.UtcNow;
   }
 
   public void SetTipo(IEnumerable<TipoBaseMovimentacao> tipo)
-    {
-        Tipo = tipo;
-    }
+  {
+    Tipo = tipo;
+  }
 
-    public void SetDescricao(string descricao)
-    {
-        Descricao = descricao;
-    }
+  public void SetDescricao(string descricao)
+  {
+    Descricao = descricao;
+  }
 
-    public void SetDataAlteracao(DateTime dataAlteracao)
-    {
-        updated_at = dataAlteracao;
-    }
+  public void SetDataAlteracao(DateTime dataAlteracao)
+  {
+    updated_at = dataAlteracao;
+  }
+
+  public void SetInativar()
+  {
+    Inativo = Status.Inativo;
+  }
 }
 
