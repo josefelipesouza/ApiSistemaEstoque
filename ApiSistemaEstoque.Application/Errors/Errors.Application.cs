@@ -23,6 +23,14 @@ public static partial class Application
         );
     }
 
+    public static class TipoMovimentacaoErrors
+    {
+        public static Error TipoMovimentacaoNaoEncontrada => Error.NotFound(
+            code: "TipoMovimentacao.NaoEncontrada",
+            description: "O tipo de movimentação não foi encontrada."
+        );
+    }
+
     public static class UnidadeErrors
     {
         public static Error UnidadeNaoEncontrada => Error.NotFound(

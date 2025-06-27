@@ -4,7 +4,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
-using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
+using  ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.TipoMovimentacao.Cadastrar;
 
@@ -35,7 +35,7 @@ public class CadastrarTipoMovimentacaoHandler : BaseHandler, IRequestHandler<Cad
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
-        var nova = new TipoMovimentacao(
+        var nova = new Domain.Entities.TipoMovimentacao(
             request.Tipo,
             request.Descricao,
             usuarioCadastro
@@ -45,12 +45,13 @@ public class CadastrarTipoMovimentacaoHandler : BaseHandler, IRequestHandler<Cad
         await _tipoMovimentacaoRepository.UnitOfWork.CommitAsync(cancellationToken);
 
         return new CadastrarTipoMovimentacaoResponse(
-            nova.Codigo ?? 0,
+            nova.Codigo,
             nova.Tipo,
             nova.Descricao!,
             nova.UsuarioCadastro,
             nova.CreatedAt,
-            nova.updated_at
+            nova.updated_at,
+            nova.Inativo
         );
     }
 }

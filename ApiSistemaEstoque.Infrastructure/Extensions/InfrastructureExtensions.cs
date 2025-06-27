@@ -22,6 +22,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions
             services.AddScoped<IEstoqueRepository, EstoqueRepository>();
             services.AddScoped<IItemEstoqueRepository, ItemEstoqueRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<ITipoMovimentacaoRepository, TipoMovimentacaoRepository>();
             services.AddScoped<IMovimentacaoRepository, MovimentacaoRepository>();
             services.AddScoped<IUnidadeRepository, UnidadeRepository>();
             

@@ -1,8 +1,8 @@
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
 
-namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.TipoMovimentacao.Cadastrar;
+namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.TipoMovimentacao.BuscarPorCodigo;
 
-public record CadastrarTipoMovimentacaoResponse(
+public record BuscarPorCodigoTipoMovimentacaoResponse(
     int Codigo,
     TipoBaseMovimentacao Tipo,
     string Descricao,

@@ -41,6 +41,69 @@
             <param name="codigo">Código do estoque a buscar.</param>
             <param name="cancellationToken">Token de cancelamento.</param>
         </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.ItemController.CadastrarItemAsync(ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Cadastrar.CadastrarItemRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cadastra um novo item no sistema.
+            </summary>
+            <param name="request">Dados do item a ser cadastrado.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna o item criado ou erros de validação.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.ItemController.EditarItemAsync(System.Int32,ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Editar.EditarItemRequest,System.Threading.CancellationToken)">
+            <summary>
+            Edita um item existente no sistema.
+            </summary>
+            <param name="codigo">Código do item a ser editado.</param>
+            <param name="request">Dados atualizados do item.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna o item atualizado ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.ItemController.BuscarItemPorCodigoAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Busca um item pelo seu código.
+            </summary>
+            <param name="codigo">Código do item.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna os dados do item ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.ItemController.ListarItensAsync(System.Threading.CancellationToken)">
+            <summary>
+            Lista todos os itens do sistema.
+            </summary>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna uma lista de itens ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.ItemController.InativarItemAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Inativa um item existente no sistema.
+            </summary>
+            <param name="codigo">Código do item a ser inativado.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna sucesso ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.TipoMovimentacaoController.CadastrarTipoMovimentacaoAsync(ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.TipoMovimentacao.Cadastrar.CadastrarTipoMovimentacaoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cadastra um novo tipo de movimentação no sistema.
+            </summary>
+            <param name="request">Dados do tipo de movimentação a ser cadastrado.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna o tipo de movimentação criado ou erros de validação.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.TipoMovimentacaoController.ListarTiposMovimentacaoAsync(System.Threading.CancellationToken)">
+            <summary>
+            Lista todos os tipos de movimentação do sistema.
+            </summary>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna uma lista de tipos de movimentação ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.TipoMovimentacaoController.BuscarPorCodigoAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Busca um tipo de movimentação pelo seu código.
+            </summary>
+            <param name="codigo">Código do tipo de movimentação.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna os dados do tipo de movimentação ou erro.</returns>
+        </member>
         <member name="M:ApiSistemaEstoque.API.Controllers.UnidadeController.CadastrarUnidadeAsync(ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Cadastrar.CadastrarUnidadeRequest,System.Threading.CancellationToken)">
             <summary>
             Cadastra uma nova unidade no sistema.
@@ -72,6 +135,14 @@
             </summary>
             <param name="cancellationToken">Token de cancelamento.</param>
             <returns>Retorna uma lista de unidades ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.UnidadeController.InativarUnidadeAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Inativa uma unidade existente.
+            </summary>
+            <param name="codigo">Código da unidade a ser inativada.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna sucesso ou erro.</returns>
         </member>
         <member name="T:ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers.CategoriaController">
             <summary>
@@ -208,6 +279,18 @@
             <inheritdoc />
         </member>
         <member name="M:ApiSistemaEstoque.Migrations.AlterarCampoInativoParaInteger.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:ApiSistemaEstoque.Migrations.NovoCampoInativoTipoMovimentacao">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.NovoCampoInativoTipoMovimentacao.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.NovoCampoInativoTipoMovimentacao.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.NovoCampoInativoTipoMovimentacao.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

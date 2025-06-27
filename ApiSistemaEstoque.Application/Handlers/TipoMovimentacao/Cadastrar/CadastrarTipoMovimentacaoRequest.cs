@@ -6,7 +6,7 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.TipoMovimentacao.Cadastrar;
 
 public record CadastrarTipoMovimentacaoRequest(
-    IEnumerable<TipoBaseMovimentacao> Tipo,
+    TipoBaseMovimentacao Tipo,
     string Descricao
 ) : IRequest<ErrorOr<CadastrarTipoMovimentacaoResponse>>;
 
@@ -19,6 +19,6 @@ public class CadastrarTipoMovimentacaoRequestValidator : AbstractValidator<Cadas
             .MaximumLength(100).WithMessage("A descrição deve ter no máximo 100 caracteres.");
 
         RuleFor(x => x.Tipo)
-            .NotEmpty().WithMessage("Pelo menos um tipo de movimentação deve ser informado.");
+            .IsInEnum().WithMessage("Pelo menos um tipo de movimentação deve ser informado.");
     }
 }
