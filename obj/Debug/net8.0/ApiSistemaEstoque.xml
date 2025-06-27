@@ -81,6 +81,14 @@
             <param name="cancellationToken">Token de cancelamento.</param>
             <returns>Retorna sucesso ou erro.</returns>
         </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.MovimentacaoController.CadastrarMovimentacaoAsync(ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Cadastrar.CadastrarMovimentacaoRequest,System.Threading.CancellationToken)">
+            <summary>
+            Cadastra uma nova movimentação no sistema.
+            </summary>
+            <param name="request">Dados da movimentação a ser cadastrada.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna a movimentação criada ou erros de validação.</returns>
+        </member>
         <member name="M:ApiSistemaEstoque.API.Controllers.TipoMovimentacaoController.CadastrarTipoMovimentacaoAsync(ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.TipoMovimentacao.Cadastrar.CadastrarTipoMovimentacaoRequest,System.Threading.CancellationToken)">
             <summary>
             Cadastra um novo tipo de movimentação no sistema.
@@ -103,6 +111,14 @@
             <param name="codigo">Código do tipo de movimentação.</param>
             <param name="cancellationToken">Token de cancelamento.</param>
             <returns>Retorna os dados do tipo de movimentação ou erro.</returns>
+        </member>
+        <member name="M:ApiSistemaEstoque.API.Controllers.TipoMovimentacaoController.InativarTipoMovimentacaoAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Inativa um tipo de movimentação pelo código.
+            </summary>
+            <param name="codigo">Código do tipo de movimentação.</param>
+            <param name="cancellationToken">Token de cancelamento.</param>
+            <returns>Retorna sucesso ou erro.</returns>
         </member>
         <member name="M:ApiSistemaEstoque.API.Controllers.UnidadeController.CadastrarUnidadeAsync(ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Cadastrar.CadastrarUnidadeRequest,System.Threading.CancellationToken)">
             <summary>
@@ -291,6 +307,18 @@
             <inheritdoc />
         </member>
         <member name="M:ApiSistemaEstoque.Migrations.NovoCampoInativoTipoMovimentacao.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:ApiSistemaEstoque.Migrations.AlteraTipoDoCampoCodigoUsuarioEstoque">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlteraTipoDoCampoCodigoUsuarioEstoque.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlteraTipoDoCampoCodigoUsuarioEstoque.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ApiSistemaEstoque.Migrations.AlteraTipoDoCampoCodigoUsuarioEstoque.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>

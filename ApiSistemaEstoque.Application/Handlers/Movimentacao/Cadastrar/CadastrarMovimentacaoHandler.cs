@@ -29,16 +29,16 @@ public class CadastrarMovimentacaoHandler : BaseHandler, IRequestHandler<Cadastr
         if (Validar(request, new CadastrarMovimentacaoRequestValidator()) is var resultado && resultado.Count != 0)
             return resultado;
 
-        var usuarioCadastro = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (usuarioCadastro == 0)
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;   
 
         // Criação da movimentação
         var movimentacao = new Domain.Entities.Movimentacao(
             request.CodigoTipoMovimentacao,
             request.CodigoEstoqueSolicitante,
-            request.CodigoUsuarioEstoqueSolicitante,
+            usuarioCadastro,
             request.CodigoEstoqueSolicitado ?? 0
         );
 

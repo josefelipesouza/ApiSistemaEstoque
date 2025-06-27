@@ -29,8 +29,8 @@ public class InativarTipoMovimentacaoHandler
         if (tipoMov is null)
             return TipoMovimentacaoErrors.TipoMovimentacaoNaoEncontrada;
 
-        tipoMov.SetInativar();
-        _tipoMovimentacaoRepository.Atualizar(tipoMov);
+        _tipoMovimentacaoRepository.Inativar(tipoMov);
+        
         await _tipoMovimentacaoRepository.UnitOfWork.CommitAsync(cancellationToken);
 
         return true;

@@ -8,7 +8,6 @@ public record CadastrarMovimentacaoRequest(
 
     int CodigoTipoMovimentacao, 
     int CodigoEstoqueSolicitante, 
-    int CodigoUsuarioEstoqueSolicitante, 
     int? CodigoEstoqueSolicitado, 
     List<ItemMovimentacao> Itens 
 ) : IRequest<ErrorOr<CadastrarMovimentacaoResponse>>;
@@ -28,12 +27,9 @@ public record CadastrarMovimentacaoRequest(
             RuleFor(x => x.CodigoEstoqueSolicitante)
                 .GreaterThan(0).WithMessage("O código do estoque solicitante é obrigatório.");
 
-            RuleFor(x => x.CodigoUsuarioEstoqueSolicitante)
-                .GreaterThan(0).WithMessage("O código do usuário solicitante é obrigatório.");
-
             RuleFor(x => x.CodigoEstoqueSolicitado)
-                .GreaterThan(0).When(x => x.CodigoEstoqueSolicitado.HasValue)
-                .WithMessage("O código do estoque solicitado deve ser maior que zero.");
+                .GreaterThanOrEqualTo(0).When(x => x.CodigoEstoqueSolicitado.HasValue)
+                .WithMessage("O código do estoque solicitado deve ser maior ou igual a zero."); 
 
             RuleForEach(x => x.Itens)
                 .ChildRules(items =>

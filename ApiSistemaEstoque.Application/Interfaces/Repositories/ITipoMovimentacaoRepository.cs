@@ -14,4 +14,6 @@ public interface ITipoMovimentacaoRepository
     Task<IEnumerable<TipoMovimentacao>> ListarAsync(CancellationToken cancellationToken);
 
     void Atualizar(TipoMovimentacao tipoMovimentacao);
+
+    void Inativar(TipoMovimentacao tipoMovimentacao);
 }

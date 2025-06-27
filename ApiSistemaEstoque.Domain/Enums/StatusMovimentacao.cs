@@ -2,7 +2,10 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
 
 public enum StatusMovimentacao
 {
-    Aguardando,
-    Aprovado,
-    Recusado
+    Novo,
+    EmAndamento,
+    Recusado,
+    Despachado,
+    Entregue,
+    Finalizado
 }

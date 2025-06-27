@@ -66,7 +66,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
             modelBuilder.Entity<Movimentacao>()
                 .Property(m => m.Status)
                 .HasConversion<string>()
-                .HasDefaultValue(StatusMovimentacao.Aguardando);
+                .HasDefaultValue(StatusMovimentacao.Novo);
             modelBuilder.Entity<Movimentacao>()
                 .Property(m => m.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity<Movimentacao>()
