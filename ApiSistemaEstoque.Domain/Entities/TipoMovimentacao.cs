@@ -6,14 +6,15 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
 public class TipoMovimentacao
 {
   [Key]
-  public int? Codigo { get; set; }
-  public IEnumerable<TipoBaseMovimentacao> Tipo { get; set; }
-  public string? Descricao { get; set; }
-  public int UsuarioCadastro { get; private set; }
+  public int Codigo { get; set; }
+  public TipoBaseMovimentacao Tipo { get; set; }
+  public string Descricao { get; set; }
+  public string UsuarioCadastro { get; private set; }
   public DateTime CreatedAt { get; private set; }
   public DateTime updated_at { get; private set; }
+  public Status Inativo { get; private set; }
 
-  public TipoMovimentacao(IEnumerable<TipoBaseMovimentacao> tipo, string descricao, int usuarioCadastro)
+  public TipoMovimentacao(TipoBaseMovimentacao tipo, string descricao, string usuarioCadastro)
   {
     Tipo = tipo;
     Descricao = descricao;
@@ -21,19 +22,24 @@ public class TipoMovimentacao
     CreatedAt = DateTime.UtcNow;
   }
 
-  public void SetTipo(IEnumerable<TipoBaseMovimentacao> tipo)
-    {
-        Tipo = tipo;
-    }
+  public void SetTipo(TipoBaseMovimentacao tipo)
+  {
+    Tipo = tipo;
+  }
 
-    public void SetDescricao(string descricao)
-    {
-        Descricao = descricao;
-    }
+  public void SetDescricao(string descricao)
+  {
+    Descricao = descricao;
+  }
 
-    public void SetDataAlteracao(DateTime dataAlteracao)
-    {
-        updated_at = dataAlteracao;
-    }
+  public void SetDataAlteracao(DateTime dataAlteracao)
+  {
+    updated_at = dataAlteracao;
+  }
+
+  public void SetInativar()
+  {
+    Inativo = Status.Inativo;
+  }
 }
 

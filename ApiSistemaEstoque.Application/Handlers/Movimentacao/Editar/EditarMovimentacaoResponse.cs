@@ -4,7 +4,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.
 
 public record EditarMovimentacaoResponse(
     int Codigo,
-    int CodigoUsuarioEstoqueSolicitado,
+    string CodigoUsuarioEstoqueSolicitado,
     StatusMovimentacao Status,
     DateTime UpdatedAt
 );

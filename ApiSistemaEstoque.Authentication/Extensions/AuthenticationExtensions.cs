@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Models;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Models.exceptions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+
 /*
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.AlterarSenha;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.Login;

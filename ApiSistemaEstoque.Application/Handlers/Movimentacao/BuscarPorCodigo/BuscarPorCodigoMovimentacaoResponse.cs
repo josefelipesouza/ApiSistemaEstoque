@@ -7,9 +7,9 @@ public record BuscarPorCodigoMovimentacaoResponse(
     StatusMovimentacao? Status,
     int? CodigoTipoMovimentacao,
     int? CodigoEstoqueSolicitante,
-    int? CodigoUsuarioEstoqueSolicitante,
+    string? CodigoUsuarioEstoqueSolicitante,
     int? CodigoEstoqueSolicitado,
-    int? CodigoUsuarioEstoqueSolicitado,
+    string? CodigoUsuarioEstoqueSolicitado,
     DateTime CreatedAt,
     DateTime updated_at,
     IEnumerable<ItemMovimentacaoResponse> Itens);

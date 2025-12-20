@@ -2,6 +2,11 @@ using ErrorOr;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using MediatR;
 using System.Security.Claims;
+using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
+using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
+using Microsoft.AspNetCore.Identity;
+
+
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Cadastrar;
 
@@ -9,26 +14,31 @@ public class CadastrarCategoriaHandler : BaseHandler, IRequestHandler<CadastrarC
 {
     private readonly ICategoriaRepository _categoriaRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public CadastrarCategoriaHandler(
         IMediator mediator,
         ICategoriaRepository categoriaRepository,
-        IHttpContextAccessor httpContextAccessor) : base(mediator)
+        IHttpContextAccessor httpContextAccessor,
+        UserManager<IdentityUser> userManager) : base(mediator)
     {
         _categoriaRepository = categoriaRepository;
         _httpContextAccessor = httpContextAccessor;
+        _userManager = userManager;
     }
 
     public async Task<ErrorOr<CadastrarCategoriaResponse>> Handle(CadastrarCategoriaRequest request, CancellationToken cancellationToken)
     {
         if (Validar(request, new CadastrarCategoriaRequestValidator()) is var resultado && resultado.Count != 0)
             return resultado;
-
-        var usuarioCadastro = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
-
-        if (usuarioCadastro == 0)
-            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;    
         
+        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
+            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
+    
+
         var novaCategoria = new Domain.Entities.Categoria(
             request.Descricao,
             request.Superior,

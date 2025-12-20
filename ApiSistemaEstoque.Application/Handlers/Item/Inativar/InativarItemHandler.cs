@@ -32,9 +32,9 @@ public class InativarItemHandler
         if (item is null)
             return ItemErrors.ItemNaoEncontrado;
 
-        item.SetInativar();
-        _itemRepository.Atualizar(item);
-
+        
+        _itemRepository.Inativar(item);
+        
         await _itemRepository.UnitOfWork.CommitAsync(cancellationToken);
 
         return true;

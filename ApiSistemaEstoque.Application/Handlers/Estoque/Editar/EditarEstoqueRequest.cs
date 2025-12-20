@@ -4,14 +4,15 @@ using FluentValidation;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.Editar;
 
-public class EditarEstoqueRequest : IRequest<ErrorOr<EditarEstoqueResponse>>
-{
-    public int Codigo { get; set; }
-    public required string Descricao { get; set; }
-    public required string Localizacao { get; set; }
-    public int Responsavel { get; set; }
-    public int Superior { get; set; }
-}
+public record EditarEstoqueRequest(
+
+        int Codigo,
+        string Descricao,
+        string Localizacao,
+        string Responsavel,
+        int Superior
+        
+): IRequest<ErrorOr<EditarEstoqueResponse>>;
 
 public class EditarEstoqueRequestValidator : AbstractValidator<EditarEstoqueRequest>
 {

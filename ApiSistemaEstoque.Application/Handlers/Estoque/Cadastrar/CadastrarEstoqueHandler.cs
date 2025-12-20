@@ -3,6 +3,11 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using MediatR;
 using System.Security.Claims;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
+using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
+using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.Cadastrar;
 
@@ -10,14 +15,17 @@ public class CadastrarEstoqueHandler : BaseHandler, IRequestHandler<CadastrarEst
 {
     private readonly IEstoqueRepository _estoqueRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly UserManager<IdentityUser> _userManager;
 
     public CadastrarEstoqueHandler(
         IMediator mediator,
         IEstoqueRepository estoqueRepository,
-        IHttpContextAccessor httpContextAccessor) : base(mediator)
+        IHttpContextAccessor httpContextAccessor,
+        UserManager<IdentityUser> userManager) : base(mediator)
     {
         _estoqueRepository = estoqueRepository;
         _httpContextAccessor = httpContextAccessor;
+        _userManager = userManager;
     }
 
     public async Task<ErrorOr<CadastrarEstoqueResponse>> Handle(CadastrarEstoqueRequest request, CancellationToken cancellationToken)
@@ -25,11 +33,11 @@ public class CadastrarEstoqueHandler : BaseHandler, IRequestHandler<CadastrarEst
         if (Validar(request, new CadastrarEstoqueRequestValidator()) is var resultado && resultado.Count != 0)
             return resultado;
 
-        var usuarioCadastro = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (usuarioCadastro == 0)
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;    
-        
+ 
         var novoEstoque = new Domain.Entities.Estoque(
             request.Descricao,
             usuarioCadastro,
@@ -49,7 +57,7 @@ public class CadastrarEstoqueHandler : BaseHandler, IRequestHandler<CadastrarEst
             novoEstoque.Superior,
             novoEstoque.CreatedAt,
             novoEstoque.updated_at,
-            novoEstoque.Inativo.FirstOrDefault() == Status.Inativo
+            novoEstoque.Inativo
         );
     }
 }

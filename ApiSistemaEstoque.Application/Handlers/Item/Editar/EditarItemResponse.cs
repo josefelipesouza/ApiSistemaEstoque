@@ -9,8 +9,8 @@ public record EditarItemResponse(
     string Referencia,
     int CodigoCategoria,
     int CodigoUnidade,
-    int UsuarioCadastro,
+    string UsuarioCadastro,
     DateTime CreatedAt,
     DateTime UpdatedAt,
-    IEnumerable<Status> Inativo
+    Status Inativo
 );

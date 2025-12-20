@@ -7,8 +7,8 @@ public record ListarCategoriaResponse(
     int Codigo,
     string Descricao,
     int Superior,
-    int UsuarioCadastro,
+    string UsuarioCadastro,
     DateTime CreatedAt,
     DateTime updated_at,
-    IEnumerable<Status> Inativo
+    Status Inativo 
 );

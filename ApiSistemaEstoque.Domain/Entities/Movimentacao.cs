@@ -12,23 +12,23 @@ public class Movimentacao
     public ICollection<ItemMovimentacao> ItensMovimentacao { get; set; } = new List<ItemMovimentacao>();
     public int CodigoTipoMovimentacao { get; set; }
     public int CodigoEstoqueSolicitante { get; set; }
-    public int CodigoUsuarioEstoqueSolicitante { get; set; }
+    public string CodigoUsuarioEstoqueSolicitante { get; set; }
     public int CodigoEstoqueSolicitado { get; set; }
-    public int CodigoUsuarioEstoqueSolicitado { get; set; }
+    public string CodigoUsuarioEstoqueSolicitado { get; set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime updated_at { get; private set; }
 
     [ForeignKey(nameof(CodigoTipoMovimentacao))]
     public TipoMovimentacao TipoMovimentacao { get; private set; } = default!;
 
-    public Movimentacao(int codigoTipoMovimentacao, int codigoEstoqueSolicitante, int codigoUsuarioEstoqueSolicitante, int codigoEstoqueSolicitado)
+    public Movimentacao(int codigoTipoMovimentacao, int codigoEstoqueSolicitante, string codigoUsuarioEstoqueSolicitante, int codigoEstoqueSolicitado)
     {
-        Status = StatusMovimentacao.Aguardando;
+        Status = StatusMovimentacao.Novo;
         CodigoTipoMovimentacao = codigoTipoMovimentacao;
         CodigoEstoqueSolicitante = codigoEstoqueSolicitante;
         CodigoUsuarioEstoqueSolicitante = codigoUsuarioEstoqueSolicitante;
         CodigoEstoqueSolicitado = codigoEstoqueSolicitado;
-        CodigoUsuarioEstoqueSolicitado = 0;
+        CodigoUsuarioEstoqueSolicitado = "";
         CreatedAt = DateTime.UtcNow;
     }
 
@@ -50,9 +50,19 @@ public class Movimentacao
         CodigoEstoqueSolicitante = codigoEstoqueSolicitante;
     }
 
+    public void SetCodigoUsuarioEstoqueSolicitante(string codigoUsuarioEstoqueSolicitante)
+    {
+        CodigoUsuarioEstoqueSolicitante = codigoUsuarioEstoqueSolicitante;
+    }
+
     public void SetCodigoEstoqueSolicitado(int codigoEstoqueSolicitado)
     {
         CodigoEstoqueSolicitado = codigoEstoqueSolicitado;
+    }
+
+    public void SetCodigoUsuarioEstoqueSolicitado(string codigoUsuarioEstoqueSolicitado)
+    {
+        CodigoUsuarioEstoqueSolicitado = codigoUsuarioEstoqueSolicitado;
     }
 
     public void SetDataAlteracao(DateTime dataAlteracao)

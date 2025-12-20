@@ -1,52 +1,50 @@
 ﻿using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
-
-public class Categoria
+namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities
 {
-    [Key]
-    public int Codigo { get; set; }
-    public string Descricao { get; private set; }
-    public int Superior { get; private set; }
-    public int UsuarioCadastro { get; private set; }
-    public DateTime CreatedAt  { get; private set; }
-    public DateTime updated_at {get; private set;}
-    public IEnumerable<Status> Inativo { get; private set; }
-
-    public Categoria(string descricao, int superior, int usuarioCadastro)
+    public class Categoria
     {
-        Descricao = descricao;
-        Superior = superior;
-        UsuarioCadastro = usuarioCadastro;
-        CreatedAt =  DateTime.UtcNow;
-        Inativo = new List<Status> { Status.Ativo };
+        [Key]
+        public int Codigo { get; private set; }
 
-    }
+        [Required]
+        public string Descricao { get; private set; }
 
-    public void SetDescricao(string descricao)
-    {
-        Descricao = descricao;
-    }
+        public int Superior { get; private set; }
 
-    public void SetSuperior(int superior)
-    {
-        Superior = superior;
-    }
+        [Required]
+        public string UsuarioCadastro { get; private set; }
 
-    public void SetUsuarioCadastro(int usuarioCadastro)
-    {
-        UsuarioCadastro = usuarioCadastro;
-    }
+        public DateTime CreatedAt { get; private set; }
 
-    public void SetDataAlteracao(DateTime dataAlteracao)
-    {
-        updated_at  = dataAlteracao;
-    }
+        public DateTime updated_at { get; private set; }
 
-    public void SetInativar()
-    {
-        Inativo = new List<Status> { Status.Inativo };
+        public Status Inativo { get; private set; }
+
+ 
+        // Construtor para uso na criação da categoria
+        public Categoria(string descricao, int superior, string usuarioCadastro)
+        {
+            Descricao = descricao;
+            Superior = superior;
+            UsuarioCadastro = usuarioCadastro;
+            CreatedAt = DateTime.UtcNow;
+            Inativo = Status.Ativo;
+        }
+
+        // Construtor sem parâmetros necessário para o EF Core
+        protected Categoria() { }
+
+        // Métodos para alterar propriedades
+        public void SetDescricao(string descricao) => Descricao = descricao;
+
+        public void SetSuperior(int superior) => Superior = superior;
+
+        public void SetUsuarioCadastro(string usuarioCadastro) => UsuarioCadastro = usuarioCadastro;
+
+        public void SetDataAlteracao(DateTime dataAlteracao) => updated_at = dataAlteracao;
+
+        public void SetInativar() => Inativo = Status.Inativo;
     }
 }
-

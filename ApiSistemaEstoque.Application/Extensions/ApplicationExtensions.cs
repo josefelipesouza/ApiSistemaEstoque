@@ -1,5 +1,8 @@
 using ErrorOr;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
+using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
+
 
 // Handlers para Categoria
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.BuscarPorCodigo;
@@ -22,6 +25,14 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Editar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Inativar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Listar;
 
+// Handlers para Item
+//using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.BuscarPorCodigo;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.TipoMovimentacao.Cadastrar;
+/*
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Editar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Inativar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Listar;
+*/
 // Handlers para Movimentação
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Buscar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.BuscarPorCodigo;
@@ -96,6 +107,15 @@ public static class ApplicationExtensions
         services.AddScoped<IRequestHandler<EditarUnidadeRequest, ErrorOr<EditarUnidadeResponse>>, EditarUnidadeHandler>();
         services.AddScoped<IRequestHandler<InativarUnidadeRequest, ErrorOr<bool>>, InativarUnidadeHandler>();
         services.AddScoped<IRequestHandler<ListarUnidadeRequest, ErrorOr<IEnumerable<ListarUnidadeResponse>>>, ListarUnidadeHandler>();
+
+        // Handler para TipoMovimentação
+        //services.AddScoped<IRequestHandler<BuscarPorCodigoUnidadeRequest, ErrorOr<BuscarPorCodigoUnidadeResponse>>, BuscarPorCodigoUnidadeHandler>();
+        services.AddScoped<IRequestHandler<CadastrarTipoMovimentacaoRequest, ErrorOr<CadastrarTipoMovimentacaoResponse>>, CadastrarTipoMovimentacaoHandler>();
+        /*
+        services.AddScoped<IRequestHandler<EditarUnidadeRequest, ErrorOr<EditarUnidadeResponse>>, EditarUnidadeHandler>();
+        services.AddScoped<IRequestHandler<InativarUnidadeRequest, ErrorOr<bool>>, InativarUnidadeHandler>();
+        services.AddScoped<IRequestHandler<ListarUnidadeRequest, ErrorOr<IEnumerable<ListarUnidadeResponse>>>, ListarUnidadeHandler>();
+        */
 
         return services;
     }

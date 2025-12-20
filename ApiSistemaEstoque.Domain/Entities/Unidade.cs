@@ -10,20 +10,20 @@ public class Unidade
 
     public string Descricao { get; private set; }
 
-    public int UsuarioCadastro { get; private set; }
+    public string UsuarioCadastro { get; private set; }
 
-    public DateTime CreatedAt  { get; private set; }
-    public DateTime updated_at {get; private set;}
+    public DateTime CreatedAt { get; private set; }
+    public DateTime updated_at { get; private set; }
 
-    public IEnumerable<Status> Inativo { get; private set; }
+    public Status Inativo { get; private set; }
 
 
-    public Unidade(string descricao, int usuarioCadastro)
+    public Unidade(string descricao, string usuarioCadastro)
     {
         Descricao = descricao;
         UsuarioCadastro = usuarioCadastro;
-        CreatedAt =  DateTime.UtcNow;
-        Inativo = new List<Status> { Status.Ativo };
+        CreatedAt = DateTime.UtcNow;
+        Inativo = Status.Ativo;
     }
 
     public void SetDescricao(string descricao)
@@ -38,7 +38,12 @@ public class Unidade
 
     public void SetInativar()
     {
-        Inativo = new List<Status> { Status.Inativo };
+        Inativo = Status.Inativo;
+    }
+
+    public void SetUsuarioCadastro(string usuarioCadastro)
+    {
+        UsuarioCadastro = usuarioCadastro;
     }
 }
 

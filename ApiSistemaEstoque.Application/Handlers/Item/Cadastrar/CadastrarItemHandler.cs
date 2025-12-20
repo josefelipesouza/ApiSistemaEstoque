@@ -2,6 +2,11 @@ using MediatR;
 using ErrorOr;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using System.Security.Claims;
+using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
+using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
+using System.Security.Claims;
+
+
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Cadastrar;
 
@@ -25,9 +30,9 @@ public class CadastrarItemHandler : BaseHandler, IRequestHandler<CadastrarItemRe
         if (Validar(request, new CadastrarItemRequestValidator()) is var resultado && resultado.Count != 0)
             return resultado;    
 
-        var usuarioCadastro = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (usuarioCadastro == 0)
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
         var novoItem = new Domain.Entities.Item(
