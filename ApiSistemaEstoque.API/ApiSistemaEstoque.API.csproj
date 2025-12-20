@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable> <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
@@ -14,8 +13,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\Program.cs" Link="Program.cs" />
+    
+    <Content Include="..\appsettings.json" Link="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ApiSistemaEstoque.Application\ApiSistemaEstoque.Application.csproj" />
     <ProjectReference Include="..\ApiSistemaEstoque.Authentication\ApiSistemaEstoque.Authentication.csproj" />
+    <ProjectReference Include="..\ApiSistemaEstoque.Infrastructure\ApiSistemaEstoque.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

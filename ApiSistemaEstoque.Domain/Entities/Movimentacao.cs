@@ -50,9 +50,19 @@ public class Movimentacao
         CodigoEstoqueSolicitante = codigoEstoqueSolicitante;
     }
 
+    public void SetCodigoUsuarioEstoqueSolicitante(string codigoUsuarioEstoqueSolicitante)
+    {
+        CodigoUsuarioEstoqueSolicitante = codigoUsuarioEstoqueSolicitante;
+    }
+
     public void SetCodigoEstoqueSolicitado(int codigoEstoqueSolicitado)
     {
         CodigoEstoqueSolicitado = codigoEstoqueSolicitado;
+    }
+
+    public void SetCodigoUsuarioEstoqueSolicitado(string codigoUsuarioEstoqueSolicitado)
+    {
+        CodigoUsuarioEstoqueSolicitado = codigoUsuarioEstoqueSolicitado;
     }
 
     public void SetDataAlteracao(DateTime dataAlteracao)

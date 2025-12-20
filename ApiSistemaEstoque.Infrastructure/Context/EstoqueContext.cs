@@ -31,9 +31,9 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new RoleEntityConfig());
-            modelBuilder.ApplyConfiguration(new CategoriaEntityTypeConfiguration()); // 👍 Navegação configurada aqui
+            modelBuilder.ApplyConfiguration(new CategoriaEntityTypeConfiguration());
 
-            // Demais configurações
+          
             modelBuilder.Entity<HistoricoValorItem>().HasKey(h => h.Codigo);
             modelBuilder.Entity<Item>().HasKey(i => i.Codigo);
 
@@ -50,14 +50,27 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
             modelBuilder.Entity<ItemEstoque>().Property(ie => ie.Quantidade).HasDefaultValue(0);
 
             modelBuilder.Entity<ItemMovimentacao>()
-                .HasKey(im => new { im.CodigoMovimentacao, im.Item });
-            modelBuilder.Entity<ItemMovimentacao>().Property(im => im.CodigoMovimentacao).HasDefaultValue(0);
-            modelBuilder.Entity<ItemMovimentacao>().Property(im => im.Item).HasDefaultValue(0);
-            modelBuilder.Entity<ItemMovimentacao>().Property(im => im.Quantidade).HasDefaultValue(1);
+                .HasKey(im => im.Codigo);
+
             modelBuilder.Entity<ItemMovimentacao>()
-                .HasOne(im => im.Movimentacao).WithMany(m => m.ItensMovimentacao)
+                .Property(im => im.Codigo)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<ItemMovimentacao>()
+                .Property(im => im.CodigoMovimentacao).HasDefaultValue(0);
+
+            modelBuilder.Entity<ItemMovimentacao>()
+                .Property(im => im.Item).HasDefaultValue(0);
+
+            modelBuilder.Entity<ItemMovimentacao>()
+                .Property(im => im.Quantidade).HasDefaultValue(1);
+
+            modelBuilder.Entity<ItemMovimentacao>()
+                .HasOne(im => im.Movimentacao)
+                .WithMany(m => m.ItensMovimentacao)
                 .HasForeignKey(im => im.CodigoMovimentacao)
                 .OnDelete(DeleteBehavior.Cascade);
+
 
             modelBuilder.Entity<KardexDiario>().HasKey(kd => kd.Codigo);
 

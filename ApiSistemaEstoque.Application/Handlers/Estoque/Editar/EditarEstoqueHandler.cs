@@ -2,6 +2,8 @@ using ErrorOr;
 using MediatR;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;    
 using System.Security.Claims;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.Editar;

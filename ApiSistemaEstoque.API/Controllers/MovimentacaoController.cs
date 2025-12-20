@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using ErrorOr;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Cadastrar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.BuscarPorCodigo;
 
 namespace ApiSistemaEstoque.API.Controllers;
 
@@ -41,6 +42,36 @@ public class MovimentacaoController : ControllerBase
             {
                 Success = true,
                 Message = "Movimentação cadastrada com sucesso.",
+                Data = response
+            }),
+            errors => Problem(errors)
+        );
+    }
+
+    /// <summary>
+    /// Busca uma movimentação pelo código.
+    /// </summary>
+    /// <param name="codigo">Código da movimentação a ser buscada.</param>
+    /// <param name="cancellationToken">Token de cancelamento.</param>
+    /// <returns>Retorna os dados da movimentação encontrada ou erro caso não exista.</returns>
+    [HttpGet("{codigo:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> BuscarPorCodigoAsync([FromRoute] int codigo, CancellationToken cancellationToken)
+    {
+        var request = new BuscarPorCodigoMovimentacaoRequest { Codigo = codigo };
+
+        var resultado = await _mediator.Send(request, cancellationToken);
+
+        return resultado.Match(
+            response => Ok(new
+            {
+                Success = true,
+                Message = "Movimentação encontrada com sucesso.",
                 Data = response
             }),
             errors => Problem(errors)

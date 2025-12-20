@@ -197,25 +197,28 @@ namespace ApiSistemaEstoque.Migrations
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.ItemMovimentacao", b =>
                 {
-                    b.Property<int?>("CodigoMovimentacao")
+                    b.Property<int>("Codigo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
-
-                    b.Property<int?>("Item")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
-
-                    b.Property<int?>("Codigo")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Quantidade")
+                    b.Property<int>("CodigoMovimentacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("Item")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("Quantidade")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(1);
 
-                    b.HasKey("CodigoMovimentacao", "Item");
+                    b.HasKey("Codigo");
+
+                    b.HasIndex("CodigoMovimentacao");
 
                     b.ToTable("ItensMovimentacao");
                 });

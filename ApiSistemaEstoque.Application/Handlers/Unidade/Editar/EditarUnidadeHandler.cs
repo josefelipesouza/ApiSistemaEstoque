@@ -2,6 +2,10 @@ using ErrorOr;
 using MediatR;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using System.Security.Claims;
+using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
+using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
+using Microsoft.AspNetCore.Identity;
+
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Editar;
 

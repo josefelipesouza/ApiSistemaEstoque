@@ -4,7 +4,6 @@ using MediatR;
 using System.Security.Claims;
 using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
 using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
 

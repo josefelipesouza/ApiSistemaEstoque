@@ -1,10 +1,14 @@
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions
-{
+namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions;
+
     public static class InfrastructureExtensions
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
@@ -30,4 +34,3 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions
             return services;
         }
     }
-}

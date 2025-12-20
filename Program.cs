@@ -9,7 +9,7 @@ using System.Security.Claims;
 using MediatR;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions;
 
-namespace ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers;
+namespace ApiSistemaEstoque.ApiSistemaEstoque.API;
 
 public class Program
 {
