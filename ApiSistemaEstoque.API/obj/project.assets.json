@@ -4729,8 +4729,8 @@
             "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj": {
               "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj"
             },
-            "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj"
+            "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj"
             }
           }
         }
@@ -4778,10 +4778,6 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.12, 8.0.12]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
             "version": "[8.0.12, 8.0.12]"
           },
           {
