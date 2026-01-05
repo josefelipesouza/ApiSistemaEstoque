@@ -1,13 +1,19 @@
-using ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers;
-using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Security.Claims;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+// 🔹 Context
+using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
+
+// 🔹 Extensions
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Extensions;
+using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Extensions;
+
+// Controllers / Handlers
+using ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers;
+using ApiSistemaEstoque.Application.Handlers.Usuario.Auth.Registrar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.API;
 
@@ -17,90 +23,102 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // 1) Configurar Kestrel / HTTPS
+        // ======================================================
+        // 1) KESTREL / HTTPS
+        // ======================================================
         builder.WebHost.ConfigureKestrel(options =>
         {
             options.ListenLocalhost(5270, listenOptions => listenOptions.UseHttps());
         });
 
-        // 2) Carregar configuração do JWT
-        var jwtKey      = builder.Configuration["Jwt:Key"]     ?? throw new InvalidOperationException("Jwt:Key não configurado.");
-        var jwtIssuer   = builder.Configuration["Jwt:Issuer"]  ?? throw new InvalidOperationException("Jwt:Issuer não configurado.");
-        var jwtAudience = builder.Configuration["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience não configurado.");
+        // ======================================================
+        // 2) SQLITE — STRING ÚNICA
+        // ======================================================
+        var databaseFolder = Path.Combine(AppContext.BaseDirectory, "Banco");
+        Directory.CreateDirectory(databaseFolder);
 
-        // 3) Registrar Swagger (antes de autenticação)
+        var databasePath = Path.Combine(databaseFolder, "estoque.db");
+
+        builder.Configuration["ConnectionStrings:EstoqueDbConnection"] =
+            $"Data Source={databasePath}";
+
+        // ======================================================
+        // 3) SWAGGER
+        // ======================================================
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Sistema de Estoque", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "API Sistema de Estoque",
+                Version = "v1"
+            });
 
-            // Suporte JWT no Swagger
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = "Use: Bearer {token}",
-                Name        = "Authorization",
-                In          = ParameterLocation.Header,
-                Type        = SecuritySchemeType.Http,
-                Scheme      = "Bearer",
-                BearerFormat= "JWT"
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer"
             });
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement{
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
                 {
-                    new OpenApiSecurityScheme{
-                        Reference = new OpenApiReference{
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
                             Type = ReferenceType.SecurityScheme,
-                            Id   = "Bearer"
+                            Id = "Bearer"
                         }
                     },
-                    new string[]{}
+                    Array.Empty<string>()
                 }
             });
         });
 
-        // 4) Serviços de infraestrutura, Mediator e Controllers
-        builder.Services.AddInfrastructureServices(builder.Configuration);
+        // ======================================================
+        // 4) AUTH (USANDO SEUS MÉTODOS ✅)
+        // ======================================================
+        builder.Services.AddAuthenticationServices(builder.Configuration);
+        builder.Services.AddJwtServices(builder.Configuration);
+        builder.Services.AddAuthenticationHandlers();
+
+        // ======================================================
+        // 5) HTTP CONTEXT / USUÁRIO LOGADO
+        // ======================================================
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddMediatR(typeof(Program).Assembly);
+        builder.Services.AddScoped<IUsuarioLogado, UsuarioLogado>();
+
+        // ======================================================
+        // 6) INFRASTRUCTURE & APPLICATION
+        // ======================================================
+        builder.Services.AddInfrastructureServices(builder.Configuration);
+        builder.Services.AddApplicationServices();
+
+        // ======================================================
+        // 7) MEDIATR
+        // ======================================================
+        builder.Services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(
+                typeof(RegistrarUsuarioHandler).Assembly
+            );
+        });
+
+        // ======================================================
+        // 8) CONTROLLERS
+        // ======================================================
         builder.Services.AddControllers()
-               .AddApplicationPart(typeof(CategoriaController).Assembly);
+            .AddApplicationPart(typeof(CategoriaController).Assembly);
 
-        // 5) Registrar o JWT Bearer **antes** do Identity, para definir
-        //    o esquema padrão de autenticação como JWT
-        builder.Services
-            .AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer           = true,
-                    ValidateAudience         = true,
-                    ValidateLifetime         = true,
-                    ValidateIssuerSigningKey = true,
-
-                    ValidIssuer    = jwtIssuer,
-                    ValidAudience  = jwtAudience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-
-                    NameClaimType = ClaimTypes.NameIdentifier,
-                    RoleClaimType = ClaimTypes.Role
-                };
-            });
-
-        // 6) Agora registro o Identity (que registra cookies mas não
-        //    sobrescreve o DefaultAuthenticateScheme já configurado acima)
-        builder.Services
-            .AddIdentity<IdentityUser, IdentityRole>()
-            .AddEntityFrameworkStores<EstoqueContext>()
-            .AddDefaultTokenProviders();
-
-        // 7) Build e pipeline
         var app = builder.Build();
 
-        // 8) Swagger UI em Development
+        // ======================================================
+        // 9) PIPELINE
+        // ======================================================
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -111,13 +129,10 @@ public class Program
             });
         }
 
-        // 9) Middlewares de segurança
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
 
-        // 10) Endpoints
-        app.MapGet("/", () => "Bem-vindo à API do Sistema de Estoque!");
         app.MapControllers();
 
         app.Run();

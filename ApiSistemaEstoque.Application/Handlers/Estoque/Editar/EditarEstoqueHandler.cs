@@ -1,41 +1,41 @@
 using ErrorOr;
 using MediatR;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http;    
-using System.Security.Claims;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.Editar;
 
-public class EditarEstoqueHandler : BaseHandler, IRequestHandler<EditarEstoqueRequest, ErrorOr<EditarEstoqueResponse>>
+public class EditarEstoqueHandler 
+    : BaseHandler, IRequestHandler<EditarEstoqueRequest, ErrorOr<EditarEstoqueResponse>>
 {
     private readonly IEstoqueRepository _estoqueRepository;
-     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IUsuarioLogado _usuarioLogado;
 
     public EditarEstoqueHandler(
         IMediator mediator,
         IEstoqueRepository estoqueRepository,
-         IHttpContextAccessor httpContextAccessor,
-        UserManager<IdentityUser> userManager) : base(mediator)
+        IUsuarioLogado usuarioLogado
+    ) : base(mediator)
     {
         _estoqueRepository = estoqueRepository;
-        _httpContextAccessor = httpContextAccessor;
-        _userManager = userManager;
+        _usuarioLogado = usuarioLogado;
     }
 
-    public async Task<ErrorOr<EditarEstoqueResponse>> Handle(EditarEstoqueRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<EditarEstoqueResponse>> Handle(
+        EditarEstoqueRequest request,
+        CancellationToken cancellationToken)
     {
-        if (Validar(request, new EditarEstoqueRequestValidator()) is var resultado && resultado.Any())
+        if (Validar(request, new EditarEstoqueRequestValidator()) is var resultado 
+            && resultado.Any())
             return resultado;
 
-        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
 
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
-            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado; 
+            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
-        var estoqueExistente = await _estoqueRepository.BuscarPorCodigoAsync(request.Codigo, cancellationToken);
+        var estoqueExistente = await _estoqueRepository
+            .BuscarPorCodigoAsync(request.Codigo, cancellationToken);
 
         if (estoqueExistente is null)
             return Errors.Application.EstoqueErrors.EstoqueNaoEncontrado;
@@ -46,7 +46,7 @@ public class EditarEstoqueHandler : BaseHandler, IRequestHandler<EditarEstoqueRe
         estoqueExistente.SetResponsavel(request.Responsavel);
         estoqueExistente.SetSuperior(request.Superior);
         estoqueExistente.SetDataAlteracao(DateTime.UtcNow);
-        
+
         _estoqueRepository.Atualizar(estoqueExistente);
 
         await _estoqueRepository.UnitOfWork.CommitAsync(cancellationToken);

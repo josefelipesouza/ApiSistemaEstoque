@@ -1,43 +1,39 @@
 using ErrorOr;
-using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using MediatR;
-using System.Security.Claims;
-using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
-using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
-using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
-using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
-
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.Cadastrar;
 
-public class CadastrarEstoqueHandler : BaseHandler, IRequestHandler<CadastrarEstoqueRequest, ErrorOr<CadastrarEstoqueResponse>>
+public class CadastrarEstoqueHandler 
+    : BaseHandler, IRequestHandler<CadastrarEstoqueRequest, ErrorOr<CadastrarEstoqueResponse>>
 {
     private readonly IEstoqueRepository _estoqueRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IUsuarioLogado _usuarioLogado;
 
     public CadastrarEstoqueHandler(
         IMediator mediator,
         IEstoqueRepository estoqueRepository,
-        IHttpContextAccessor httpContextAccessor,
-        UserManager<IdentityUser> userManager) : base(mediator)
+        IUsuarioLogado usuarioLogado
+    ) : base(mediator)
     {
         _estoqueRepository = estoqueRepository;
-        _httpContextAccessor = httpContextAccessor;
-        _userManager = userManager;
+        _usuarioLogado = usuarioLogado;
     }
 
-    public async Task<ErrorOr<CadastrarEstoqueResponse>> Handle(CadastrarEstoqueRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<CadastrarEstoqueResponse>> Handle(
+        CadastrarEstoqueRequest request,
+        CancellationToken cancellationToken)
     {
-        if (Validar(request, new CadastrarEstoqueRequestValidator()) is var resultado && resultado.Count != 0)
+        if (Validar(request, new CadastrarEstoqueRequestValidator()) is var resultado 
+            && resultado.Count != 0)
             return resultado;
 
-        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
 
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
-            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;    
- 
+            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
+
         var novoEstoque = new Domain.Entities.Estoque(
             request.Descricao,
             usuarioCadastro,
