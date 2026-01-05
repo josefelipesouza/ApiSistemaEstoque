@@ -14,9 +14,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Context;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Aplique as configurações específicas das entidades do sistema de estoque
-            //modelBuilder.ApplyConfiguration(new ProdutoEntityConfig()); // Exemplo de configuração de entidade
-            //modelBuilder.ApplyConfiguration(new CategoriaEntityConfig()); // Exemplo de configuração de entidade
+            
             modelBuilder.ApplyConfiguration(new RoleEntityConfig());
 
             base.OnModelCreating(modelBuilder);

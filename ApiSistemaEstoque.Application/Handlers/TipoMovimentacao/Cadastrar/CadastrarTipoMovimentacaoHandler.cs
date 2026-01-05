@@ -1,36 +1,35 @@
 using ErrorOr;
 using MediatR;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
-using  ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.TipoMovimentacao.Cadastrar;
 
-public class CadastrarTipoMovimentacaoHandler : BaseHandler, IRequestHandler<CadastrarTipoMovimentacaoRequest, ErrorOr<CadastrarTipoMovimentacaoResponse>>
+public class CadastrarTipoMovimentacaoHandler 
+    : BaseHandler, IRequestHandler<CadastrarTipoMovimentacaoRequest, ErrorOr<CadastrarTipoMovimentacaoResponse>>
 {
     private readonly ITipoMovimentacaoRepository _tipoMovimentacaoRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IUsuarioLogado _usuarioLogado;
 
     public CadastrarTipoMovimentacaoHandler(
         IMediator mediator,
         ITipoMovimentacaoRepository tipoMovimentacaoRepository,
-        IHttpContextAccessor httpContextAccessor,
-        UserManager<IdentityUser> userManager) : base(mediator)
+        IUsuarioLogado usuarioLogado
+    ) : base(mediator)
     {
         _tipoMovimentacaoRepository = tipoMovimentacaoRepository;
-        _httpContextAccessor = httpContextAccessor;
-        _userManager = userManager;
+        _usuarioLogado = usuarioLogado;
     }
 
-    public async Task<ErrorOr<CadastrarTipoMovimentacaoResponse>> Handle(CadastrarTipoMovimentacaoRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<CadastrarTipoMovimentacaoResponse>> Handle(
+        CadastrarTipoMovimentacaoRequest request,
+        CancellationToken cancellationToken)
     {
-        if (Validar(request, new CadastrarTipoMovimentacaoRequestValidator()) is var resultado && resultado.Count != 0)
+        if (Validar(request, new CadastrarTipoMovimentacaoRequestValidator()) is var resultado
+            && resultado.Count != 0)
             return resultado;
 
-        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
 
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;

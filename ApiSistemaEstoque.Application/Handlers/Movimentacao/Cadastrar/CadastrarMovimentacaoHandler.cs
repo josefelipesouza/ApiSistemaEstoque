@@ -1,38 +1,38 @@
 using MediatR;
 using ErrorOr;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
-using System.Security.Claims;
-using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
-using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
-using System.Security.Claims;
-
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Cadastrar;
 
-public class CadastrarMovimentacaoHandler : BaseHandler, IRequestHandler<CadastrarMovimentacaoRequest, ErrorOr<CadastrarMovimentacaoResponse>>
+public class CadastrarMovimentacaoHandler 
+    : BaseHandler, IRequestHandler<CadastrarMovimentacaoRequest, ErrorOr<CadastrarMovimentacaoResponse>>
 {
     private readonly IMovimentacaoRepository _movimentacaoRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IUsuarioLogado _usuarioLogado;
 
     public CadastrarMovimentacaoHandler(
         IMediator mediator,
         IMovimentacaoRepository movimentacaoRepository,
-        IHttpContextAccessor httpContextAccessor) : base(mediator)
+        IUsuarioLogado usuarioLogado
+    ) : base(mediator)
     {
         _movimentacaoRepository = movimentacaoRepository;
-        _httpContextAccessor = httpContextAccessor;
+        _usuarioLogado = usuarioLogado;
     }
 
-
-    public async Task<ErrorOr<CadastrarMovimentacaoResponse>> Handle(CadastrarMovimentacaoRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<CadastrarMovimentacaoResponse>> Handle(
+        CadastrarMovimentacaoRequest request,
+        CancellationToken cancellationToken)
     {
-        if (Validar(request, new CadastrarMovimentacaoRequestValidator()) is var resultado && resultado.Count != 0)
+        if (Validar(request, new CadastrarMovimentacaoRequestValidator()) is var resultado 
+            && resultado.Count != 0)
             return resultado;
 
-        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
 
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
-            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;   
+            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
         // Criação da movimentação
         var movimentacao = new Domain.Entities.Movimentacao(
@@ -42,7 +42,6 @@ public class CadastrarMovimentacaoHandler : BaseHandler, IRequestHandler<Cadastr
             request.CodigoEstoqueSolicitado ?? 0
         );
 
-        // Adicionando a movimentação ao repositório
         await _movimentacaoRepository.AdicionarAsync(movimentacao, cancellationToken);
         await _movimentacaoRepository.UnitOfWork.CommitAsync(cancellationToken);
 
@@ -54,10 +53,10 @@ public class CadastrarMovimentacaoHandler : BaseHandler, IRequestHandler<Cadastr
                 item.Quantidade
             );
 
-            // Adicionar o item ao repositório (se for necessário)
-            await _movimentacaoRepository.AdicionarItemAsync(itemMovimentacao, cancellationToken);
+            await _movimentacaoRepository.AdicionarItemAsync(
+                itemMovimentacao, cancellationToken);
         }
-        // Commit dos itens
+
         await _movimentacaoRepository.UnitOfWork.CommitAsync(cancellationToken);
 
         return new CadastrarMovimentacaoResponse(
@@ -71,6 +70,4 @@ public class CadastrarMovimentacaoHandler : BaseHandler, IRequestHandler<Cadastr
             movimentacao.CreatedAt
         );
     }
-
-
 }

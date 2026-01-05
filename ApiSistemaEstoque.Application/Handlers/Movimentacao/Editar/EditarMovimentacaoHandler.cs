@@ -1,91 +1,78 @@
 using ErrorOr;
 using MediatR;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
-using static ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Editar.EditarMovimentacaoRequest;
-using System.Security.Claims;
-using System.Linq.Expressions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Editar;
 
-public class EditarMovimentacaoHandler : BaseHandler, IRequestHandler<EditarMovimentacaoRequest, ErrorOr<EditarMovimentacaoResponse>>
+public class EditarMovimentacaoHandler 
+    : BaseHandler, IRequestHandler<EditarMovimentacaoRequest, ErrorOr<EditarMovimentacaoResponse>>
 {
     private readonly IMovimentacaoRepository _movimentacaoRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly IUsuarioLogado _usuarioLogado;
 
     public EditarMovimentacaoHandler(
-         IMediator mediator,
+        IMediator mediator,
         IMovimentacaoRepository movimentacaoRepository,
-         IHttpContextAccessor httpContextAccessor,
-        UserManager<IdentityUser> userManager
-        ) : base(mediator)
+        IUsuarioLogado usuarioLogado
+    ) : base(mediator)
     {
         _movimentacaoRepository = movimentacaoRepository;
-        _httpContextAccessor = httpContextAccessor;
-        _userManager = userManager;
+        _usuarioLogado = usuarioLogado;
     }
 
-    public async Task<ErrorOr<EditarMovimentacaoResponse>> Handle(EditarMovimentacaoRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<EditarMovimentacaoResponse>> Handle(
+        EditarMovimentacaoRequest request,
+        CancellationToken cancellationToken)
     {
+        if (Validar(request, new EditarMovimentacaoRequest.EditarMovimentacaoRequestValidator()) is var resultado && resultado.Count != 0)
+            {
+                return resultado;
+            }
 
-        if (Validar(request, new EditarMovimentacaoRequestValidator()) is var resultado && resultado.Count != 0)
-            return resultado;
 
-        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
 
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
-        var movimentacao = await _movimentacaoRepository.BuscarMovimentacaoPorCodigoAsync(request.Codigo, cancellationToken);
+        var movimentacao = await _movimentacaoRepository
+            .BuscarMovimentacaoPorCodigoAsync(request.Codigo, cancellationToken);
 
         if (movimentacao is null)
             return Errors.Application.MovimentacaoErrors.MovimentacaoNaoEncontrada;
 
-
-
         movimentacao.SetStatus(request.Status);
         movimentacao.SetCodigoEstoqueSolicitado(request.CodigoUsuarioEstoqueSolicitado);
+        movimentacao.SetDataAlteracao(DateTime.UtcNow);
+
         switch (movimentacao.Status)
         {
-            case StatusMovimentacao.Novo: 
-                Console.WriteLine("Movimentação criada. Aguardando processamento.");
-                // Lógica adicional: notificar responsável, por exemplo
+            case StatusMovimentacao.Novo:
+                // movimentação criada
                 break;
 
             case StatusMovimentacao.EmAndamento:
-                Console.WriteLine("Movimentação está em andamento.");
-                // Ex: travar edição de campos
+                // movimentação em andamento
                 break;
 
             case StatusMovimentacao.Recusado:
-                Console.WriteLine("Movimentação recusada.");
-                // Ex: logar o motivo, enviar e-mail
+                // movimentação recusada
                 break;
 
             case StatusMovimentacao.Despachado:
-                Console.WriteLine("Movimentação despachada para entrega.");
-                // Ex: atualizar rastreio
+                // movimentação despachada
                 break;
 
             case StatusMovimentacao.Entregue:
-                Console.WriteLine("Movimentação entregue com sucesso.");
-                // Ex: permitir avaliação
+                // movimentação entregue
                 break;
 
             case StatusMovimentacao.Finalizado:
-                Console.WriteLine("Movimentação finalizada.");
-                // Ex: gerar comprovante ou relatório
-                break;
-
-            default:
-                Console.WriteLine("Status desconhecido.");
-                // Ex: log de erro
+                // movimentação finalizada
                 break;
         }
-        movimentacao.SetDataAlteracao(DateTime.UtcNow);
 
         _movimentacaoRepository.Atualizar(movimentacao);
         await _movimentacaoRepository.UnitOfWork.CommitAsync(cancellationToken);

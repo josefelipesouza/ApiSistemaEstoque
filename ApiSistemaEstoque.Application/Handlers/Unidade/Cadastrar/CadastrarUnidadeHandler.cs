@@ -1,40 +1,39 @@
 using ErrorOr;
-using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using MediatR;
-using System.Security.Claims;
-using Microsoft.Extensions.Configuration;
-
-using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
-using Microsoft.AspNetCore.Http;                // Para IHttpContextAccessor
-using System.Security.Claims;
-
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Cadastrar;
 
-public class CadastrarUnidadeHandler : BaseHandler, IRequestHandler<CadastrarUnidadeRequest, ErrorOr<CadastrarUnidadeResponse>>
+public class CadastrarUnidadeHandler 
+    : BaseHandler, IRequestHandler<CadastrarUnidadeRequest, ErrorOr<CadastrarUnidadeResponse>>
 {
     private readonly IUnidadeRepository _unidadeRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IUsuarioLogado _usuarioLogado;
 
     public CadastrarUnidadeHandler(
         IMediator mediator,
         IUnidadeRepository unidadeRepository,
-        IHttpContextAccessor httpContextAccessor) : base(mediator)
+        IUsuarioLogado usuarioLogado
+    ) : base(mediator)
     {
         _unidadeRepository = unidadeRepository;
-        _httpContextAccessor = httpContextAccessor;
+        _usuarioLogado = usuarioLogado;
     }
 
-    public async Task<ErrorOr<CadastrarUnidadeResponse>> Handle(CadastrarUnidadeRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<CadastrarUnidadeResponse>> Handle(
+        CadastrarUnidadeRequest request,
+        CancellationToken cancellationToken)
     {
-        if (Validar(request, new CadastrarUnidadeRequestValidator()) is var resultado && resultado.Count != 0)
+        if (Validar(request, new CadastrarUnidadeRequestValidator()) is var resultado
+            && resultado.Count != 0)
             return resultado;
 
-        var usuarioCadastro = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
 
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
-    return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
-    
+            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
+
         var novaUnidade = new Domain.Entities.Unidade(
             request.Descricao,
             usuarioCadastro

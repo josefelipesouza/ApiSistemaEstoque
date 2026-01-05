@@ -17,14 +17,14 @@
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
               "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj": {
                 "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj"
@@ -32,8 +32,8 @@
               "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj": {
                 "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj"
               },
-              "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj"
+              "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj"
               }
             }
           }
@@ -51,20 +51,25 @@
         "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
+            "MediatR": {
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[14.0.0, )"
             },
-            "Microsoft.Extensions.DependencyInjection": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.4.0, )"
+              "version": "[6.5.0, )"
             }
           },
           "imports": [
@@ -78,20 +83,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -117,17 +108,17 @@
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
-                "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
+              "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
+                "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
               }
             }
           }
@@ -145,52 +136,20 @@
         "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "ErrorOr": {
               "target": "Package",
               "version": "[2.0.1, )"
             },
-            "FluentValidation": {
+            "FluentValidation.DependencyInjectionExtensions": {
               "target": "Package",
-              "version": "[11.11.0, )"
+              "version": "[12.1.1, )"
             },
             "MediatR": {
               "target": "Package",
-              "version": "[11.1.0, )"
-            },
-            "MediatR.Extensions.Microsoft.DependencyInjection": {
-              "target": "Package",
-              "version": "[11.1.0, )"
-            },
-            "Microsoft.AspNetCore.Http.Abstractions": {
-              "target": "Package",
-              "version": "[2.3.0, )"
-            },
-            "Microsoft.AspNetCore.Identity": {
-              "target": "Package",
-              "version": "[2.3.1, )"
-            },
-            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[7.0.0, )"
-            },
-            "Microsoft.Extensions.Configuration.Abstractions": {
-              "target": "Package",
-              "version": "[9.0.6, )"
-            },
-            "Microsoft.Extensions.DependencyInjection.Abstractions": {
-              "target": "Package",
-              "version": "[9.0.6, )"
-            },
-            "Microsoft.Extensions.Options": {
-              "target": "Package",
-              "version": "[9.0.6, )"
-            },
-            "System.IdentityModel.Tokens.Jwt": {
-              "target": "Package",
-              "version": "[8.12.0, )"
+              "version": "[14.0.0, )"
             }
           },
           "imports": [
@@ -204,20 +163,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -240,20 +185,20 @@
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
               "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj": {
                 "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj"
               },
-              "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
-                "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
+              "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
+                "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
               }
             }
           }
@@ -271,54 +216,29 @@
         "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "ErrorOr": {
               "target": "Package",
               "version": "[2.0.1, )"
             },
-            "MediatR.Extensions.Microsoft.DependencyInjection": {
-              "target": "Package",
-              "version": "[11.1.0, )"
-            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[8.0.4, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.4, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.4, )"
+              "version": "[9.0.0, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.4, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[8.0.4, )"
-            },
-            "Microsoft.EntityFrameworkCore.Sqlite": {
-              "target": "Package",
-              "version": "[8.0.4, )"
-            },
-            "Microsoft.Extensions.Configuration": {
-              "target": "Package",
               "version": "[9.0.0, )"
-            },
-            "Microsoft.Extensions.DependencyInjection": {
-              "target": "Package",
-              "version": "[9.0.0, )"
-            },
-            "Microsoft.Extensions.Options": {
-              "target": "Package",
-              "version": "[9.0.6, )"
             }
           },
           "imports": [
@@ -332,20 +252,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -355,27 +261,27 @@
         }
       }
     },
-    "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
+    "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj",
         "projectName": "ApiSistemaEstoque.Domain",
-        "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -392,8 +298,8 @@
         "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "imports": [
             "net461",
             "net462",
@@ -405,20 +311,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -428,44 +320,38 @@
         }
       }
     },
-    "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj": {
+    "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj",
         "projectName": "ApiSistemaEstoque.Infrastructure",
-        "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
               "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj": {
                 "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj"
               },
-              "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj": {
-                "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj"
-              },
-              "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
-                "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
+              "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
+                "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
               }
             }
           }
         },
         "warningProperties": {
-          "noWarn": [
-            "NU1605"
-          ],
           "warnAsError": [
             "NU1605"
           ]
@@ -478,22 +364,18 @@
         "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.8, )"
+              "version": "[9.0.0, )"
             },
-            "Microsoft.EntityFrameworkCore.Sqlite": {
-              "target": "Package",
-              "version": "[8.0.8, )"
-            },
-            "Microsoft.Extensions.Configuration.Abstractions": {
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.0, )"
             },
-            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[9.0.0, )"
             }
@@ -509,20 +391,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.12, 8.0.12]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
