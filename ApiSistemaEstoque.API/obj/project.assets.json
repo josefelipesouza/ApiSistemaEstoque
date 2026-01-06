@@ -1500,7 +1500,8 @@
           "ErrorOr": "2.0.1",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.0",
-          "Microsoft.EntityFrameworkCore": "9.0.0"
+          "Microsoft.EntityFrameworkCore": "9.0.0",
+          "Microsoft.EntityFrameworkCore.Sqlite": "9.0.0"
         },
         "compile": {
           "bin/placeholder/ApiSistemaEstoque.Authentication.dll": {}
@@ -1524,6 +1525,7 @@
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
           "ApiSistemaEstoque.Application": "1.0.0",
+          "ApiSistemaEstoque.Authentication": "1.0.0",
           "ApiSistemaEstoque.Domain": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.0",
           "Microsoft.EntityFrameworkCore": "9.0.0",

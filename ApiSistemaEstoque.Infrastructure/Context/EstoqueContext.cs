@@ -1,5 +1,5 @@
-﻿using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Data;
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.EntityConfig;
+﻿using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.EntityConfig;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Data;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
@@ -30,7 +30,6 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new RoleEntityConfig());
             modelBuilder.ApplyConfiguration(new CategoriaEntityTypeConfiguration());
 
           

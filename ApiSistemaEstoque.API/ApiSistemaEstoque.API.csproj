@@ -6,12 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!-- Referências aos projetos internos -->
   <ItemGroup>
     <ProjectReference Include="..\ApiSistemaEstoque.Application\ApiSistemaEstoque.Application.csproj" />
     <ProjectReference Include="..\ApiSistemaEstoque.Authentication\ApiSistemaEstoque.Authentication.csproj" />
     <ProjectReference Include="..\ApiSistemaEstoque.Infrastructure\ApiSistemaEstoque.Infrastructure.csproj" />
   </ItemGroup>
 
+  <!-- Pacotes necessários -->
   <ItemGroup>
     <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />

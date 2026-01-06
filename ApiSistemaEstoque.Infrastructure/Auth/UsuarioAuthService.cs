@@ -6,14 +6,10 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Auth;
 public class UsuarioAuthService : IUsuarioAuthService
 {
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
 
-    public UsuarioAuthService(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+    public UsuarioAuthService(UserManager<IdentityUser> userManager)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
     }
 
     public async Task<UsuarioRegistradoDto> RegistrarAsync(
@@ -53,17 +49,14 @@ public class UsuarioAuthService : IUsuarioAuthService
         if (usuario is null)
             return null;
 
-        var resultado = await _signInManager.PasswordSignInAsync(
-            usuario, senha, false, false);
-
-        if (!resultado.Succeeded)
+        var senhaValida = await _userManager.CheckPasswordAsync(usuario, senha);
+        if (!senhaValida)
             return null;
 
         return new UsuarioAutenticadoDto
         {
             Id = usuario.Id,
             Email = usuario.Email!
-            
         };
     }
 }
