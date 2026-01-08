@@ -2,7 +2,9 @@
 using ApiSistemaEstoque.Application.Handlers.Usuario.Auth.Logar;
 using ApiSistemaEstoque.Application.Handlers.Usuario.Auth.Registrar;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace ApiSistemaEstoque.API.Controllers;
 

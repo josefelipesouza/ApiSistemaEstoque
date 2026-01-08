@@ -1,4 +1,6 @@
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
+using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Auth;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +27,8 @@ public static class InfrastructureExtensions
         services.AddScoped<IMovimentacaoRepository, MovimentacaoRepository>();
         services.AddScoped<IUnidadeRepository, UnidadeRepository>();
 
-        
+        // Auth
+        services.AddScoped<IUsuarioAuthService, UsuarioAuthService>();
 
         return services;
     }

@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "DNbavsGEy07V9DL/oQ/PwbtFEXOhFRRGHDtD0Fp2VPU=",
-  "Source": "ApiSistemaEstoque.API",
-  "BasePath": "_content/ApiSistemaEstoque.API",
+  "Hash": "IXfayiZHrRpo6kUMAhqMruPKllfQMCq6ZybQl8Kheb4=",
+  "Source": "ApiSistemaEstoque.Host",
+  "BasePath": "_content/ApiSistemaEstoque.Host",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

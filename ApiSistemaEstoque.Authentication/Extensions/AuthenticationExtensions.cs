@@ -1,95 +1,91 @@
 using System.Text;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Context;
-using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Services;
-//using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Models;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Models.exceptions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-
-/*
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.AlterarSenha;
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.Login;
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.Registrar;
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.SolicitarEsqueciSenha;
-*/
-using ErrorOr;
-using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Extensions;
 
-    public static class AuthenticationExtensions
+public static class AuthenticationExtensions
+{
+    public static IServiceCollection AddAuthenticationServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
-        public static IServiceCollection AddAuthenticationServices(this IServiceCollection services,
-            IConfiguration configuration)
+        services.AddDbContext<AuthContext>(options =>
+            options.UseSqlite(configuration.GetConnectionString("EstoqueDbConnection")!));
+
+        services.AddIdentity<IdentityUser, IdentityRole>(options =>
         {
-            services.AddDbContext<AuthContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("EstoqueDbConnection")!));
+            options.User.RequireUniqueEmail = true;
+        })
+        .AddEntityFrameworkStores<AuthContext>()
+        .AddDefaultTokenProviders()
+        .AddErrorDescriber<IdentityMensagensPortuguesConfig>();
 
-            services.AddIdentity<IdentityUser , IdentityRole>(x => x.User.RequireUniqueEmail = true)
-                .AddEntityFrameworkStores<AuthContext>()
-                .AddDefaultTokenProviders()
-                .AddErrorDescriber<IdentityMensagensPortuguesConfig>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddJwtServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            var appSettingsSection = configuration.GetSection(nameof(AppSettings));
-            services.Configure<AppSettings>(appSettingsSection);
-
-            var appSettings = appSettingsSection.Get<AppSettings>();
-
-            if (appSettings is null)
-                throw new JwtException("Configurações token inválidas");
-
-            var key = Encoding.ASCII.GetBytes(appSettings.Segredo);
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(bearerOptions =>
-            {
-                bearerOptions.RequireHttpsMetadata = true;
-                bearerOptions.SaveToken = true;
-                bearerOptions.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = appSettings.ValidoEm,
-                    ValidIssuer = appSettings.Emissor
-                };
-            });
-
-            return services;
-        }
-
-        public static IServiceCollection AddAuthenticationHandlers(this IServiceCollection services)
-        {
-            /*
-            services.AddScoped<IRequestHandler<LoginRequest, ErrorOr<LoginResponse>>, LoginHandler>();
-            services.AddScoped<IRequestHandler<RegistrarRequest, ErrorOr<bool>>, RegistrarHandler>();
-            services.AddScoped<IRequestHandler<SolicitarEsqueciSenhaRequest, ErrorOr<string?>>, SolicitarEsqueciSenhaHandler>();
-            services.AddScoped<IRequestHandler<AlterarSenhaRequest, ErrorOr<string?>>, AlterarSenhaHandler>();
-            */
-
-            return services;
-        }
-
-        /*
-
-        public static IServiceCollection AddAuthenticationServices(this IServiceCollection services)
-        {
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            return services;
-        }
-        */
+        return services;
     }
+
+    public static IServiceCollection AddJwtServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        // 🔹 SEÇÃO CORRETA
+        var jwtSection = configuration.GetSection("Jwt");
+
+        if (!jwtSection.Exists())
+            throw new JwtException("Seção 'Jwt' não encontrada no appsettings");
+
+        services.Configure<AppSettings>(jwtSection);
+
+        var appSettings = jwtSection.Get<AppSettings>();
+
+        if (appSettings is null ||
+            string.IsNullOrWhiteSpace(appSettings.Secret) ||
+            string.IsNullOrWhiteSpace(appSettings.Issuer) ||
+            string.IsNullOrWhiteSpace(appSettings.Audience))
+        {
+            throw new JwtException("Configurações JWT inválidas ou incompletas");
+        }
+
+        var key = Encoding.UTF8.GetBytes(appSettings.Secret);
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = true;
+            options.SaveToken = true;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+
+                ValidateIssuer = true,
+                ValidIssuer = appSettings.Issuer,
+
+                ValidateAudience = true,
+                ValidAudience = appSettings.Audience,
+
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+
+        return services;
+    }
+
+    public static IServiceCollection AddAuthenticationHandlers(
+        this IServiceCollection services)
+    {
+        return services;
+    }
+}

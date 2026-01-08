@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\ApiSistemaEstoque.API.props" />
-</Project>

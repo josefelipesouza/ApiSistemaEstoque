@@ -7,7 +7,9 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Listar;
 using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.API.Controllers;
 
