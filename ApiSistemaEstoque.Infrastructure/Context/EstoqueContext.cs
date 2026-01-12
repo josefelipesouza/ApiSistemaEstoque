@@ -2,13 +2,11 @@
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Data;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
 {
-    public class EstoqueContext : IdentityDbContext<IdentityUser>, IUnityOfWork
+    public class EstoqueContext : DbContext, IUnityOfWork
     {
         public EstoqueContext(DbContextOptions<EstoqueContext> options)
             : base(options)

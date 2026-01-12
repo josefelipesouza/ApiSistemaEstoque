@@ -13,17 +13,26 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Extensions;
 
 public static class AuthenticationExtensions
 {
+    // ======================================================
+    // IDENTITY (API PURA - SEM COOKIE)
+    // ======================================================
     public static IServiceCollection AddAuthenticationServices(
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        // 🔹 DbContext do Identity
         services.AddDbContext<AuthContext>(options =>
-            options.UseSqlite(configuration.GetConnectionString("EstoqueDbConnection")!));
+            options.UseSqlite(
+                configuration.GetConnectionString("EstoqueDbConnection")!
+            )
+        );
 
-        services.AddIdentity<IdentityUser, IdentityRole>(options =>
+        // 🔹 IdentityCore (sem cookies, sem MVC)
+        services.AddIdentityCore<IdentityUser>(options =>
         {
             options.User.RequireUniqueEmail = true;
         })
+        .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AuthContext>()
         .AddDefaultTokenProviders()
         .AddErrorDescriber<IdentityMensagensPortuguesConfig>();
@@ -31,11 +40,13 @@ public static class AuthenticationExtensions
         return services;
     }
 
+    // ======================================================
+    // JWT (ÚNICO SCHEME DE AUTH)
+    // ======================================================
     public static IServiceCollection AddJwtServices(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // 🔹 SEÇÃO CORRETA
         var jwtSection = configuration.GetSection("Jwt");
 
         if (!jwtSection.Exists())
@@ -55,34 +66,35 @@ public static class AuthenticationExtensions
 
         var key = Encoding.UTF8.GetBytes(appSettings.Secret);
 
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-        {
-            options.RequireHttpsMetadata = true;
-            options.SaveToken = true;
-            options.TokenValidationParameters = new TokenValidationParameters
+        // 🔹 ÚNICO AddAuthentication DA APLICAÇÃO
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
+                options.RequireHttpsMetadata = true;
+                options.SaveToken = true;
 
-                ValidateIssuer = true,
-                ValidIssuer = appSettings.Issuer,
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
 
-                ValidateAudience = true,
-                ValidAudience = appSettings.Audience,
+                    ValidateIssuer = true,
+                    ValidIssuer = appSettings.Issuer,
 
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
-            };
-        });
+                    ValidateAudience = true,
+                    ValidAudience = appSettings.Audience,
+
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
 
         return services;
     }
 
+    // ======================================================
+    // HANDLERS (SE NECESSÁRIO NO FUTURO)
+    // ======================================================
     public static IServiceCollection AddAuthenticationHandlers(
         this IServiceCollection services)
     {
