@@ -225,13 +225,4 @@ Projeto desenvolvido para fins de estudo e evolução em arquitetura backend com
 ✔️ Clean Architecture
 ✔️ CQRS
 
----
 
-Se precisar de ajuda para:
-
-* Dockerizar
-* Subir em produção
-* Criar testes
-* Melhorar segurança
-
-👉 é só chamar 🚀
