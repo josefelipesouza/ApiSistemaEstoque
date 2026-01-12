@@ -6,14 +6,14 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Auth;
 public class UsuarioAuthService : IUsuarioAuthService
 {
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly IJwtTokenService _jwtTokenService;
 
     public UsuarioAuthService(
         UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        IJwtTokenService jwtTokenService)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
+        _jwtTokenService = jwtTokenService;
     }
 
     public async Task<UsuarioRegistradoDto> RegistrarAsync(
@@ -31,8 +31,10 @@ public class UsuarioAuthService : IUsuarioAuthService
         var resultado = await _userManager.CreateAsync(usuario, senha);
 
         if (!resultado.Succeeded)
+        {
             throw new ApplicationException(
                 string.Join(", ", resultado.Errors.Select(e => e.Description)));
+        }
 
         await _userManager.AddToRoleAsync(usuario, role);
 
@@ -53,17 +55,24 @@ public class UsuarioAuthService : IUsuarioAuthService
         if (usuario is null)
             return null;
 
-        var resultado = await _signInManager.PasswordSignInAsync(
-            usuario, senha, false, false);
-
-        if (!resultado.Succeeded)
+        var senhaValida = await _userManager.CheckPasswordAsync(usuario, senha);
+        if (!senhaValida)
             return null;
+
+        // 🔹 BUSCA ROLES DO USUÁRIO
+        var roles = await _userManager.GetRolesAsync(usuario);
+
+        // 🔹 GERA JWT (ASSINATURA CORRETA)
+        var token = _jwtTokenService.GerarToken(
+            usuario.Id,
+            usuario.Email!,
+            roles);
 
         return new UsuarioAutenticadoDto
         {
             Id = usuario.Id,
-            Email = usuario.Email!
-            
+            Email = usuario.Email!,
+            Token = token
         };
     }
 }

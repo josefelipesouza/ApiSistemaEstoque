@@ -536,11 +536,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj",
+      "projectUniqueName": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj",
       "projectName": "ApiSistemaEstoque.Application",
-      "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj",
+      "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\obj\\",
+      "outputPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"

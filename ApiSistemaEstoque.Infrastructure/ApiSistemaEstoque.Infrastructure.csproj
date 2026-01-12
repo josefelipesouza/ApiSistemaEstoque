@@ -9,15 +9,16 @@
   <ItemGroup>
     <ProjectReference Include="..\ApiSistemaEstoque.Domain\ApiSistemaEstoque.Domain.csproj" />
     <ProjectReference Include="..\ApiSistemaEstoque.Application\ApiSistemaEstoque.Application.csproj" />
+    <ProjectReference Include="..\ApiSistemaEstoque.Authentication\ApiSistemaEstoque.Authentication.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- EF Core 9 -->
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
 
     <!-- Identity persistence -->
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

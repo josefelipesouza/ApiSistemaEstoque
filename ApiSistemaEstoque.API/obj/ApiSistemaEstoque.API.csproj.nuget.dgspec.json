@@ -53,25 +53,6 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "dependencies": {
-            "MediatR": {
-              "target": "Package",
-              "version": "[14.0.0, )"
-            },
-            "Microsoft.AspNetCore.Authentication.JwtBearer": {
-              "target": "Package",
-              "version": "[9.0.0, )"
-            },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[9.0.0, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.5.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -239,6 +220,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.0, )"
             }
           },
           "imports": [
@@ -344,6 +329,9 @@
             "projectReferences": {
               "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj": {
                 "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj"
+              },
+              "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj": {
+                "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj"
               },
               "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
                 "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"

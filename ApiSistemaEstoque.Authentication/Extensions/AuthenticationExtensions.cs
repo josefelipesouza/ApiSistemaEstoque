@@ -1,95 +1,103 @@
 using System.Text;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Context;
-using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Services;
-//using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Models;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Models.exceptions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-
-/*
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.AlterarSenha;
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.Login;
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.Registrar;
-using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Handlers.SolicitarEsqueciSenha;
-*/
-using ErrorOr;
-using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Extensions;
 
-    public static class AuthenticationExtensions
+public static class AuthenticationExtensions
+{
+    // ======================================================
+    // IDENTITY (API PURA - SEM COOKIE)
+    // ======================================================
+    public static IServiceCollection AddAuthenticationServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
-        public static IServiceCollection AddAuthenticationServices(this IServiceCollection services,
-            IConfiguration configuration)
+        // 🔹 DbContext do Identity
+        services.AddDbContext<AuthContext>(options =>
+            options.UseSqlite(
+                configuration.GetConnectionString("EstoqueDbConnection")!
+            )
+        );
+
+        // 🔹 IdentityCore (sem cookies, sem MVC)
+        services.AddIdentityCore<IdentityUser>(options =>
         {
-            services.AddDbContext<AuthContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("EstoqueDbConnection")!));
+            options.User.RequireUniqueEmail = true;
+        })
+        .AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<AuthContext>()
+        .AddDefaultTokenProviders()
+        .AddErrorDescriber<IdentityMensagensPortuguesConfig>();
 
-            services.AddIdentity<IdentityUser , IdentityRole>(x => x.User.RequireUniqueEmail = true)
-                .AddEntityFrameworkStores<AuthContext>()
-                .AddDefaultTokenProviders()
-                .AddErrorDescriber<IdentityMensagensPortuguesConfig>();
+        return services;
+    }
 
-            return services;
+    // ======================================================
+    // JWT (ÚNICO SCHEME DE AUTH)
+    // ======================================================
+    public static IServiceCollection AddJwtServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var jwtSection = configuration.GetSection("Jwt");
+
+        if (!jwtSection.Exists())
+            throw new JwtException("Seção 'Jwt' não encontrada no appsettings");
+
+        services.Configure<AppSettings>(jwtSection);
+
+        var appSettings = jwtSection.Get<AppSettings>();
+
+        if (appSettings is null ||
+            string.IsNullOrWhiteSpace(appSettings.Secret) ||
+            string.IsNullOrWhiteSpace(appSettings.Issuer) ||
+            string.IsNullOrWhiteSpace(appSettings.Audience))
+        {
+            throw new JwtException("Configurações JWT inválidas ou incompletas");
         }
 
-        public static IServiceCollection AddJwtServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            var appSettingsSection = configuration.GetSection(nameof(AppSettings));
-            services.Configure<AppSettings>(appSettingsSection);
+        var key = Encoding.UTF8.GetBytes(appSettings.Secret);
 
-            var appSettings = appSettingsSection.Get<AppSettings>();
-
-            if (appSettings is null)
-                throw new JwtException("Configurações token inválidas");
-
-            var key = Encoding.ASCII.GetBytes(appSettings.Segredo);
-
-            services.AddAuthentication(options =>
+        // 🔹 ÚNICO AddAuthentication DA APLICAÇÃO
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(bearerOptions =>
-            {
-                bearerOptions.RequireHttpsMetadata = true;
-                bearerOptions.SaveToken = true;
-                bearerOptions.TokenValidationParameters = new TokenValidationParameters
+                options.RequireHttpsMetadata = true;
+                options.SaveToken = true;
+
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
+
                     ValidateIssuer = true,
+                    ValidIssuer = appSettings.Issuer,
+
                     ValidateAudience = true,
-                    ValidAudience = appSettings.ValidoEm,
-                    ValidIssuer = appSettings.Emissor
+                    ValidAudience = appSettings.Audience,
+
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
-            return services;
-        }
-
-        public static IServiceCollection AddAuthenticationHandlers(this IServiceCollection services)
-        {
-            /*
-            services.AddScoped<IRequestHandler<LoginRequest, ErrorOr<LoginResponse>>, LoginHandler>();
-            services.AddScoped<IRequestHandler<RegistrarRequest, ErrorOr<bool>>, RegistrarHandler>();
-            services.AddScoped<IRequestHandler<SolicitarEsqueciSenhaRequest, ErrorOr<string?>>, SolicitarEsqueciSenhaHandler>();
-            services.AddScoped<IRequestHandler<AlterarSenhaRequest, ErrorOr<string?>>, AlterarSenhaHandler>();
-            */
-
-            return services;
-        }
-
-        /*
-
-        public static IServiceCollection AddAuthenticationServices(this IServiceCollection services)
-        {
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            return services;
-        }
-        */
+        return services;
     }
+
+    // ======================================================
+    // HANDLERS (SE NECESSÁRIO NO FUTURO)
+    // ======================================================
+    public static IServiceCollection AddAuthenticationHandlers(
+        this IServiceCollection services)
+    {
+        return services;
+    }
+}
