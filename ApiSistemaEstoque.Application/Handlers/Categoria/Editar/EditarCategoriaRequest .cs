@@ -7,7 +7,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Edi
 public record EditarCategoriaRequest(
     int Codigo,
     string Descricao,
-    int Superior
+    int? Superior
 ) : IRequest<ErrorOr<EditarCategoriaResponse>>;
 
 

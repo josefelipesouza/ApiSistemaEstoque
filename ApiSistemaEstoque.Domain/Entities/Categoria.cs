@@ -11,7 +11,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities
         [Required]
         public string Descricao { get; private set; }
 
-        public int Superior { get; private set; }
+        public int? Superior { get; private set; }
 
         [Required]
         public string UsuarioCadastro { get; private set; }
@@ -24,7 +24,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities
 
  
         // Construtor para uso na criação da categoria
-        public Categoria(string descricao, int superior, string usuarioCadastro)
+        public Categoria(string descricao, int? superior, string usuarioCadastro)
         {
             Descricao = descricao;
             Superior = superior;
@@ -39,7 +39,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities
         // Métodos para alterar propriedades
         public void SetDescricao(string descricao) => Descricao = descricao;
 
-        public void SetSuperior(int superior) => Superior = superior;
+        public void SetSuperior(int? superior) => Superior = superior;
 
         public void SetUsuarioCadastro(string usuarioCadastro) => UsuarioCadastro = usuarioCadastro;
 

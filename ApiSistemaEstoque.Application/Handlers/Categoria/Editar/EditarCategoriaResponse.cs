@@ -6,7 +6,7 @@ public record EditarCategoriaResponse(
 
     int Codigo,
     string Descricao,
-    int Superior,
+    int? Superior,
     string UsuarioCadastro,
     DateTime CreatedAt,
     DateTime updated_at,

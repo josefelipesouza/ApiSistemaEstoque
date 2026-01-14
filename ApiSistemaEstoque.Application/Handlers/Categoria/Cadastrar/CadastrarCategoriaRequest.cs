@@ -7,7 +7,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Cad
 public record CadastrarCategoriaRequest (
 
     string Descricao,
-    int Superior
+    int? Superior
 ) : IRequest<ErrorOr<CadastrarCategoriaResponse>>;
 
 public class CadastrarCategoriaRequestValidator : AbstractValidator<CadastrarCategoriaRequest>

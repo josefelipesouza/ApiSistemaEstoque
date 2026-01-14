@@ -40,8 +40,30 @@ public class EditarCategoriaHandler
         if (categoriaExistente is null)
             return Errors.Application.CategoriaErrors.CategoriaNaoEncontrada;
 
+        // =============================
+        // REGRA DE NEGÓCIO: 0 → null
+        // =============================
+        int? superiorTratado = request.Superior == 0
+            ? null
+            : request.Superior;
+
+        // =============================
+        // Validação: categoria superior deve existir
+        // =============================
+        if (superiorTratado.HasValue)
+        {
+            int codigoSuperior = superiorTratado.Value;
+
+            var categoriaSuperior = await _categoriaRepository
+                .BuscarPorCodigoAsync(codigoSuperior, cancellationToken);
+
+            if (categoriaSuperior is null)
+                return Errors.Application.CategoriaErrors.CategoriaNaoEncontrada;
+        }
+
+
         categoriaExistente.SetDescricao(request.Descricao);
-        categoriaExistente.SetSuperior(request.Superior);
+        categoriaExistente.SetSuperior(superiorTratado);
         categoriaExistente.SetUsuarioCadastro(usuarioCadastro);
         categoriaExistente.SetDataAlteracao(DateTime.UtcNow);
 

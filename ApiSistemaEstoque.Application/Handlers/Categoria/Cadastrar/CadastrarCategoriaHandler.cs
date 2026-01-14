@@ -34,9 +34,14 @@ public class CadastrarCategoriaHandler
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
+        // 0 → null (categoria raiz)
+        int? superiorTratado = request.Superior == 0
+            ? null
+            : request.Superior;
+
         var novaCategoria = new Domain.Entities.Categoria(
             request.Descricao,
-            request.Superior,
+            superiorTratado,
             usuarioCadastro
         );
 
