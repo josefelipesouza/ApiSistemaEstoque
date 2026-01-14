@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using MediatR;
 
@@ -39,8 +41,34 @@ public class Program
         // ======================================================
         // CONTROLLERS
         // ======================================================
-        builder.Services.AddControllers()
+        builder.Services
+            .AddControllers()
             .AddApplicationPart(typeof(CategoriaController).Assembly);
+
+        // ======================================================
+        // AUTHENTICATION / IDENTITY / JWT
+        // ======================================================
+        builder.Services.AddAuthenticationServices(builder.Configuration);
+        builder.Services.AddJwtServices(builder.Configuration);
+        builder.Services.AddAuthenticationHandlers();
+
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<IUsuarioLogado, UsuarioLogado>();
+
+        // ======================================================
+        // 🔐 JWT COMO SCHEME PADRÃO
+        // ======================================================
+        builder.Services.PostConfigure<AuthenticationOptions>(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        });
+
+        // ======================================================
+        // 🔓 AUTHORIZATION (SEM FALLBACK POLICY)
+        // ======================================================
+        builder.Services.AddAuthorization();
 
         // ======================================================
         // SWAGGER
@@ -56,11 +84,12 @@ public class Program
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                Description = "Informe: Bearer {token}",
                 Name = "Authorization",
-                In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
-                Scheme = "Bearer"
+                Scheme = "Bearer",
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Description = "Informe: Bearer {token}"
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -78,20 +107,6 @@ public class Program
                 }
             });
         });
-
-        // ======================================================
-        // AUTH / JWT
-        // ======================================================
-        builder.Services.AddAuthenticationServices(builder.Configuration);
-        
-        Console.WriteLine("JWT SECRET = " + builder.Configuration["Jwt:Secret"]);
-        Console.WriteLine("JWT ISSUER = " + builder.Configuration["Jwt:Issuer"]);
-        Console.WriteLine("JWT AUDIENCE = " + builder.Configuration["Jwt:Audience"]);
-
-        builder.Services.AddJwtServices(builder.Configuration);
-        builder.Services.AddAuthenticationHandlers();
-        builder.Services.AddHttpContextAccessor();
-        builder.Services.AddScoped<IUsuarioLogado, UsuarioLogado>();
 
         // ======================================================
         // INFRA / APPLICATION
@@ -118,8 +133,10 @@ public class Program
         app.UseSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Sistema de Estoque v1");
-            c.RoutePrefix = string.Empty; // Swagger na raiz
+            c.RoutePrefix = string.Empty;
         });
+
+        app.UseRouting();
 
         app.UseAuthentication();
         app.UseAuthorization();
