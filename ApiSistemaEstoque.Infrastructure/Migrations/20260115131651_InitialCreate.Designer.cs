@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiSistemaEstoque.Infrastructure.Migrations
 {
     [DbContext(typeof(EstoqueContext))]
-    [Migration("20260112145548_InitialEstoque")]
-    partial class InitialEstoque
+    [Migration("20260115131651_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,12 +31,13 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Inativo")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Superior")
+                    b.Property<int?>("Superior")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UsuarioCadastro")
@@ -48,9 +49,9 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
 
                     b.HasKey("Codigo");
 
-                    b.HasIndex("UsuarioCadastro");
+                    b.HasIndex("Superior");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("Categorias", (string)null);
                 });
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Estoque", b =>
@@ -77,7 +78,7 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Superior")
+                    b.Property<int?>("Superior")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UsuarioCadastro")
@@ -372,65 +373,12 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                     b.ToTable("Unidades");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IdentityUser");
-                });
-
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Categoria", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Categoria", null)
                         .WithMany()
-                        .HasForeignKey("UsuarioCadastro")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("Superior")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Item", b =>

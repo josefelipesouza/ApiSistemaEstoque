@@ -75,7 +75,7 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Superior")
+                    b.Property<int?>("Superior")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UsuarioCadastro")

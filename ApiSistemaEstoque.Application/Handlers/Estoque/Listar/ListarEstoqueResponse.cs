@@ -7,7 +7,7 @@ public record ListarEstoqueResponse(
     string Descricao,
     string Localizacao,
     string Responsavel,
-    int Superior,
+    int? Superior,
     DateTime CreatedAt,
     DateTime updated_at,
     Status Inativo 
