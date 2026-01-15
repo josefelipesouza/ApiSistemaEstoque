@@ -82,17 +82,13 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
             // ============================================================
             modelBuilder.Entity<ItemEstoque>(builder =>
             {
-                builder.HasKey(ie => new { ie.CodigoItem, ie.CodigoEstoque });
+                builder.HasKey(ie => ie.Codigo);
 
-                builder.Property(ie => ie.CodigoItem)
-                    .HasDefaultValue(0);
-
-                builder.Property(ie => ie.CodigoEstoque)
-                    .HasDefaultValue(0);
+                builder.Property(ie => ie.Codigo)
+                    .ValueGeneratedOnAdd(); // 🔥 ESSENCIAL
 
                 builder.Property(ie => ie.Quantidade)
-                    .IsRequired()
-                    .HasDefaultValue(0);
+                    .IsRequired();
 
                 builder.HasOne(ie => ie.Item)
                     .WithMany()
@@ -103,6 +99,9 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
                     .WithMany()
                     .HasForeignKey(ie => ie.CodigoEstoque)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                builder.HasIndex(ie => new { ie.CodigoItem, ie.CodigoEstoque })
+                    .IsUnique();
             });
 
             // ============================================================

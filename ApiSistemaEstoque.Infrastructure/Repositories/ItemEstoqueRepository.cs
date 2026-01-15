@@ -26,34 +26,36 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Repositories
         {
             return await _context.ItensEstoque
                 .Include(ie => ie.Item)
-                .Include(ie => ie.Quantidade)
                 .Include(ie => ie.Estoque)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(ie => ie.CodigoEstoque == codigoEstoque && ie.CodigoItem == codigoItem, cancellationToken);
+                .FirstOrDefaultAsync(
+                    ie => ie.CodigoEstoque == codigoEstoque 
+                    && ie.CodigoItem == codigoItem,
+                    cancellationToken);
         }
 
-        public async Task<IEnumerable<ItemEstoque>> BuscarPorCodigoEstoque(int codigoEstoque, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ItemEstoque>> BuscarPorCodigoEstoque(int codigoEstoque,CancellationToken cancellationToken)
         {
             return await _context.ItensEstoque
                 .Include(ie => ie.Item)
-                .Include(ie => ie.Quantidade)
                 .Include(ie => ie.Estoque)
                 .AsNoTracking()
                 .Where(ie => ie.CodigoEstoque == codigoEstoque)
+                .OrderBy(ie => ie.CodigoItem)
                 .ToListAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<ItemEstoque>> ListarAsync(CancellationToken cancellationToken)
         {
             return await _context.ItensEstoque
-                .Include(ie => ie.Item)
-                .Include(ie => ie.Quantidade)
-                .Include(ie => ie.Estoque)
+                .Include(ie => ie.Item)       // navegação → OK
+                .Include(ie => ie.Estoque)    // navegação → OK
                 .AsNoTracking()
                 .OrderBy(ie => ie.CodigoEstoque)
                 .ThenBy(ie => ie.CodigoItem)
                 .ToListAsync(cancellationToken);
         }
+
         // a ideia é quando chamar a função AtualizarQuantidadeAsync já passar a quantidade correta a ser atualizada a operação fica por conta da Movimentação.
         public async Task AtualizarQuantidadeAsync(int codigoEstoque, int codigoItem, int quantidade, CancellationToken cancellationToken)
         {
