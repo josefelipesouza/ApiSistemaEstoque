@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 using MediatR;
 
 // 🔹 Extensions
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions;
+using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Extensions;
 using ApiSistemaEstoque.ApiSistemaEstoque.Authentication.Extensions;
 
@@ -125,6 +127,18 @@ public class Program
         });
 
         var app = builder.Build();
+
+        // ======================================================
+        // 🔹 DATABASE SEEDER
+        // ======================================================
+        using (var scope = app.Services.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<EstoqueContext>();
+
+            context.Database.Migrate();
+
+            DatabaseSeeder.SeedAsync(context).GetAwaiter().GetResult();
+        }
 
         // ======================================================
         // PIPELINE

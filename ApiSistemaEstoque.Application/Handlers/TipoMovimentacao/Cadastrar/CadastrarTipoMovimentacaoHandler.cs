@@ -36,7 +36,6 @@ public class CadastrarTipoMovimentacaoHandler
 
         var nova = new Domain.Entities.TipoMovimentacao(
             request.Tipo,
-            request.Descricao,
             usuarioCadastro
         );
 
@@ -49,7 +48,7 @@ public class CadastrarTipoMovimentacaoHandler
             nova.Descricao!,
             nova.UsuarioCadastro,
             nova.CreatedAt,
-            nova.updated_at,
+            nova.UpdatedAt,
             nova.Inativo
         );
     }

@@ -61,6 +61,12 @@ public static partial class Application
             code: "ItemEstoque.NaoEncontrado",
             description: "O item não foi encontrado neste estoque."
         );
+
+        public static Error ItemEstoqueQuantidadeInsuficiente => Error.NotFound(
+            code: "ItemEstoque.QuantidadeInsuficiente",
+            description: "A quantidade do item não é suficiente para realizar a movimentação neste estoque."
+        );
+    
     }
 
     public static class MovimentacaoErrors

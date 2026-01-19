@@ -555,8 +555,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
-              "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
+            "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
+              "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
             }
           }
         }

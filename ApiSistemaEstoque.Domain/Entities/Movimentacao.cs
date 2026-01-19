@@ -23,13 +23,27 @@ public class Movimentacao
 
     public Movimentacao(int codigoTipoMovimentacao, int codigoEstoqueSolicitante, string codigoUsuarioEstoqueSolicitante, int codigoEstoqueSolicitado)
     {
-        Status = StatusMovimentacao.Novo;
-        CodigoTipoMovimentacao = codigoTipoMovimentacao;
-        CodigoEstoqueSolicitante = codigoEstoqueSolicitante;
-        CodigoUsuarioEstoqueSolicitante = codigoUsuarioEstoqueSolicitante;
-        CodigoEstoqueSolicitado = codigoEstoqueSolicitado;
-        CodigoUsuarioEstoqueSolicitado = "";
-        CreatedAt = DateTime.UtcNow;
+        if (codigoTipoMovimentacao <= 4)// Entrada ou Saída(já finaliza movimentação)
+        {
+            Status = StatusMovimentacao.Finalizado;
+            CodigoTipoMovimentacao = codigoTipoMovimentacao;
+            CodigoEstoqueSolicitante = codigoEstoqueSolicitante;
+            CodigoUsuarioEstoqueSolicitante = codigoUsuarioEstoqueSolicitante;
+            CodigoEstoqueSolicitado = 0;
+            CodigoUsuarioEstoqueSolicitado = "";
+            CreatedAt = DateTime.UtcNow;
+        }
+        else // Transferência, Solicitação ou Devolução
+        {
+         
+            Status = StatusMovimentacao.Novo;
+            CodigoTipoMovimentacao = codigoTipoMovimentacao;
+            CodigoEstoqueSolicitante = codigoEstoqueSolicitante;
+            CodigoUsuarioEstoqueSolicitante = codigoUsuarioEstoqueSolicitante;
+            CodigoEstoqueSolicitado = codigoEstoqueSolicitado;
+            CodigoUsuarioEstoqueSolicitado = "";
+            CreatedAt = DateTime.UtcNow;
+        }
     }
 
     // Construtor padrão necessário para o EF

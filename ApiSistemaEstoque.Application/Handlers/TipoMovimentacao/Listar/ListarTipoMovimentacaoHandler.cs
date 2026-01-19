@@ -25,7 +25,7 @@ public class ListarTipoMovimentacaoHandler : BaseHandler, IRequestHandler<Listar
             tipo.Tipo,
             tipo.UsuarioCadastro,
             tipo.CreatedAt,
-            tipo.updated_at,
+            tipo.UpdatedAt,
             tipo.Inativo
         ));
 
