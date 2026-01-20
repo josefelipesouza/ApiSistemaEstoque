@@ -17,7 +17,6 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Repositories
             _context = context;
         }
 
-        // Agora a função recebe um objeto Movimentacao
         public async Task AdicionarAsync(Movimentacao movimentacao, CancellationToken cancellationToken)
         {
             await _context.Movimentacoes.AddAsync(movimentacao, cancellationToken);

@@ -24,7 +24,7 @@ public class ItemEstoque
         CodigoItem = codigoItem;
         CodigoEstoque = codigoEstoque;
         Quantidade = quantidade;
-        //CreatedAt = DateTime.UtcNow;
+        CreatedAt = DateTime.UtcNow;
     }
 
     private ItemEstoque() { }

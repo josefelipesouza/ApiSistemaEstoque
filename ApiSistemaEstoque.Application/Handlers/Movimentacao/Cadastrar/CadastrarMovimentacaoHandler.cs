@@ -2,22 +2,26 @@ using MediatR;
 using ErrorOr;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
+using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Cadastrar;
 
-public class CadastrarMovimentacaoHandler 
+public class CadastrarMovimentacaoHandler
     : BaseHandler, IRequestHandler<CadastrarMovimentacaoRequest, ErrorOr<CadastrarMovimentacaoResponse>>
 {
     private readonly IMovimentacaoRepository _movimentacaoRepository;
+    private readonly IItemEstoqueRepository _itemEstoqueRepository;
     private readonly IUsuarioLogado _usuarioLogado;
 
     public CadastrarMovimentacaoHandler(
         IMediator mediator,
         IMovimentacaoRepository movimentacaoRepository,
+        IItemEstoqueRepository itemEstoqueRepository,
         IUsuarioLogado usuarioLogado
     ) : base(mediator)
     {
         _movimentacaoRepository = movimentacaoRepository;
+        _itemEstoqueRepository = itemEstoqueRepository;
         _usuarioLogado = usuarioLogado;
     }
 
@@ -25,16 +29,20 @@ public class CadastrarMovimentacaoHandler
         CadastrarMovimentacaoRequest request,
         CancellationToken cancellationToken)
     {
-        if (Validar(request, new CadastrarMovimentacaoRequestValidator()) is var resultado 
-            && resultado.Count != 0)
-            return resultado;
+        // ======================================================
+        // Validação
+        // ======================================================
+        var erros = Validar(request, new CadastrarMovimentacaoRequestValidator());
+        if (erros.Count != 0)
+            return erros;
 
         var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
-
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
+        // ======================================================
         // Criação da movimentação
+        // ======================================================
         var movimentacao = new Domain.Entities.Movimentacao(
             request.CodigoTipoMovimentacao,
             request.CodigoEstoqueSolicitante,
@@ -45,20 +53,109 @@ public class CadastrarMovimentacaoHandler
         await _movimentacaoRepository.AdicionarAsync(movimentacao, cancellationToken);
         await _movimentacaoRepository.UnitOfWork.CommitAsync(cancellationToken);
 
+        var tipoMovimentacao = (TipoBaseMovimentacao)request.CodigoTipoMovimentacao;
+
+        // ======================================================
+        // Processamento dos itens
+        // ======================================================
         foreach (var item in request.Itens)
         {
+            // -------------------------------
+            // Item da movimentação
+            // -------------------------------
             var itemMovimentacao = new Domain.Entities.ItemMovimentacao(
                 movimentacao.Codigo,
                 item.CodigoItem,
                 item.Quantidade
             );
 
-            await _movimentacaoRepository.AdicionarItemAsync(
-                itemMovimentacao, cancellationToken);
+            await _movimentacaoRepository.AdicionarItemAsync(itemMovimentacao, cancellationToken);
+
+            var itemEstoqueAtual =
+                await _itemEstoqueRepository.BuscarPorCodigoEstoqueItem(
+                    request.CodigoEstoqueSolicitante,
+                    item.CodigoItem,
+                    cancellationToken);
+
+            switch (tipoMovimentacao)
+            {
+                // ==================================================
+                // ENTRADA / CORREÇÃO ENTRADA
+                // ==================================================
+                case TipoBaseMovimentacao.Entrada:
+                case TipoBaseMovimentacao.CorreçãoEntrada:
+                {
+                    if (itemEstoqueAtual is null)
+                    {
+                        var novoItemEstoque = new Domain.Entities.ItemEstoque(
+                            item.CodigoItem,
+                            request.CodigoEstoqueSolicitante,
+                            item.Quantidade
+                        );
+
+                        await _itemEstoqueRepository.AdicionarAsync(
+                            novoItemEstoque,
+                            cancellationToken
+                        );
+                    }
+                    else
+                    {
+                        var novaQuantidade =
+                            itemEstoqueAtual.Quantidade + item.Quantidade;
+
+                        await _itemEstoqueRepository.AtualizarQuantidadeAsync(
+                            request.CodigoEstoqueSolicitante,
+                            item.CodigoItem,
+                            novaQuantidade,
+                            cancellationToken
+                        );
+                    }
+
+                    break;
+                }
+
+                // ==================================================
+                // SAÍDA / CORREÇÃO SAÍDA
+                // ==================================================
+                case TipoBaseMovimentacao.Saida:
+                case TipoBaseMovimentacao.CorreçãoSaida:
+                {
+                    if (itemEstoqueAtual is null)
+                        return Errors.Application.ItemEstoqueErrors.ItemEstoqueNaoEncontrado;
+
+                    if (itemEstoqueAtual.Quantidade < item.Quantidade)
+                        return Errors.Application.ItemEstoqueErrors.ItemEstoqueQuantidadeInsuficiente;
+
+                    var novaQuantidade =
+                        itemEstoqueAtual.Quantidade - item.Quantidade;
+
+                    await _itemEstoqueRepository.AtualizarQuantidadeAsync(
+                        request.CodigoEstoqueSolicitante,
+                        item.CodigoItem,
+                        novaQuantidade,
+                        cancellationToken
+                    );
+
+                    break;
+                }
+
+                // ==================================================
+                // OUTROS TIPOS (Transferência, etc.)
+                // ==================================================
+                default:
+                    break;
+            }
         }
 
+        // ======================================================
+        // Commit final
+        // ======================================================
         await _movimentacaoRepository.UnitOfWork.CommitAsync(cancellationToken);
+        await _itemEstoqueRepository.UnitOfWork.CommitAsync(cancellationToken);
 
+        // ======================================================
+        // Response
+        // ======================================================
         return new CadastrarMovimentacaoResponse(
             movimentacao.Codigo,
             movimentacao.Status,

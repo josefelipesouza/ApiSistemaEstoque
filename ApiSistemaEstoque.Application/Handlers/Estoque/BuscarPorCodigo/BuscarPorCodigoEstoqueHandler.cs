@@ -4,7 +4,8 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.BuscarPorCodigo;
 
-public class BuscarPorCodigoEstoqueHandler : IRequestHandler<BuscarPorCodigoEstoqueRequest, ErrorOr<BuscarPorCodigoEstoqueResponse>>
+public class BuscarPorCodigoEstoqueHandler 
+    : IRequestHandler<BuscarPorCodigoEstoqueRequest, ErrorOr<BuscarPorCodigoEstoqueResponse>>
 {
     private readonly IEstoqueRepository _repository;
 
@@ -20,21 +21,17 @@ public class BuscarPorCodigoEstoqueHandler : IRequestHandler<BuscarPorCodigoEsto
         var estoque = await _repository.BuscarPorCodigoAsync(request.Codigo, cancellationToken);
 
         if (estoque is null)
-        {
             return Errors.Application.EstoqueErrors.EstoqueNaoEncontrado;
-        }
 
-        var response = new BuscarPorCodigoEstoqueResponse(
+        return new BuscarPorCodigoEstoqueResponse(
             estoque.Codigo,
             estoque.Descricao,
             estoque.Localizacao,
             estoque.Responsavel,
-            estoque.Superior,
+            estoque.Superior, // int?
             estoque.CreatedAt,
             estoque.updated_at,
             estoque.Inativo
         );
-
-        return response;
     }
 }

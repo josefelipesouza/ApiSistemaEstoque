@@ -5,41 +5,53 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
 
 public class TipoMovimentacao
 {
-  [Key]
-  public int Codigo { get; set; }
-  public TipoBaseMovimentacao Tipo { get; set; }
-  public string Descricao { get; set; }
-  public string UsuarioCadastro { get; private set; }
-  public DateTime CreatedAt { get; private set; }
-  public DateTime updated_at { get; private set; }
-  public Status Inativo { get; private set; }
+    [Key]
+    public int Codigo { get; private set; }
 
-  public TipoMovimentacao(TipoBaseMovimentacao tipo, string descricao, string usuarioCadastro)
-  {
-    Tipo = tipo;
-    Descricao = descricao;
-    UsuarioCadastro = usuarioCadastro;
-    CreatedAt = DateTime.UtcNow;
-  }
+    public TipoBaseMovimentacao Tipo { get; private set; }
 
-  public void SetTipo(TipoBaseMovimentacao tipo)
-  {
-    Tipo = tipo;
-  }
+    public string Descricao { get; private set; } = null!;
 
-  public void SetDescricao(string descricao)
-  {
-    Descricao = descricao;
-  }
+    public string UsuarioCadastro { get; private set; } = null!;
 
-  public void SetDataAlteracao(DateTime dataAlteracao)
-  {
-    updated_at = dataAlteracao;
-  }
+    public DateTime CreatedAt { get; private set; }
 
-  public void SetInativar()
-  {
-    Inativo = Status.Inativo;
-  }
+    public DateTime UpdatedAt { get; private set; }
+
+    public Status Inativo { get; private set; }
+
+    protected TipoMovimentacao() { }
+
+    public TipoMovimentacao(
+        TipoBaseMovimentacao tipo,
+        string usuarioCadastro)
+    {
+        Tipo = tipo;
+        Descricao = tipo.ToString();
+        UsuarioCadastro = usuarioCadastro;
+
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+
+        Inativo = Status.Ativo;
+    }
+
+    public void SetTipo(TipoBaseMovimentacao tipo)
+    {
+        Tipo = tipo;
+        Descricao = tipo.ToString();
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetInativar()
+    {
+        Inativo = Status.Inativo;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetReativar()
+    {
+        Inativo = Status.Ativo;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
-

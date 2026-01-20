@@ -40,15 +40,16 @@ public class EditarEstoqueHandler
         if (estoqueExistente is null)
             return Errors.Application.EstoqueErrors.EstoqueNaoEncontrado;
 
+        int? superior = request.Superior == 0 ? null : request.Superior;
+
         estoqueExistente.SetDescricao(request.Descricao);
         estoqueExistente.SetUsuarioCadastro(usuarioCadastro);
         estoqueExistente.SetLocalizacao(request.Localizacao);
         estoqueExistente.SetResponsavel(request.Responsavel);
-        estoqueExistente.SetSuperior(request.Superior);
+        estoqueExistente.SetSuperior(superior);
         estoqueExistente.SetDataAlteracao(DateTime.UtcNow);
 
         _estoqueRepository.Atualizar(estoqueExistente);
-
         await _estoqueRepository.UnitOfWork.CommitAsync(cancellationToken);
 
         return new EditarEstoqueResponse(

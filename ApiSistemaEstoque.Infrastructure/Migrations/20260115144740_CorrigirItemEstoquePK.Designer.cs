@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiSistemaEstoque.Infrastructure.Migrations
 {
     [DbContext(typeof(EstoqueContext))]
-    [Migration("20260114191444_RemoveCategoriaUsuarioFK")]
-    partial class RemoveCategoriaUsuarioFK
+    [Migration("20260115144740_CorrigirItemEstoquePK")]
+    partial class CorrigirItemEstoquePK
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,7 +78,7 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Superior")
+                    b.Property<int?>("Superior")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UsuarioCadastro")
@@ -163,17 +163,14 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.ItemEstoque", b =>
                 {
-                    b.Property<int>("CodigoItem")
+                    b.Property<int>("Codigo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("CodigoEstoque")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Codigo")
+                    b.Property<int>("CodigoItem")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
@@ -183,18 +180,19 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Quantidade")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CodigoItem", "CodigoEstoque");
+                    b.HasKey("Codigo");
 
                     b.HasIndex("CodigoEstoque");
 
                     b.HasIndex("EstoqueCodigo");
+
+                    b.HasIndex("CodigoItem", "CodigoEstoque")
+                        .IsUnique();
 
                     b.ToTable("ItensEstoque");
                 });

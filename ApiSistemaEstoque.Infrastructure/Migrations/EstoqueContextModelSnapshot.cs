@@ -75,7 +75,7 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Superior")
+                    b.Property<int?>("Superior")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UsuarioCadastro")
@@ -160,17 +160,14 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.ItemEstoque", b =>
                 {
-                    b.Property<int>("CodigoItem")
+                    b.Property<int>("Codigo")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("CodigoEstoque")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Codigo")
+                    b.Property<int>("CodigoItem")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
@@ -180,18 +177,19 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Quantidade")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0);
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("updated_at")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CodigoItem", "CodigoEstoque");
+                    b.HasKey("Codigo");
 
                     b.HasIndex("CodigoEstoque");
 
                     b.HasIndex("EstoqueCodigo");
+
+                    b.HasIndex("CodigoItem", "CodigoEstoque")
+                        .IsUnique();
 
                     b.ToTable("ItensEstoque");
                 });
@@ -330,11 +328,11 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                     b.Property<int>("Tipo")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UsuarioCadastro")
-                        .IsRequired()
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("updated_at")
+                    b.Property<string>("UsuarioCadastro")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Codigo");

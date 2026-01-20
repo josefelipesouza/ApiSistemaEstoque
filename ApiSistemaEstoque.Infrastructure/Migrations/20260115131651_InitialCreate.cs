@@ -6,11 +6,35 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ApiSistemaEstoque.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialEstoque : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Categorias",
+                columns: table => new
+                {
+                    Codigo = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Descricao = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Superior = table.Column<int>(type: "INTEGER", nullable: true),
+                    UsuarioCadastro = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    updated_at = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Inativo = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categorias", x => x.Codigo);
+                    table.ForeignKey(
+                        name: "FK_Categorias_Categorias_Superior",
+                        column: x => x.Superior,
+                        principalTable: "Categorias",
+                        principalColumn: "Codigo",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Estoques",
                 columns: table => new
@@ -21,7 +45,7 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                     UsuarioCadastro = table.Column<string>(type: "TEXT", nullable: false),
                     Localizacao = table.Column<string>(type: "TEXT", nullable: false),
                     Responsavel = table.Column<string>(type: "TEXT", nullable: false),
-                    Superior = table.Column<int>(type: "INTEGER", nullable: false),
+                    Superior = table.Column<int>(type: "INTEGER", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     updated_at = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Inativo = table.Column<int>(type: "INTEGER", nullable: false)
@@ -45,31 +69,6 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HistoricoValorItens", x => x.Codigo);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "IdentityUser",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    UserName = table.Column<string>(type: "TEXT", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "TEXT", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "TEXT", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IdentityUser", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,30 +126,6 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Unidades", x => x.Codigo);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Categorias",
-                columns: table => new
-                {
-                    Codigo = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Descricao = table.Column<string>(type: "TEXT", nullable: false),
-                    Superior = table.Column<int>(type: "INTEGER", nullable: false),
-                    UsuarioCadastro = table.Column<string>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    updated_at = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Inativo = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categorias", x => x.Codigo);
-                    table.ForeignKey(
-                        name: "FK_Categorias_IdentityUser_UsuarioCadastro",
-                        column: x => x.UsuarioCadastro,
-                        principalTable: "IdentityUser",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -268,9 +243,9 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categorias_UsuarioCadastro",
+                name: "IX_Categorias_Superior",
                 table: "Categorias",
-                column: "UsuarioCadastro");
+                column: "Superior");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Itens_CodigoCategoria",
@@ -335,9 +310,6 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "TiposMovimentacoes");
-
-            migrationBuilder.DropTable(
-                name: "IdentityUser");
         }
     }
 }

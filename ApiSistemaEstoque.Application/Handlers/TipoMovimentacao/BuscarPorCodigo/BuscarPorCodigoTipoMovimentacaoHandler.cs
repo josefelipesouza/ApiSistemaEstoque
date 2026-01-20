@@ -31,7 +31,7 @@ public class BuscarPorCodigoTipoMovimentacaoHandler
             tipoMovimentacao.Descricao,
             tipoMovimentacao.UsuarioCadastro,
             tipoMovimentacao.CreatedAt,
-            tipoMovimentacao.updated_at,
+            tipoMovimentacao.UpdatedAt,
             tipoMovimentacao.Inativo
         );
 
