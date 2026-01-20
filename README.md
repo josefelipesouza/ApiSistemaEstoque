@@ -120,17 +120,15 @@ O projeto utiliza **Entity Framework Core**.
 Execute **a partir da raiz da solução**:
 
 ```bash
-dotnet ef migrations add InitialCreate \
-  --project ApiSistemaEstoque.Infrastructure \
-  --startup-project ApiSistemaEstoque.Host
+dotnet ef migrations add UpdateTipoMovimentacao --context EstoqueContext --project ApiSistemaEstoque.Infrastructure --startup-project ApiSistemaEstoque.Host
+
 ```
 
 ### 📌 Aplicar migrations
 
 ```bash
-dotnet ef database update \
-  --project ApiSistemaEstoque.Infrastructure \
-  --startup-project ApiSistemaEstoque.Host
+dotnet ef database update --context EstoqueContext --project ApiSistemaEstoque.Infrastructure --startup-project ApiSistemaEstoque.Host
+
 ```
 
 📍 As migrations ficam em:
