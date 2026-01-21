@@ -8,7 +8,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.
 public class EditarMovimentacaoRequest : IRequest<ErrorOr<EditarMovimentacaoResponse>>
 {
     public int Codigo { get; set; }
-    public int CodigoUsuarioEstoqueSolicitado {get; set;}
+    public string PlacaVeiculo {get; set;}
     public StatusMovimentacao Status { get; set; }
 
     public class EditarMovimentacaoRequestValidator : AbstractValidator<EditarMovimentacaoRequest>
@@ -20,9 +20,9 @@ public class EditarMovimentacaoRequest : IRequest<ErrorOr<EditarMovimentacaoResp
                 .NotNull().WithMessage("O código é obrigatório.")
                 .GreaterThan(0).WithMessage("O código deve ser maior que zero.");
 
-            RuleFor(x => x.CodigoUsuarioEstoqueSolicitado)
-                .NotNull().WithMessage("O código é obrigatório.")
-                .GreaterThan(0).WithMessage("O código deve ser maior que zero.");    
+            RuleFor(x => x.PlacaVeiculo)
+            .NotEmpty().WithMessage("A placa é obrigatória.")
+            .MaximumLength(7).WithMessage("A placa deve ter no máximo 7 caracteres.");
 
             RuleFor(x => x.Status)
                 .IsInEnum().WithMessage("O status informado é inválido.");

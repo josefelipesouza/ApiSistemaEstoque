@@ -50,6 +50,42 @@ public class MovimentacaoController : ControllerBase
     }
 
     /// <summary>
+    /// Altera uma movimentação existente.
+    /// </summary>
+    /// <param name="codigo">Código da movimentação a editar.</param>
+    /// <param name="request">Dados a alterar.</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// PUT api/movimentacoes/{codigo}
+    [HttpPut("{codigo:int}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(409)]
+    [ProducesResponseType(500)]
+    public async Task<IActionResult> EditarMovimentacaoAsync(
+        int codigo,
+        [FromBody] EditarMovimentacaoRequest request,
+        CancellationToken cancellationToken)
+    {
+        // 🔐 Garante que o código da rota é usado
+        request.Codigo = codigo;
+
+        var resultado = await _mediator.Send(request, cancellationToken);
+
+        return resultado.Match(
+            response => Ok(new
+            {
+                Success = true,
+                Message = "Movimentação atualizada com sucesso.",
+                Data = response
+            }),
+            errors => Problem(errors)
+        );
+    }
+
+    /// <summary>
     /// Busca uma movimentação pelo código.
     /// </summary>
     /// <param name="codigo">Código da movimentação a ser buscada.</param>

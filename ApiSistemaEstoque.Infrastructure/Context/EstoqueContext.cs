@@ -23,6 +23,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
         public DbSet<Movimentacao> Movimentacoes { get; set; } = null!;
         public DbSet<TipoMovimentacao> TiposMovimentacoes { get; set; } = null!;
         public DbSet<Unidade> Unidades { get; set; } = null!;
+        public DbSet<Transporte> Transportes { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
