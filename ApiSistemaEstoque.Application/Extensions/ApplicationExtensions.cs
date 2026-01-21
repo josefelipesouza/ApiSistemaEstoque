@@ -49,7 +49,6 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Listar;
 // Handlers para ItemEstoque
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.BuscarPorCodigoEstoqueItem;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.BuscarPorCodigoEstoque;
-using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.Cadastrar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.Listar;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Extensions;
@@ -90,7 +89,6 @@ public static class ApplicationExtensions
         // Handlers para Item de Estoque
         services.AddScoped<IRequestHandler<BuscarPorCodigoRequest, ErrorOr<BuscarPorCodigoResponse>>, BuscarPorCodigoHandler>();
         services.AddScoped<IRequestHandler<BuscarPorCodigoEstoqueItemRequest, ErrorOr<BuscarPorCodigoEstoqueItemResponse>>, BuscarPorCodigoEstoqueItemHandler>();
-        services.AddScoped<IRequestHandler<CadastrarItemEstoqueRequest, ErrorOr<CadastrarItemEstoqueResponse>>, CadastrarItemEstoqueHandler>();
         services.AddScoped<IRequestHandler<ListarItemEstoqueRequest, ErrorOr<IEnumerable<ListarItemEstoqueResponse>>>, ListarItemEstoqueHandler>();
 
         // Handlers para Movimentação

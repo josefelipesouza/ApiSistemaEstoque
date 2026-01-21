@@ -75,5 +75,15 @@ public static partial class Application
             code: "Movimentacao.NaoEncontrada",
             description: "A Movimentação não foi encontrada."
         );
+
+        public static Error MovimentacaoNaoPodeSerAlterada => Error.NotFound(
+            code: "Movimentacao.NaoPodeSerAlterada",
+            description: "A Movimentação não pode ser alterada."
+        );
+
+        public static Error TransicaoStatusInvalida => Error.NotFound(
+            code: "Movimentacao.TransicaoStatusInvalida",
+            description: "A transição de status da movimentação é inválida."
+        );
     }
 }

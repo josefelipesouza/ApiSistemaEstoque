@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ErrorOr;
-using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.Cadastrar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.Listar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.BuscarPorCodigoEstoque;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.BuscarPorCodigoEstoqueItem;
@@ -20,32 +19,6 @@ public class ItemEstoqueController : ControllerBase
     public ItemEstoqueController(IMediator mediator)
     {
         _mediator = mediator;
-    }
-
-    /// <summary>
-    /// Cadastra um novo item no estoque.
-    /// </summary>
-    [HttpPost]
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(409)]
-    [ProducesResponseType(500)]
-    public async Task<IActionResult> CadastrarAsync(
-        [FromBody] CadastrarItemEstoqueRequest request,
-        CancellationToken cancellationToken)
-    {
-        var resultado = await _mediator.Send(request, cancellationToken);
-
-        return resultado.Match(
-            response => Ok(new
-            {
-                Success = true,
-                Message = "Item de estoque cadastrado com sucesso.",
-                Data = response
-            }),
-            errors => Problem(errors)
-        );
     }
 
     /// <summary>
