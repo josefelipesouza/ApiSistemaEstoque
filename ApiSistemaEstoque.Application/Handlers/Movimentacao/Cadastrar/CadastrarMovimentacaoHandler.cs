@@ -92,7 +92,7 @@ public class CadastrarMovimentacaoHandler
                             request.CodigoEstoqueSolicitante,
                             item.Quantidade
                         );
-
+                        // novo item no estoque
                         await _itemEstoqueRepository.AdicionarAsync(
                             novoItemEstoque,
                             cancellationToken

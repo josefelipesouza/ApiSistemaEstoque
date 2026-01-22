@@ -49,5 +49,20 @@ public class ItemEstoque
         updated_at = dataAlteracao;
     }
 
+    public void Debitar(int quantidade)
+    {
+        Quantidade -= quantidade;
+        updated_at = DateTime.UtcNow;
+    }
+
+    public void Creditar(int quantidade)
+    {
+        Quantidade += quantidade;
+        updated_at = DateTime.UtcNow;
+    }
+
+
+
+
 }
 
