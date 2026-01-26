@@ -66,6 +66,12 @@ public static partial class Application
             code: "ItemEstoque.QuantidadeInsuficiente",
             description: "A quantidade do item não é suficiente para realizar a movimentação neste estoque."
         );
+
+        public static Error ItemEstoqueQuantidadeInvalida => Error.NotFound(
+            code: "ItemEstoque.QuantidadeInvalida",
+            description: "A quantidade informada é inválida."
+        );
+    
     
     }
 
@@ -85,5 +91,11 @@ public static partial class Application
             code: "Movimentacao.TransicaoStatusInvalida",
             description: "A transição de status da movimentação é inválida."
         );
+
+        public static Error TransacaoInvalida => Error.NotFound(
+            code: "Movimentacao.TransacaoInvalida",
+            description: "A transação de movimentação é inválida."
+        );
+
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using ErrorOr;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Cadastrar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Editar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.BuscarPorCodigo;
 
 namespace ApiSistemaEstoque.API.Controllers;

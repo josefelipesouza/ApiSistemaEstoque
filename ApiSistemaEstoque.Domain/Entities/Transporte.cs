@@ -36,8 +36,7 @@ public class Transporte
         string placaVeiculo,
         int codigoMovimentacao,
         int codigoItem,
-        int quantidade,
-        DateTime dataEntrada)
+        int quantidade)
     {
         PlacaVeiculo = placaVeiculo;
         CodigoMovimentacao = codigoMovimentacao;

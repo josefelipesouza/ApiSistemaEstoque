@@ -1,7 +1,10 @@
 using ErrorOr;
 using MediatR;
+using MovimentacaoEntity = ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Movimentacao;
+using TransporteEntity = ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Transporte;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
+using ApiSistemaEstoque.ApiSistemaEstoque.Domain;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Editar;
@@ -59,16 +62,16 @@ public class EditarMovimentacaoHandler
             return Errors.Application.MovimentacaoErrors.TransicaoStatusInvalida;
 
         // 📦 Regras por tipo de movimentação
-        switch (movimentacao.CodigoTipoMovimentacao)
+        switch ((TipoBaseMovimentacao)movimentacao.CodigoTipoMovimentacao)
         {
-            case TipoMovimentacaoEnum.Solicitacao:
+            case TipoBaseMovimentacao.Solicitacao:
                 await ProcessarSolicitacaoAsync(movimentacao, request, cancellationToken);
                 break;
 
-            case TipoMovimentacaoEnum.Devolucao:
-                await ProcessarDevolucaoAsync(movimentacao, request, cancellationToken);
+            case TipoBaseMovimentacao.Devolucao:
                 break;
         }
+
 
         movimentacao.SetStatus(request.Status);
         movimentacao.SetDataAlteracao(DateTime.UtcNow);
@@ -78,6 +81,7 @@ public class EditarMovimentacaoHandler
 
         return new EditarMovimentacaoResponse(
             movimentacao.Codigo,
+            movimentacao.CodigoUsuarioEstoqueSolicitado,
             movimentacao.Status,
             movimentacao.updated_at
         );
@@ -108,102 +112,183 @@ public class EditarMovimentacaoHandler
     // ===============================
     // 📦 Solicitação
     // ===============================
-    private async Task ProcessarSolicitacaoAsync(
-        Domain.Entities.Movimentacao movimentacao,
-        EditarMovimentacaoRequest request,
-        CancellationToken cancellationToken)
+    private async Task<ErrorOr<Success>> ProcessarSolicitacaoAsync(MovimentacaoEntity movimentacao, EditarMovimentacaoRequest request, CancellationToken cancellationToken)
     {
-        // 🚚 DESPACHADO → sai da matriz e vai para transporte
+        // ==================================================
+        // 🚚 DESPACHADO
+        // ==================================================
         if (request.Status == StatusMovimentacao.Despachado)
         {
             foreach (var item in movimentacao.ItensMovimentacao)
             {
-                // 🔻 Debita do estoque solicitado (matriz)
-                var estoqueItemMatriz = await _itemEstoqueRepository
-                    .BuscarAsync(
+                var itemEstoqueRemetente = await _itemEstoqueRepository
+                    .BuscarPorCodigoEstoqueItem(
                         movimentacao.CodigoEstoqueSolicitado,
                         item.Item,
                         cancellationToken
                     );
 
-                estoqueItemMatriz.Debitar(item.Quantidade);
+                if (itemEstoqueRemetente is null)
+                    return Errors.Application.ItemEstoqueErrors.ItemEstoqueNaoEncontrado;
 
-                // 🚚 Cria transporte
-                var transporte = new Domain.Entities.Transporte(
+                if (item.Quantidade <= 0)
+                    return Errors.Application.ItemEstoqueErrors.ItemEstoqueQuantidadeInvalida;
+
+                if (itemEstoqueRemetente.Quantidade < item.Quantidade)
+                    return Errors.Application.ItemEstoqueErrors.ItemEstoqueQuantidadeInsuficiente;
+
+                //Débito do estoque remetente
+                var novaQuantidade = itemEstoqueRemetente.Quantidade - item.Quantidade;
+
+                await _itemEstoqueRepository.AtualizarQuantidadeAsync(
+                    movimentacao.CodigoEstoqueSolicitado,
+                    item.Item,
+                    novaQuantidade,
+                    cancellationToken
+                );
+
+                itemEstoqueRemetente.SetDataAlteracao(DateTime.UtcNow);
+
+                //Cria transporte
+                var transporte = new TransporteEntity(
                     request.PlacaVeiculo,
                     movimentacao.Codigo,
                     item.Item,
                     item.Quantidade
                 );
 
-                _transporteRepository.Adicionar(transporte);
+                await _transporteRepository.AdicionarAsync(transporte, cancellationToken);
             }
 
-            return;
+            // Persiste estoque + transportes
+            await _itemEstoqueRepository.UnitOfWork.CommitAsync(cancellationToken);
+            return Result.Success;
         }
 
-        // 📦 ENTREGUE → sai do transporte e entra no estoque solicitante
+        // ==================================================
+        // 📦 ENTREGUE
+        // ==================================================
         if (request.Status == StatusMovimentacao.Entregue)
+        {
+            var transportes = await _transporteRepository
+                .BuscarPorCodigoMovimentacaoAsync(
+                    movimentacao.Codigo,
+                    cancellationToken
+                );
+
+            foreach (var transporte in transportes)
+            {
+                var itemEstoqueDestino = await _itemEstoqueRepository
+                    .BuscarPorCodigoEstoqueItem(
+                        movimentacao.CodigoEstoqueSolicitante,
+                        transporte.CodigoItem,
+                        cancellationToken
+                    );
+
+                if (itemEstoqueDestino is null)
+                {
+                    //Cria item no estoque destino
+                    itemEstoqueDestino = new Domain.Entities.ItemEstoque(
+                        transporte.CodigoItem,
+                        movimentacao.CodigoEstoqueSolicitante,
+                        transporte.Quantidade
+                    );
+
+                    await _itemEstoqueRepository
+                        .AdicionarAsync(itemEstoqueDestino, cancellationToken);
+                }
+                else
+                {
+                    //Entrada no estoque destino
+                    var novaQuantidade = itemEstoqueDestino.Quantidade + transporte.Quantidade;
+
+                    await _itemEstoqueRepository.AtualizarQuantidadeAsync(
+                    movimentacao.CodigoEstoqueSolicitante,
+                    transporte.CodigoItem,
+                    novaQuantidade,
+                    cancellationToken
+                );
+
+                    itemEstoqueDestino.SetDataAlteracao(DateTime.UtcNow);
+                }
+
+                //Finaliza transporte
+                await _transporteRepository.AtualizarDataEntregaAsync(movimentacao.Codigo, cancellationToken);
+
+            }
+
+            // Commit único (estoque + transporte)
+            await _itemEstoqueRepository.UnitOfWork.CommitAsync(cancellationToken);
+            return Result.Success;
+        }
+
+        return Errors.Application.MovimentacaoErrors.TransacaoInvalida;
+
+    }
+
+
+
+    // ===============================
+    // 🔄 Devolução
+    // ===============================
+/*
+    private async Task ProcessarDevolucaoAsync(Movimentacao movimentacao, EditarMovimentacaoRequest request, CancellationToken cancellationToken)
+    {
+        // 🚚 DESPACHADO → sai do estoque colicitado e vai para transporte
+        if (request.Status == StatusMovimentacao.Despachado)
         {
             foreach (var item in movimentacao.ItensMovimentacao)
             {
-                // ➕ Entra no estoque solicitante
-                var estoqueItemSolicitante = await _itemEstoqueRepository
-                    .BuscarAsync(
+                // 🔻 Debita do estoque solicitante
+                var QuantidadeDisponivel = await _itemEstoqueRepository
+                    .BuscarPorCodigoEstoqueItem(
                         movimentacao.CodigoEstoqueSolicitante,
                         item.Item,
                         cancellationToken
                     );
 
-                estoqueItemSolicitante.Creditar(item.Quantidade);
-            }
+                 if (item.Quantidade <= 0)
+                    throw new DomainException("Quantidade solicitada inválida");
 
-            // ❌ Remove todos os itens do transporte dessa movimentação
-            _transporteRepository.RemoverPorMovimentacao(movimentacao.Codigo);
-        }
-    }
+                if (QuantidadeDisponivel < item.Quantidade)
+                    throw new DomainException("Estoque insuficiente");    
 
-    // ===============================
-    // 🔄 Devolução
-    // ===============================
-    private async Task ProcessarDevolucaoAsync(
-        Domain.Entities.Movimentacao movimentacao,
-        EditarMovimentacaoRequest request,
-        CancellationToken cancellationToken)
-    {
-        if (request.Status == StatusMovimentacao.Despachado)
-        {
-            foreach (var item in movimentacao.ItensMovimentacao)
-            {
-                // 🔻 Sai do estoque solicitante
-                var estoqueItem = await _itemEstoqueRepository
-                    .BuscarAsync(movimentacao.CodigoEstoqueSolicitante, item.Item, cancellationToken);
+                var QuantidadeAtualizada = QuantidadeDisponivel - item.Quantidade;
 
-                estoqueItem.Debitar(item.Quantidade);
+                await _itemEstoqueRepository.AtualizarQuantidadeAsync(
+                            movimentacao.CodigoEstoqueSolicitante,
+                            item.Item,
+                            QuantidadeAtualizada,
+                            cancellationToken
+                        );
 
+                await _itemEstoqueRepository.UnitOfWork.CommitAsync(cancellationToken);
+
+                // 🚚 Cria transporte
                 var transporte = new Domain.Entities.Transporte(
                     request.PlacaVeiculo,
                     movimentacao.Codigo,
-                    item.Item,
+                    item.Item,// seria .codigo ?
                     item.Quantidade
                 );
 
                 _transporteRepository.Adicionar(transporte);
+
+                await _transporteRepository.UnitOfWork.CommitAsync(cancellationToken);
             }
+
+            return;
         }
 
+        // 📦 ENTREGUE// 
         if (request.Status == StatusMovimentacao.Entregue)
         {
-            foreach (var item in movimentacao.ItensMovimentacao)
-            {
-                // ➕ Entra no estoque solicitado (matriz)
-                var estoqueItem = await _itemEstoqueRepository
-                    .BuscarAsync(movimentacao.CodigoEstoqueSolicitado, item.Item, cancellationToken);
 
-                estoqueItem.Creditar(item.Quantidade);
+            _transporteRepository.AtualizarDataEntregaAsync(movimentacao.Codigo);
 
-                _transporteRepository.RemoverPorMovimentacao(movimentacao.Codigo);
-            }
+            await _transporteRepository.UnitOfWork.CommitAsync(cancellationToken);
+           
         }
     }
+    */
 }

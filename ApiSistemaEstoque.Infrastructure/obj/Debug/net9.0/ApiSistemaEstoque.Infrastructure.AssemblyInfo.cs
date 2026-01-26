@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiSistemaEstoque.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9c924fcde99ac6e64395e26d67b26629608db645")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+371b477433080688e7430130c8f6398dcc744d31")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiSistemaEstoque.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiSistemaEstoque.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
