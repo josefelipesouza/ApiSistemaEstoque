@@ -58,7 +58,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Repositories
 
             foreach (var transporte in transportes)
             {
-                transporte.SetDataEntrega(DateTime.UtcNow);
+                transporte.SetDataSaida(DateTime.UtcNow);
             }
 
             _context.Transportes.UpdateRange(transportes);

@@ -34,6 +34,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions
             services.AddScoped<ITipoMovimentacaoRepository, TipoMovimentacaoRepository>();
             services.AddScoped<IMovimentacaoRepository, MovimentacaoRepository>();
             services.AddScoped<IUnidadeRepository, UnidadeRepository>();
+            services.AddScoped<ITransporteRepository, TransporteRepository>();
 
             // Auth
             services.AddScoped<IUsuarioAuthService, UsuarioAuthService>();
