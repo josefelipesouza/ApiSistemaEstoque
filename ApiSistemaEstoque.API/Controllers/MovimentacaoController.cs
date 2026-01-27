@@ -70,7 +70,6 @@ public class MovimentacaoController : ControllerBase
         [FromBody] EditarMovimentacaoRequest request,
         CancellationToken cancellationToken)
     {
-        // 🔐 Garante que o código da rota é usado
         request.Codigo = codigo;
 
         var resultado = await _mediator.Send(request, cancellationToken);

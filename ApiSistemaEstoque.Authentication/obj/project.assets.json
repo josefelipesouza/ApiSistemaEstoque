@@ -3821,11 +3821,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj",
       "projectName": "ApiSistemaEstoque.Authentication",
-      "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -3840,11 +3840,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj": {
-              "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj"
+            "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj"
             },
-            "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
-              "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
+            "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Domain\\ApiSistemaEstoque.Domain.csproj"
             }
           }
         }

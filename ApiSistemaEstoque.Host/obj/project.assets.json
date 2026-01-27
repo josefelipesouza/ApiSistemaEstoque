@@ -4314,11 +4314,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Host\\ApiSistemaEstoque.Host.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Host\\ApiSistemaEstoque.Host.csproj",
       "projectName": "ApiSistemaEstoque.Host",
-      "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Host\\ApiSistemaEstoque.Host.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Host\\ApiSistemaEstoque.Host.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Host\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Host\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -4333,17 +4333,17 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.API\\ApiSistemaEstoque.API.csproj": {
-              "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.API\\ApiSistemaEstoque.API.csproj"
+            "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.API\\ApiSistemaEstoque.API.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.API\\ApiSistemaEstoque.API.csproj"
             },
-            "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj": {
-              "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj"
+            "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Application\\ApiSistemaEstoque.Application.csproj"
             },
-            "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj": {
-              "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj"
+            "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Authentication\\ApiSistemaEstoque.Authentication.csproj"
             },
-            "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\User\\desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj"
+            "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\dev\\.net\\ApiSistemaEstoque\\ApiSistemaEstoque.Infrastructure\\ApiSistemaEstoque.Infrastructure.csproj"
             }
           }
         }
