@@ -1,12 +1,18 @@
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
+using ApiSistemaEstoque.Application.Interfaces.UsuariosEstoque;
+
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Auth;
+using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Services;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Repositories;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+
+
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions
 {
@@ -35,6 +41,8 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions
             services.AddScoped<IMovimentacaoRepository, MovimentacaoRepository>();
             services.AddScoped<IUnidadeRepository, UnidadeRepository>();
             services.AddScoped<ITransporteRepository, TransporteRepository>();
+            services.AddScoped<IUsuarioEstoqueService, UsuarioEstoqueService>();
+            services.AddScoped<IUsuarioEstoqueRepository, UsuarioEstoqueRepository>();
 
             // Auth
             services.AddScoped<IUsuarioAuthService, UsuarioAuthService>();

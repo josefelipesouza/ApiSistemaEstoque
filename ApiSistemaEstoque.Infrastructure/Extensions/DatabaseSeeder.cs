@@ -20,9 +20,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Extensions
                 new(TipoBaseMovimentacao.CorreçãoEntrada, usuarioSistema),
                 new(TipoBaseMovimentacao.Saida, usuarioSistema),
                 new(TipoBaseMovimentacao.CorreçãoSaida, usuarioSistema),
-                new(TipoBaseMovimentacao.Transferencia, usuarioSistema),
                 new(TipoBaseMovimentacao.Solicitacao, usuarioSistema),
-                new(TipoBaseMovimentacao.Devolucao, usuarioSistema)
             };
 
             context.TiposMovimentacoes.AddRange(tipos);

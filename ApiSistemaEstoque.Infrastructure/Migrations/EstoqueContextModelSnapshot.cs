@@ -402,6 +402,35 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                     b.ToTable("Unidades");
                 });
 
+            modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.UsuarioEstoque", b =>
+                {
+                    b.Property<int>("Codigo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CodigoEstoque")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CodigoUsuario")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Codigo");
+
+                    b.HasIndex("CodigoEstoque");
+
+                    b.HasIndex("CodigoUsuario", "CodigoEstoque")
+                        .IsUnique();
+
+                    b.ToTable("UsuariosEstoques", (string)null);
+                });
+
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Categoria", b =>
                 {
                     b.HasOne("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Categoria", null)
@@ -491,6 +520,15 @@ namespace ApiSistemaEstoque.Infrastructure.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("Movimentacao");
+                });
+
+            modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.UsuarioEstoque", b =>
+                {
+                    b.HasOne("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Estoque", null)
+                        .WithMany()
+                        .HasForeignKey("CodigoEstoque")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities.Estoque", b =>
