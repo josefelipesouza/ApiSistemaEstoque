@@ -1,5 +1,6 @@
 using MediatR;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
+using ApiSistemaEstoque.Application.Interfaces.UsuariosEstoque;
 
 namespace ApiSistemaEstoque.Application.Handlers.Usuario.Auth.Registrar;
 
@@ -7,10 +8,14 @@ public class RegistrarUsuarioHandler
     : IRequestHandler<RegistrarUsuarioRequest, RegistrarUsuarioResponse>
 {
     private readonly IUsuarioAuthService _usuarioAuthService;
+    private readonly IUsuarioEstoqueService _usuarioEstoqueService;
 
-    public RegistrarUsuarioHandler(IUsuarioAuthService usuarioAuthService)
+    public RegistrarUsuarioHandler(
+        IUsuarioAuthService usuarioAuthService,
+        IUsuarioEstoqueService usuarioEstoqueService)
     {
         _usuarioAuthService = usuarioAuthService;
+        _usuarioEstoqueService = usuarioEstoqueService;
     }
 
     public async Task<RegistrarUsuarioResponse> Handle(
@@ -21,6 +26,12 @@ public class RegistrarUsuarioHandler
             request.Email,
             request.Senha,
             request.Role,
+            cancellationToken
+        );
+
+        await _usuarioEstoqueService.VincularAsync(
+            usuario.Id,
+            request.CodigoEstoque,
             cancellationToken
         );
 

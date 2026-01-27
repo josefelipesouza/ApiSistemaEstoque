@@ -24,6 +24,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
         public DbSet<TipoMovimentacao> TiposMovimentacoes { get; set; } = null!;
         public DbSet<Unidade> Unidades { get; set; } = null!;
         public DbSet<Transporte> Transportes { get; set; } = null!;
+        public DbSet<UsuarioEstoque> UsuariosEstoques { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -59,6 +60,29 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context
 
                 builder.Property(e => e.Inativo)
                     .IsRequired();
+            });
+            // ============================================================
+            // 🔹 USUÁRIOESTOQUE
+            // ============================================================
+            modelBuilder.Entity<UsuarioEstoque>(entity =>
+            {
+                entity.ToTable("UsuariosEstoques");
+
+                entity.HasKey(x => x.Codigo);
+
+                entity.Property(x => x.CodigoUsuario)
+                    .IsRequired();
+
+                entity.Property(x => x.CodigoEstoque)
+                    .IsRequired();
+
+                entity.HasIndex(x => new { x.CodigoUsuario, x.CodigoEstoque })
+                    .IsUnique();
+
+                entity.HasOne<Estoque>()
+                    .WithMany()
+                    .HasForeignKey(x => x.CodigoEstoque)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // ============================================================

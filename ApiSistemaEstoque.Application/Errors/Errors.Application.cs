@@ -97,5 +97,16 @@ public static partial class Application
             description: "A transação de movimentação é inválida."
         );
 
+        public static Error UsuarioNaoPertenceAoEstoqueSolicitado => Error.NotFound(
+            code: "Movimentacao.UsuarioNaoPertenceAoEstoqueSolicitado",
+            description: "O usuário não pertence ao estoque solicitado."
+        );
+
+        public static Error UsuarioNaoPertenceAoEstoqueSolicitante => Error.NotFound(
+            code: "Movimentacao.UsuarioNaoPertenceAoEstoqueSolicitante",
+            description: "O usuário não pertence ao estoque solicitante."
+        );
+
+
     }
 }
