@@ -13,10 +13,7 @@ public class UsuarioEstoqueRepository : IUsuarioEstoqueRepository
         _context = context;
     }
 
-    public async Task<bool> ExisteVinculoAsync(
-        string codigoUsuario,
-        int codigoEstoque,
-        CancellationToken cancellationToken)
+    public async Task<bool> ExisteVinculoAsync(string codigoUsuario, int codigoEstoque, CancellationToken cancellationToken)
     {
         return await _context.UsuariosEstoques.AnyAsync(
             ue =>
@@ -25,4 +22,14 @@ public class UsuarioEstoqueRepository : IUsuarioEstoqueRepository
             cancellationToken
         );
     }
+
+    public async Task<int?> ObterCodigoEstoquePorUsuarioAsync(string codigoUsuario,CancellationToken cancellationToken)
+    {
+        return await _context.UsuariosEstoques
+            .Where(ue => ue.CodigoUsuario == codigoUsuario)
+            .Select(ue => (int?)ue.CodigoEstoque)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+
 }

@@ -7,7 +7,6 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.
 public record CadastrarMovimentacaoRequest(
 
     int CodigoTipoMovimentacao, 
-    int CodigoEstoqueSolicitante, 
     int? CodigoEstoqueSolicitado, 
     List<ItemMovimentacao> Itens 
 ) : IRequest<ErrorOr<CadastrarMovimentacaoResponse>>;
@@ -23,9 +22,6 @@ public record CadastrarMovimentacaoRequest(
         {
             RuleFor(x => x.CodigoTipoMovimentacao)
                 .GreaterThan(0).WithMessage("O código do tipo de movimentação é obrigatório.");
-
-            RuleFor(x => x.CodigoEstoqueSolicitante)
-                .GreaterThan(0).WithMessage("O código do estoque solicitante é obrigatório.");
 
             RuleFor(x => x.CodigoEstoqueSolicitado)
                 .GreaterThanOrEqualTo(0).When(x => x.CodigoEstoqueSolicitado.HasValue)
