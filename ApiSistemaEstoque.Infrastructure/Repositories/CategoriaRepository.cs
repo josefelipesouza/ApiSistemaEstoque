@@ -1,6 +1,7 @@
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Data;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
+using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
 using ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +27,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Repositories;
         {
             return await _context.Categorias
                 .AsNoTracking()
-                .Where(x => x.Codigo == codigo)
+                .Where(x => x.Codigo == codigo && x.Inativo == Status.Ativo)
                 .FirstOrDefaultAsync(cancellationToken);
         }
 
@@ -34,6 +35,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Infrastructure.Repositories;
         {
             return await _context.Categorias
                 .AsNoTracking()
+                .Where(x => x.Inativo == Status.Ativo)
                 .ToListAsync(cancellationToken);
         }
 

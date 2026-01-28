@@ -9,54 +9,31 @@ public class Estoque
     public int Codigo { get; set; }
     public ICollection<ItemEstoque> ItensEstoque { get; set; } = new List<ItemEstoque>();
     public string Descricao { get; private set; }
-    public int UsuarioCadastro { get; private set; }
+    public string UsuarioCadastro { get; private set; }
     public string Localizacao { get; private set; }
-    public int Responsavel { get; private set; }
-    public int Superior { get; private set; }
-    public DateTime CreatedAt  { get; private set; }
-    public DateTime updated_at {get; private set;}
-    public IEnumerable<Status> Inativo { get; private set; }
+    public string Responsavel { get; private set; }
+    public int? Superior { get; private set; } 
+    public DateTime CreatedAt { get; private set; }
+    public DateTime updated_at { get; private set; }
+    public Status Inativo { get; private set; }
 
-    public Estoque(string descricao, int usuarioCadastro, string localizacao, int responsavel, int superior)
+    // ✅ Construtor corrigido: aceita int? e trata 0 → null
+    public Estoque(string descricao, string usuarioCadastro, string localizacao, string responsavel, int? superior)
     {
         Descricao = descricao;
         UsuarioCadastro = usuarioCadastro;
         Localizacao = localizacao;
         Responsavel = responsavel;
-        Superior = superior;
-        CreatedAt =  DateTime.UtcNow;
-        Inativo = new List<Status> { Status.Ativo };
+        Superior = superior == 0 ? null : superior; // 0 vira null
+        CreatedAt = DateTime.UtcNow;
+        Inativo = Status.Ativo;
     }
 
-    public void SetDescricao(string descricao)
-    {
-        Descricao = descricao;
-    }
-
-    public void SetLocalizacao(string localizacao)
-    {
-        Localizacao = localizacao;
-    }
-
-    public void SetResponsavel(int responsavel)
-    {
-        Responsavel = responsavel;
-    }
-
-    public void SetSuperior(int superior)
-    {
-        Superior = superior;
-    }
-
-    public void SetDataAlteracao(DateTime dataAlteracao)
-    {
-        updated_at  = dataAlteracao;
-    }
-
-    public void SetInativar()
-    {
-        Inativo = new List<Status> { Status.Inativo };
-    }
-
+    public void SetDescricao(string descricao) => Descricao = descricao;
+    public void SetLocalizacao(string localizacao) => Localizacao = localizacao;
+    public void SetResponsavel(string responsavel) => Responsavel = responsavel;
+    public void SetSuperior(int? superior) => Superior = superior == 0 ? null : superior;
+    public void SetDataAlteracao(DateTime dataAlteracao) => updated_at = dataAlteracao;
+    public void SetInativar() => Inativo = Status.Inativo;
+    public void SetUsuarioCadastro(string usuarioCadastro) => UsuarioCadastro = usuarioCadastro;
 }
-

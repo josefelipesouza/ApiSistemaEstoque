@@ -1,41 +1,47 @@
 using ErrorOr;
-using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
 using MediatR;
-using System.Security.Claims;
-using ApiSistemaEstoque.ApiSistemaEstoque.Domain.Enums;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Estoque.Cadastrar;
 
-public class CadastrarEstoqueHandler : BaseHandler, IRequestHandler<CadastrarEstoqueRequest, ErrorOr<CadastrarEstoqueResponse>>
+public class CadastrarEstoqueHandler
+    : BaseHandler, IRequestHandler<CadastrarEstoqueRequest, ErrorOr<CadastrarEstoqueResponse>>
 {
     private readonly IEstoqueRepository _estoqueRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IUsuarioLogado _usuarioLogado;
 
     public CadastrarEstoqueHandler(
         IMediator mediator,
         IEstoqueRepository estoqueRepository,
-        IHttpContextAccessor httpContextAccessor) : base(mediator)
+        IUsuarioLogado usuarioLogado
+    ) : base(mediator)
     {
         _estoqueRepository = estoqueRepository;
-        _httpContextAccessor = httpContextAccessor;
+        _usuarioLogado = usuarioLogado;
     }
 
-    public async Task<ErrorOr<CadastrarEstoqueResponse>> Handle(CadastrarEstoqueRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<CadastrarEstoqueResponse>> Handle(
+        CadastrarEstoqueRequest request,
+        CancellationToken cancellationToken)
     {
-        if (Validar(request, new CadastrarEstoqueRequestValidator()) is var resultado && resultado.Count != 0)
+        if (Validar(request, new CadastrarEstoqueRequestValidator()) is var resultado
+            && resultado.Any())
             return resultado;
 
-        var usuarioCadastro = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+        var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
 
-        if (usuarioCadastro == 0)
-            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;    
-        
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
+            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
+
+        int? superior = request.Superior == 0 ? null : request.Superior;
+
         var novoEstoque = new Domain.Entities.Estoque(
             request.Descricao,
             usuarioCadastro,
             request.Localizacao,
             request.Responsavel,
-            request.Superior
+            superior
         );
 
         await _estoqueRepository.AdicionarAsync(novoEstoque, cancellationToken);
@@ -49,7 +55,7 @@ public class CadastrarEstoqueHandler : BaseHandler, IRequestHandler<CadastrarEst
             novoEstoque.Superior,
             novoEstoque.CreatedAt,
             novoEstoque.updated_at,
-            novoEstoque.Inativo.FirstOrDefault() == Status.Inativo
+            novoEstoque.Inativo
         );
     }
 }

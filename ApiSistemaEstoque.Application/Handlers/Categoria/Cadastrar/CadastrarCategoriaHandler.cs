@@ -1,37 +1,47 @@
 using ErrorOr;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 using MediatR;
-using System.Security.Claims;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.Cadastrar;
 
-public class CadastrarCategoriaHandler : BaseHandler, IRequestHandler<CadastrarCategoriaRequest, ErrorOr<CadastrarCategoriaResponse>>
+public class CadastrarCategoriaHandler 
+    : BaseHandler, IRequestHandler<CadastrarCategoriaRequest, ErrorOr<CadastrarCategoriaResponse>>
 {
     private readonly ICategoriaRepository _categoriaRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IUsuarioLogado _usuarioLogado;
 
     public CadastrarCategoriaHandler(
         IMediator mediator,
         ICategoriaRepository categoriaRepository,
-        IHttpContextAccessor httpContextAccessor) : base(mediator)
+        IUsuarioLogado usuarioLogado
+    ) : base(mediator)
     {
         _categoriaRepository = categoriaRepository;
-        _httpContextAccessor = httpContextAccessor;
+        _usuarioLogado = usuarioLogado;
     }
 
-    public async Task<ErrorOr<CadastrarCategoriaResponse>> Handle(CadastrarCategoriaRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<CadastrarCategoriaResponse>> Handle(
+        CadastrarCategoriaRequest request,
+        CancellationToken cancellationToken)
     {
-        if (Validar(request, new CadastrarCategoriaRequestValidator()) is var resultado && resultado.Count != 0)
+        if (Validar(request, new CadastrarCategoriaRequestValidator()) is var resultado 
+            && resultado.Count != 0)
             return resultado;
 
-        var usuarioCadastro = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+        var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
 
-        if (usuarioCadastro == 0)
-            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;    
-        
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
+            return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
+
+        // 0 → null (categoria raiz)
+        int? superiorTratado = request.Superior == 0
+            ? null
+            : request.Superior;
+
         var novaCategoria = new Domain.Entities.Categoria(
             request.Descricao,
-            request.Superior,
+            superiorTratado,
             usuarioCadastro
         );
 

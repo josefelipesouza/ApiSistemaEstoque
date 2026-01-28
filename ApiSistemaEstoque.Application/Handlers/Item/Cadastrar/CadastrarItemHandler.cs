@@ -1,33 +1,37 @@
 using MediatR;
 using ErrorOr;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Repositories;
-using System.Security.Claims;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Interfaces.Auth;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Cadastrar;
 
-public class CadastrarItemHandler : BaseHandler, IRequestHandler<CadastrarItemRequest, ErrorOr<CadastrarItemResponse>>
+public class CadastrarItemHandler 
+    : BaseHandler, IRequestHandler<CadastrarItemRequest, ErrorOr<CadastrarItemResponse>>
 {
     private readonly IItemRepository _itemRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IUsuarioLogado _usuarioLogado;
 
     public CadastrarItemHandler(
         IMediator mediator,
         IItemRepository itemRepository,
-        IHttpContextAccessor httpContextAccessor) : base(mediator)
+        IUsuarioLogado usuarioLogado
+    ) : base(mediator)
     {
         _itemRepository = itemRepository;
-        _httpContextAccessor = httpContextAccessor;
+        _usuarioLogado = usuarioLogado;
     }
 
-    public async Task<ErrorOr<CadastrarItemResponse>> Handle(CadastrarItemRequest request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<CadastrarItemResponse>> Handle(
+        CadastrarItemRequest request,
+        CancellationToken cancellationToken)
     {
+        if (Validar(request, new CadastrarItemRequestValidator()) is var resultado 
+            && resultado.Count != 0)
+            return resultado;
 
-        if (Validar(request, new CadastrarItemRequestValidator()) is var resultado && resultado.Count != 0)
-            return resultado;    
+        var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
 
-        var usuarioCadastro = int.Parse(_httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
-
-        if (usuarioCadastro == 0)
+        if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
 
         var novoItem = new Domain.Entities.Item(

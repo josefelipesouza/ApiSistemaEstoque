@@ -5,35 +5,53 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
 
 public class TipoMovimentacao
 {
-  [Key]
-  public int? Codigo { get; set; }
-  public IEnumerable<TipoBaseMovimentacao> Tipo { get; set; }
-  public string? Descricao { get; set; }
-  public int UsuarioCadastro { get; private set; }
-  public DateTime CreatedAt { get; private set; }
-  public DateTime updated_at { get; private set; }
+    [Key]
+    public int Codigo { get; private set; }
 
-  public TipoMovimentacao(IEnumerable<TipoBaseMovimentacao> tipo, string descricao, int usuarioCadastro)
-  {
-    Tipo = tipo;
-    Descricao = descricao;
-    UsuarioCadastro = usuarioCadastro;
-    CreatedAt = DateTime.UtcNow;
-  }
+    public TipoBaseMovimentacao Tipo { get; private set; }
 
-  public void SetTipo(IEnumerable<TipoBaseMovimentacao> tipo)
+    public string Descricao { get; private set; } = null!;
+
+    public string UsuarioCadastro { get; private set; } = null!;
+
+    public DateTime CreatedAt { get; private set; }
+
+    public DateTime UpdatedAt { get; private set; }
+
+    public Status Inativo { get; private set; }
+
+    protected TipoMovimentacao() { }
+
+    public TipoMovimentacao(
+        TipoBaseMovimentacao tipo,
+        string usuarioCadastro)
     {
         Tipo = tipo;
+        Descricao = tipo.ToString();
+        UsuarioCadastro = usuarioCadastro;
+
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
+
+        Inativo = Status.Ativo;
     }
 
-    public void SetDescricao(string descricao)
+    public void SetTipo(TipoBaseMovimentacao tipo)
     {
-        Descricao = descricao;
+        Tipo = tipo;
+        Descricao = tipo.ToString();
+        UpdatedAt = DateTime.UtcNow;
     }
 
-    public void SetDataAlteracao(DateTime dataAlteracao)
+    public void SetInativar()
     {
-        updated_at = dataAlteracao;
+        Inativo = Status.Inativo;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void SetReativar()
+    {
+        Inativo = Status.Ativo;
+        UpdatedAt = DateTime.UtcNow;
     }
 }
-

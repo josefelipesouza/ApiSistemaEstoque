@@ -7,9 +7,9 @@ public record BuscarPorCodigoEstoqueResponse(
     int Codigo,
     string Descricao,
     string Localizacao,
-    int Responsavel,
-    int Superior,
+    string Responsavel,
+    int? Superior,
     DateTime CreatedAt,
     DateTime updated_at,
-    IEnumerable<Status> Inativo
+    Status Inativo
 );

@@ -1,5 +1,7 @@
 using ErrorOr;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection; // Para IServiceCollection
+
 
 // Handlers para Categoria
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Categoria.BuscarPorCodigo;
@@ -22,6 +24,14 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Editar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Inativar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Listar;
 
+// Handlers para Item
+//using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.BuscarPorCodigo;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.TipoMovimentacao.Cadastrar;
+/*
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Editar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Inativar;
+using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Item.Listar;
+*/
 // Handlers para Movimentação
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.Buscar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Movimentacao.BuscarPorCodigo;
@@ -39,7 +49,6 @@ using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Listar;
 // Handlers para ItemEstoque
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.BuscarPorCodigoEstoqueItem;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.BuscarPorCodigoEstoque;
-using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.Cadastrar;
 using ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.ItemEstoque.Listar;
 
 namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Extensions;
@@ -80,7 +89,6 @@ public static class ApplicationExtensions
         // Handlers para Item de Estoque
         services.AddScoped<IRequestHandler<BuscarPorCodigoRequest, ErrorOr<BuscarPorCodigoResponse>>, BuscarPorCodigoHandler>();
         services.AddScoped<IRequestHandler<BuscarPorCodigoEstoqueItemRequest, ErrorOr<BuscarPorCodigoEstoqueItemResponse>>, BuscarPorCodigoEstoqueItemHandler>();
-        services.AddScoped<IRequestHandler<CadastrarItemEstoqueRequest, ErrorOr<CadastrarItemEstoqueResponse>>, CadastrarItemEstoqueHandler>();
         services.AddScoped<IRequestHandler<ListarItemEstoqueRequest, ErrorOr<IEnumerable<ListarItemEstoqueResponse>>>, ListarItemEstoqueHandler>();
 
         // Handlers para Movimentação
@@ -96,6 +104,15 @@ public static class ApplicationExtensions
         services.AddScoped<IRequestHandler<EditarUnidadeRequest, ErrorOr<EditarUnidadeResponse>>, EditarUnidadeHandler>();
         services.AddScoped<IRequestHandler<InativarUnidadeRequest, ErrorOr<bool>>, InativarUnidadeHandler>();
         services.AddScoped<IRequestHandler<ListarUnidadeRequest, ErrorOr<IEnumerable<ListarUnidadeResponse>>>, ListarUnidadeHandler>();
+
+        // Handler para TipoMovimentação
+        //services.AddScoped<IRequestHandler<BuscarPorCodigoUnidadeRequest, ErrorOr<BuscarPorCodigoUnidadeResponse>>, BuscarPorCodigoUnidadeHandler>();
+        services.AddScoped<IRequestHandler<CadastrarTipoMovimentacaoRequest, ErrorOr<CadastrarTipoMovimentacaoResponse>>, CadastrarTipoMovimentacaoHandler>();
+        /*
+        services.AddScoped<IRequestHandler<EditarUnidadeRequest, ErrorOr<EditarUnidadeResponse>>, EditarUnidadeHandler>();
+        services.AddScoped<IRequestHandler<InativarUnidadeRequest, ErrorOr<bool>>, InativarUnidadeHandler>();
+        services.AddScoped<IRequestHandler<ListarUnidadeRequest, ErrorOr<IEnumerable<ListarUnidadeResponse>>>, ListarUnidadeHandler>();
+        */
 
         return services;
     }

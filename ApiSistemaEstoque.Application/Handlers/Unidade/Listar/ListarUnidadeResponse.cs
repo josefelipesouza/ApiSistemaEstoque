@@ -5,8 +5,8 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Application.Handlers.Unidade.Lista
 public record ListarUnidadeResponse(
     int Codigo,
     string Descricao,
-    int UsuarioCadastro,
+    string UsuarioCadastro,
     DateTime CreatedAt,
     DateTime updated_at,
-    IEnumerable<Status> Inativo
+    Status Inativo
 );

@@ -12,7 +12,7 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
       public float? Valor {  get; set; }
     
       public HistoricoValorItem(){}
-      // Construtor com parâmetros
+
       public HistoricoValorItem(int codigoProduto, DateTime dataIncial, DateTime dataFinal, float valor)
         {
             CodigoProduto = codigoProduto;

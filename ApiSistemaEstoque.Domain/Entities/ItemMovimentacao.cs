@@ -6,17 +6,17 @@ namespace ApiSistemaEstoque.ApiSistemaEstoque.Domain.Entities;
 public class ItemMovimentacao
 {
   [Key]
-  public int? Codigo { get; set; }
-  public int? CodigoMovimentacao { get; set; }
-  public int? Item { get; set; }
-  public int? Quantidade { get; set; }
+  public int Codigo { get; set; }
+  public int CodigoMovimentacao { get; set; }
+  public int Item { get; set; }
+  public int Quantidade { get; set; }
 
   [ForeignKey(nameof(CodigoMovimentacao))]
   public Movimentacao Movimentacao { get; private set; }
 
   public ItemMovimentacao() { }
 
-  public ItemMovimentacao(int? codigoMovimentacao, int? item, int? quantidade)
+  public ItemMovimentacao(int codigoMovimentacao, int item, int quantidade)
   {
     CodigoMovimentacao = codigoMovimentacao;
     Item = item;

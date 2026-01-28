@@ -6,11 +6,11 @@ public record BuscarPorCodigoCategoriaResponse(
 
     int Codigo,
     string Descricao,
-    int Superior,
-    int UsuarioCadastro,
+    int? Superior,
+    string UsuarioCadastro,
     DateTime CreatedAt,
     DateTime updated_at,
-    IEnumerable<Status> Inativo
+    Status Inativo 
 );
 
 
