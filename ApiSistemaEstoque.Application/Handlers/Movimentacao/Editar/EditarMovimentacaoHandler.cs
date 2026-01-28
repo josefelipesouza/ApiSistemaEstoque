@@ -38,7 +38,7 @@ public class EditarMovimentacaoHandler
         EditarMovimentacaoRequest request,
         CancellationToken cancellationToken)
     {
-        // 🔎 Validação
+        //Validação
         var erros = Validar(request, new EditarMovimentacaoRequest.EditarMovimentacaoRequestValidator());
         if (erros.Count != 0)
             return erros;
@@ -53,18 +53,31 @@ public class EditarMovimentacaoHandler
         if (movimentacao is null)
             return Errors.Application.MovimentacaoErrors.MovimentacaoNaoEncontrada;
 
-        // 🔒 Estados imutáveis
+        // Estados imutáveis
         if (movimentacao.Status is StatusMovimentacao.Entregue
             or StatusMovimentacao.Finalizado)
         {
             return Errors.Application.MovimentacaoErrors.MovimentacaoNaoPodeSerAlterada;
         }
 
-        // 🔁 Validação de transição
+        // Validação de transação
         if (!TransacaoPermitida(movimentacao.Status, request.Status))
             return Errors.Application.MovimentacaoErrors.TransicaoStatusInvalida;
 
-        // 📦 Regras por tipo de movimentação
+        // Validação de usuário
+        var validacaoUsuario = await ValidarUsuarioConformeStatusAsync(
+            movimentacao.Status,
+            usuarioId,
+            movimentacao,
+            cancellationToken
+        );
+
+        if (validacaoUsuario.IsError)
+            return validacaoUsuario.Errors;
+
+            
+
+        // Regras por tipo de movimentação
         switch ((TipoBaseMovimentacao)movimentacao.CodigoTipoMovimentacao)
         {
             case TipoBaseMovimentacao.Solicitacao:
@@ -92,7 +105,7 @@ public class EditarMovimentacaoHandler
     }
 
     // ===============================
-    // 🔁 Regras de Transação
+    //  Regras de Transação
     // ===============================
     private static bool TransacaoPermitida(
         StatusMovimentacao atual,
@@ -113,29 +126,75 @@ public class EditarMovimentacaoHandler
         };
     }
 
+    //==============================
+    // Regras para usuário logado Editar Movimentação
     // ===============================
-    // 📦 Solicitação
-    // ===============================
-    private async Task<ErrorOr<Success>> ProcessarMovimentacaoAsync(MovimentacaoEntity movimentacao, EditarMovimentacaoRequest request, CancellationToken cancellationToken)
+    private async Task<bool> UsuarioAutorizadoNoEstoqueAsync(
+    string usuarioId,
+    int codigoEstoque,
+    CancellationToken cancellationToken)
     {
-        // ==================================================
-        // 🚚 DESPACHADO
-        // ==================================================
-        if (request.Status == StatusMovimentacao.Despachado)
+        return await _usuarioEstoqueRepository.ExisteVinculoAsync(
+            usuarioId,
+            codigoEstoque,
+            cancellationToken
+        );
+    }
+
+    private async Task<ErrorOr<Success>> ValidarUsuarioConformeStatusAsync(
+    StatusMovimentacao statusAtual,
+    string usuarioId,
+    MovimentacaoEntity  movimentacao,
+    CancellationToken cancellationToken)
+    {
+        switch (statusAtual)
         {
-
-            var usuarioId = _usuarioLogado.ObterUsuarioId();
-
-            var autorizado =
-                await _usuarioEstoqueRepository.ExisteVinculoAsync(
+            case StatusMovimentacao.Novo:
+            case StatusMovimentacao.EmAndamento:
+            {
+                var autorizado = await UsuarioAutorizadoNoEstoqueAsync(
                     usuarioId,
                     movimentacao.CodigoEstoqueSolicitado,
                     cancellationToken
                 );
 
-            if (!autorizado)
-                return Errors.Application.MovimentacaoErrors
-                    .UsuarioNaoPertenceAoEstoqueSolicitado;
+                if (!autorizado)
+                    return Errors.Application.MovimentacaoErrors
+                        .UsuarioNaoPertenceAoEstoqueSolicitado;
+
+                break;
+            }
+
+            case StatusMovimentacao.Despachado:
+            {
+                var autorizado = await UsuarioAutorizadoNoEstoqueAsync(
+                    usuarioId,
+                    movimentacao.CodigoEstoqueSolicitante,
+                    cancellationToken
+                );
+
+                if (!autorizado)
+                    return Errors.Application.MovimentacaoErrors
+                        .UsuarioNaoPertenceAoEstoqueSolicitante;
+
+                break;
+            }
+        }
+
+        return Result.Success;
+    }
+
+
+    // Solicitação
+    // ===============================
+    private async Task<ErrorOr<Success>> ProcessarMovimentacaoAsync(MovimentacaoEntity movimentacao, EditarMovimentacaoRequest request, CancellationToken cancellationToken)
+    {
+        // ==================================================
+        // DESPACHADO
+        // ==================================================
+        if (request.Status == StatusMovimentacao.Despachado)
+        {
+               
 
             foreach (var item in movimentacao.ItensMovimentacao)
             {
@@ -184,7 +243,7 @@ public class EditarMovimentacaoHandler
         }
 
         // ==================================================
-        // 📦 ENTREGUE
+        // ENTREGUE
         // ==================================================
         if (request.Status == StatusMovimentacao.Entregue)
         {
