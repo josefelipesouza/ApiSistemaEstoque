@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "IXfayiZHrRpo6kUMAhqMruPKllfQMCq6ZybQl8Kheb4=",
+  "Source": "ApiSistemaEstoque.Host",
+  "BasePath": "_content/ApiSistemaEstoque.Host",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
