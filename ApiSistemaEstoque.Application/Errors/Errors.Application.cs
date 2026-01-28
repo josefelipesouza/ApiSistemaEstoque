@@ -45,6 +45,11 @@ public static partial class Application
             code: "Usuario.NaoEncontrado",
             description: "O usuário não foi encontrado."
         );
+
+        public static Error UsuarioNaoVinculadoAEstoque => Error.NotFound(
+            code: "Usuario.NaoVinculadoAEstoque",
+            description: "O usuário não está vinculado a nenhum estoque."
+        );
     }
 
     public static class ItemErrors

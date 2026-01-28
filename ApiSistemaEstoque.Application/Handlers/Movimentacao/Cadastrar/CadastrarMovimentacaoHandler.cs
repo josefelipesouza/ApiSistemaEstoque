@@ -11,17 +11,20 @@ public class CadastrarMovimentacaoHandler
 {
     private readonly IMovimentacaoRepository _movimentacaoRepository;
     private readonly IItemEstoqueRepository _itemEstoqueRepository;
+    private readonly IUsuarioEstoqueRepository _usuarioEstoqueRepository;
     private readonly IUsuarioLogado _usuarioLogado;
 
     public CadastrarMovimentacaoHandler(
         IMediator mediator,
         IMovimentacaoRepository movimentacaoRepository,
         IItemEstoqueRepository itemEstoqueRepository,
+        IUsuarioEstoqueRepository usuarioEstoqueRepository,
         IUsuarioLogado usuarioLogado
     ) : base(mediator)
     {
         _movimentacaoRepository = movimentacaoRepository;
         _itemEstoqueRepository = itemEstoqueRepository;
+        _usuarioEstoqueRepository = usuarioEstoqueRepository;
         _usuarioLogado = usuarioLogado;
     }
 
@@ -39,13 +42,20 @@ public class CadastrarMovimentacaoHandler
         var usuarioCadastro = _usuarioLogado.ObterUsuarioId();
         if (string.IsNullOrWhiteSpace(usuarioCadastro))
             return Errors.Application.UsuarioErrors.UsuarioNaoAutenticado;
+        // ======================================================
+        // Obter estoque solicitante do usuário
+        // ======================================================
+        var CodigoEstoqueSolicitante = await _usuarioEstoqueRepository.ObterCodigoEstoquePorUsuarioAsync(usuarioCadastro, cancellationToken);
 
+        if (CodigoEstoqueSolicitante == null)
+            return Errors.Application.UsuarioErrors.UsuarioNaoVinculadoAEstoque;
+    
         // ======================================================
         // Criação da movimentação
         // ======================================================
         var movimentacao = new Domain.Entities.Movimentacao(
             request.CodigoTipoMovimentacao,
-            request.CodigoEstoqueSolicitante,
+            CodigoEstoqueSolicitante.Value,
             usuarioCadastro,
             request.CodigoEstoqueSolicitado ?? 0
         );
@@ -73,7 +83,7 @@ public class CadastrarMovimentacaoHandler
 
             var itemEstoqueAtual =
                 await _itemEstoqueRepository.BuscarPorCodigoEstoqueItem(
-                    request.CodigoEstoqueSolicitante,
+                    CodigoEstoqueSolicitante.Value,
                     item.CodigoItem,
                     cancellationToken);
 
@@ -89,7 +99,7 @@ public class CadastrarMovimentacaoHandler
                     {
                         var novoItemEstoque = new Domain.Entities.ItemEstoque(
                             item.CodigoItem,
-                            request.CodigoEstoqueSolicitante,
+                            CodigoEstoqueSolicitante.Value,
                             item.Quantidade
                         );
                         // novo item no estoque
@@ -104,7 +114,7 @@ public class CadastrarMovimentacaoHandler
                             itemEstoqueAtual.Quantidade + item.Quantidade;
 
                         await _itemEstoqueRepository.AtualizarQuantidadeAsync(
-                            request.CodigoEstoqueSolicitante,
+                            CodigoEstoqueSolicitante.Value,
                             item.CodigoItem,
                             novaQuantidade,
                             cancellationToken
@@ -130,7 +140,7 @@ public class CadastrarMovimentacaoHandler
                         itemEstoqueAtual.Quantidade - item.Quantidade;
 
                     await _itemEstoqueRepository.AtualizarQuantidadeAsync(
-                        request.CodigoEstoqueSolicitante,
+                        CodigoEstoqueSolicitante.Value,
                         item.CodigoItem,
                         novaQuantidade,
                         cancellationToken

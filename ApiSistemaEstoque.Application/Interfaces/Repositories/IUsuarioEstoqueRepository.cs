@@ -6,4 +6,8 @@ public interface IUsuarioEstoqueRepository
         string codigoUsuario,
         int codigoEstoque,
         CancellationToken cancellationToken);
+
+    Task<int?> ObterCodigoEstoquePorUsuarioAsync(
+        string codigoUsuario,
+        CancellationToken cancellationToken);    
 }
