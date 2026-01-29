@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiSistemaEstoque.Authentication")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1400b96725b4687984e16ca06020409f0fc7ffb4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9395c10a0e704beff51f9cd1d5ccc469f22029b6")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiSistemaEstoque.Authentication")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiSistemaEstoque.Authentication")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
