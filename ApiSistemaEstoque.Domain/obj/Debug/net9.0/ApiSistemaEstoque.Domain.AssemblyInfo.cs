@@ -13,7 +13,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiSistemaEstoque.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f7b69596a209594a973725a508fe663c10e7639f")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9395c10a0e704beff51f9cd1d5ccc469f22029b6")]
+>>>>>>> development-v1.0.0-alpha.1
 [assembly: System.Reflection.AssemblyProductAttribute("ApiSistemaEstoque.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiSistemaEstoque.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

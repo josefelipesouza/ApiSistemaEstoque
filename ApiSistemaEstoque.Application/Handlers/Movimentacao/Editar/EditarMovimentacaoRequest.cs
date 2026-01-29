@@ -21,8 +21,11 @@ public class EditarMovimentacaoRequest : IRequest<ErrorOr<EditarMovimentacaoResp
                 .GreaterThan(0).WithMessage("O código deve ser maior que zero.");
 
             RuleFor(x => x.PlacaVeiculo)
-            .NotEmpty().WithMessage("A placa é obrigatória.")
-            .MaximumLength(7).WithMessage("A placa deve ter no máximo 7 caracteres.");
+                .NotEmpty()
+                .WithMessage("A placa do veículo é obrigatória quando a movimentação for despachada.")
+                .MaximumLength(7)
+                .WithMessage("A placa deve ter no máximo 7 caracteres.")
+                .When(x => x.Status == StatusMovimentacao.Despachado);
 
             RuleFor(x => x.Status)
                 .IsInEnum().WithMessage("O status informado é inválido.");

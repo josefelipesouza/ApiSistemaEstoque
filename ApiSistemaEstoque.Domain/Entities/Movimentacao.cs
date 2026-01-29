@@ -33,7 +33,7 @@ public class Movimentacao
             CodigoUsuarioEstoqueSolicitado = "";
             CreatedAt = DateTime.UtcNow;
         }
-        else // Transferência, Solicitação ou Devolução
+        else //Solicitação ou Devolução
         {
          
             Status = StatusMovimentacao.Novo;
