@@ -112,6 +112,11 @@ public static partial class Application
             description: "O usuário não pertence ao estoque solicitante."
         );
 
+        public static Error EstoquesSolicitanteESolicitadoIguais => Error.NotFound(
+            code: "Movimentacao.EstoquesSolicitanteESolicitadoIguais",
+            description: "O estoque solicitante e o estoque solicitado são iguais."
+        );
+
 
     }
 }

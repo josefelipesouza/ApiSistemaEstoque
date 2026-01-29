@@ -81,11 +81,11 @@ public class EditarMovimentacaoHandler
         switch ((TipoBaseMovimentacao)movimentacao.CodigoTipoMovimentacao)
         {
             case TipoBaseMovimentacao.Solicitacao:
-                await ProcessarMovimentacaoAsync(movimentacao, request, cancellationToken);
+                await ProcessarMovimentacaoAsync(movimentacao, usuarioId, request, cancellationToken);
                 break;
 
             case TipoBaseMovimentacao.Devolucao:
-                await ProcessarMovimentacaoAsync(movimentacao, request, cancellationToken);
+                await ProcessarMovimentacaoAsync(movimentacao, usuarioId, request, cancellationToken);
                 break;
         }
 
@@ -187,7 +187,7 @@ public class EditarMovimentacaoHandler
 
     // Solicitação
     // ===============================
-    private async Task<ErrorOr<Success>> ProcessarMovimentacaoAsync(MovimentacaoEntity movimentacao, EditarMovimentacaoRequest request, CancellationToken cancellationToken)
+    private async Task<ErrorOr<Success>> ProcessarMovimentacaoAsync(MovimentacaoEntity movimentacao, string usuarioId, EditarMovimentacaoRequest request, CancellationToken cancellationToken)
     {
         // ==================================================
         // DESPACHADO
@@ -195,7 +195,6 @@ public class EditarMovimentacaoHandler
         if (request.Status == StatusMovimentacao.Despachado)
         {
                
-
             foreach (var item in movimentacao.ItensMovimentacao)
             {
                 var itemEstoqueRemetente = await _itemEstoqueRepository
@@ -234,6 +233,8 @@ public class EditarMovimentacaoHandler
                     item.Quantidade
                 );
 
+                movimentacao.SetCodigoUsuarioEstoqueSolicitado(usuarioId);
+
                 await _transporteRepository.AdicionarAsync(transporte, cancellationToken);
             }
 
@@ -247,8 +248,6 @@ public class EditarMovimentacaoHandler
         // ==================================================
         if (request.Status == StatusMovimentacao.Entregue)
         {
-
-            var usuarioId = _usuarioLogado.ObterUsuarioId();
 
             var autorizado =
                 await _usuarioEstoqueRepository.ExisteVinculoAsync(
@@ -303,6 +302,8 @@ public class EditarMovimentacaoHandler
                     itemEstoqueDestino.SetDataAlteracao(DateTime.UtcNow);
                 }
 
+
+                movimentacao.SetCodigoUsuarioEstoqueSolicitante(usuarioId);
                 //Finaliza transporte
                 await _transporteRepository.AtualizarDataEntregaAsync(movimentacao.Codigo, cancellationToken);
 

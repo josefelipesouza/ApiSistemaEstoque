@@ -53,6 +53,9 @@ public class CadastrarMovimentacaoHandler
         // ======================================================
         // Criação da movimentação
         // ======================================================
+        if(request.CodigoEstoqueSolicitado != null && request.CodigoEstoqueSolicitado == CodigoEstoqueSolicitante.Value)
+            return Errors.Application.MovimentacaoErrors.EstoquesSolicitanteESolicitadoIguais;
+            
         var movimentacao = new Domain.Entities.Movimentacao(
             request.CodigoTipoMovimentacao,
             CodigoEstoqueSolicitante.Value,
